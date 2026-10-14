@@ -1,23 +1,31 @@
 // 프로젝트 페이지는 public/projects/<slug>/index.html 정적 HTML. 라우트가 아니라서 next/link 대신 <a> + basePath.
 import type { CSSProperties } from 'react';
+import { CareerMonths } from './CareerMonths';
+import { monthIndex, type Range } from './months';
+
 const base = process.env.PAGES_BASE_PATH || '';
+const builtAt = monthIndex(new Date());
 
-const stats = [
-  { value: '4년 5개월', label: '총 경력' },
-  { value: '7건', label: 'SI 납품' },
-  { value: '3곳', label: '근무 회사' },
-  { value: '3개', label: '개인 프로젝트' },
+const skillGroups = [
+  { name: 'C++', items: ['STL', 'Boost.Asio', 'Unreal Engine', 'Protobuf', 'spdlog'] },
+  { name: 'TypeScript', items: ['NestJS', 'Next.js', 'React Native (Expo)', 'TypeORM'] },
+  { name: 'Java', items: ['Spring Boot'] },
+  { name: 'Database', items: ['PostgreSQL', 'MSSQL'] },
+  { name: 'Infra · DevOps', items: ['Docker', 'AWS', 'Jenkins', 'GitHub Actions'] },
+  { name: '장비 · VR', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker'] },
 ];
 
-const skills = [
-  'C++', 'Unreal Engine', 'TypeScript', 'NestJS', 'Next.js', 'React Native',
-  'PostgreSQL', 'MSSQL', 'Docker', 'AWS', 'Jenkins', 'GitHub Actions', 'VR · OptiTrack',
-];
-
-const careers = [
+const careers: { company: string; range: Range; role: string; works: string[]; stack: string[] }[] = [
+  {
+    company: '프리랜서',
+    range: { start: '2026.10' },
+    role: '풀스택 개발',
+    works: ['웹 · 앱 · 서버 외주 개발', '요구사항 분석부터 개발 · 배포까지 1인 수행'],
+    stack: ['Next.js', 'NestJS', 'Spring Boot', 'React Native'],
+  },
   {
     company: '넥슨코리아 · 시스템 개발실',
-    period: '2025.12 ~ 2026.10 (11개월)',
+    range: { start: '2025.12', end: '2026.10' },
     role: '백엔드 · 서버 개발',
     works: [
       '메이플스토리 라이브 서비스 서버 개발',
@@ -29,14 +37,14 @@ const careers = [
   },
   {
     company: '빅게임스튜디오 · BCM 클라이언트 Cell',
-    period: '2025.05 ~ 2025.11 (7개월)',
+    range: { start: '2025.05', end: '2025.11' },
     role: '게임 클라이언트 개발',
     works: ['전투 시스템 개발 (시뮬레이션 전투, 링크 패시브)', '떠돌이 상인 콘텐츠 개발', 'Jenkins 기반 빌드 · 배포 자동화'],
     stack: ['Jenkins'],
   },
   {
     company: '스튜디오레논 · 메타랩실',
-    period: '2024.02 ~ 2025.05 (1년 4개월)',
+    range: { start: '2024.02', end: '2025.05' },
     role: 'SI 개발 · 파트장',
     works: [
       '연구기관 · 기업 SI 4건 납품 — 요구사항 분석부터 현장 설치까지',
@@ -48,7 +56,7 @@ const careers = [
   },
   {
     company: '스튜디오레논 · 디지털사업본부',
-    period: '2021.09 ~ 2023.03 (1년 7개월)',
+    range: { start: '2021.09', end: '2023.03' },
     role: 'SI 개발',
     works: [
       'SI 3건 납품 (VR 교육, 영상 제작 시스템, 3D 콘텐츠)',
@@ -58,6 +66,13 @@ const careers = [
     ],
     stack: ['Unreal Engine (C++)', 'VR', 'Vive Tracker', 'Google STT'],
   },
+];
+
+const stats = [
+  { value: <CareerMonths ranges={careers.map((c) => c.range)} builtAt={builtAt} />, label: '총 경력' },
+  { value: '7건', label: 'SI 납품' },
+  { value: '3곳', label: '근무 회사' },
+  { value: '3개', label: '개인 프로젝트' },
 ];
 
 const projects = [
@@ -105,14 +120,14 @@ export default function Home() {
             <img src={`${base}/profile.jpg`} alt="한동현 프로필 사진" width={180} height={240} />
           </div>
           <div className="hero-text">
-            <p className="eyebrow">Software Engineer · Portfolio</p>
+            <p className="eyebrow">Full-stack Developer</p>
             <h1>
-              안녕하세요,<br />
-              <span className="grad">한동현</span>입니다.
+              트러블슈팅에 강한<br />
+              풀스택 개발자 <span className="grad">한동현</span>입니다.
             </h1>
             <p className="lead">
-              시뮬레이션 · VR · 장비 연동 SI 개발로 시작해 게임 클라이언트와 라이브 게임 서버 개발을 거쳤습니다.
-              요구사항 분석부터 현장 설치 · 납품까지 직접 수행합니다.
+              SI 개발부터 대규모 라이브 서비스 서버 최적화까지,
+              요구사항 분석부터 현장 설치 · 납품까지 수행합니다.
             </p>
             <p className="meta">1997년생</p>
           </div>
@@ -127,9 +142,16 @@ export default function Home() {
           ))}
         </ul>
 
-        <ul className="chips skills reveal">
-          {skills.map((s) => (
-            <li key={s}>{s}</li>
+        <ul className="skill-groups">
+          {skillGroups.map((g) => (
+            <li key={g.name} className="glass reveal">
+              <h3>{g.name}</h3>
+              <ul className="chips small">
+                {g.items.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+            </li>
           ))}
         </ul>
 
@@ -141,7 +163,9 @@ export default function Home() {
               <li key={c.company} className="glass reveal">
                 <div className="career-head">
                   <h3>{c.company}</h3>
-                  <span className="period">{c.period}</span>
+                  <span className="period">
+                    {c.range.start} ~ {c.range.end ?? '현재'} (<CareerMonths ranges={[c.range]} builtAt={builtAt} />)
+                  </span>
                 </div>
                 <p className="role">{c.role}</p>
                 <ul className="works">

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import './globals.css';
 
-export const metadata = { title: '한동현 포트폴리오', description: '한동현 — 서버 · 게임 클라이언트 · SI 개발 포트폴리오' };
+export const metadata = { title: '한동현 경력기술서', description: '한동현 — 서버 · 게임 클라이언트 · SI 개발 포트폴리오' };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
