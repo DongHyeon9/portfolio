@@ -7,6 +7,19 @@ main { max-width: 860px; margin: 0 auto; padding: 48px 16px; }
 .projects { list-style: none; padding: 0; display: grid; gap: 16px; }
 .projects a { display: block; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: inherit; text-decoration: none; }
 .projects a:hover { border-color: var(--accent); }
-.projects h2 { margin: 0 0 4px; }
+.projects h3 { margin: 0 0 4px; }
 .projects p { margin: 0 0 8px; }
 .projects small { color: var(--muted); }
+h2 { margin: 48px 0 16px; }
+.meta { color: var(--muted); margin: 0; }
+.profile { display: flex; gap: 28px; align-items: center; }
+.profile img { width: 150px; height: 200px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
+.profile h1 { margin: 0; }
+.profile p:last-child { margin: 12px 0 0; }
+@media (max-width: 560px) { .profile { flex-direction: column; align-items: flex-start; } }
+.careers { list-style: none; padding: 0; margin: 0; }
+.careers > li { padding: 20px 0; border-top: 1px solid var(--line); }
+.career-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
+.careers h3 { margin: 0; }
+.careers ul { margin: 8px 0; padding-left: 20px; }
+.careers small { color: var(--muted); }
