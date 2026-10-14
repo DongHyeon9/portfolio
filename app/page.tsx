@@ -11,7 +11,7 @@ const skillGroups = [
   { name: '프론트엔드 프레임워크', items: ['Next.js', 'React Native (Expo)', 'Unreal Engine'] },
   { name: '백엔드 프레임워크', items: ['NestJS', 'Spring Boot', 'Boost.Asio', 'TypeORM', 'Protobuf', 'spdlog'] },
   { name: '데이터베이스', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
-  { name: '인프라 · 데브옵스', items: ['Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
+  { name: '인프라 · 데브옵스', items: ['Git', 'SVN', 'Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
   { name: '하드웨어', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker', 'BLE'] },
 ];
 
