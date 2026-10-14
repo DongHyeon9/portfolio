@@ -7,13 +7,12 @@ const base = process.env.PAGES_BASE_PATH || '';
 const builtAt = monthIndex(new Date());
 
 const skillGroups = [
-  { name: 'C++', items: ['STL', 'Boost.Asio', 'Unreal Engine', 'Protobuf', 'spdlog'] },
-  { name: 'TypeScript', items: ['NestJS', 'Next.js', 'React Native (Expo)', 'TypeORM'] },
-  { name: 'Java', items: ['Spring Boot'] },
-  { name: 'Database', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
-  { name: 'Infra · DevOps', items: ['Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
+  { name: '언어', items: ['C++ (STL)', 'C#', 'Java', 'TypeScript', 'JavaScript', 'Python'] },
+  { name: '프론트엔드 프레임워크', items: ['Next.js', 'React Native (Expo)', 'Unreal Engine'] },
+  { name: '백엔드 프레임워크', items: ['NestJS', 'Spring Boot', 'Boost.Asio', 'TypeORM', 'Protobuf', 'spdlog'] },
+  { name: '데이터베이스', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
+  { name: '인프라 · 데브옵스', items: ['Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
   { name: '하드웨어', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker', 'BLE'] },
-  { name: '기타 언어', items: ['C#', 'JavaScript', 'Python'] },
 ];
 
 const careers: { company: string; range: Range; role: string; works: string[]; stack: string[] }[] = [
