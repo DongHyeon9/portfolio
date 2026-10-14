@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popspot 기술 노트</title>
+<style>
+  :root {
+    --bg: #fbf8f5; --surface: #ffffff; --surface-2: #f3eeea; --text: #1a1717; --text-2: #5f5955; --border: #e2dad3;
+    --primary: #c9363e; --primary-soft: #fbe8e9; --accent: #3847c7; --accent-soft: #e9ecfb;
+    --ok: #18794e; --ok-soft: #e6f4ec; --warn: #7a5600; --warn-soft: #fff4cf; --code: #f4efea;
+    --radius: 16px; --shadow: 0 1px 2px rgb(0 0 0 / .05), 0 8px 24px rgb(0 0 0 / .06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141214; --surface: #1c191b; --surface-2: #262124; --text: #ece7e5; --text-2: #aca4a0; --border: #352f31;
+      --primary: #ff6b72; --primary-soft: #3a1d20; --accent: #93a7ff; --accent-soft: #1d2340;
+      --ok: #5fd39a; --ok-soft: #173426; --warn: #f3c969; --warn-soft: #362c12; --code: #262124; --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.75 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 52px 0; border-top: 1px solid var(--border); scroll-margin-top: 8px; }
+  h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.02em; }
+  h3 { font-size: 20px; margin: 34px 0 10px; }
+  h4 { font-size: 16px; margin: 18px 0 6px; }
+  .lead { color: var(--text-2); margin: 0 0 24px; max-width: 820px; }
+  .eyebrow { color: var(--primary); font-weight: 800; font-size: 13px; letter-spacing: .06em; margin: 0 0 4px; }
+  p { margin: 8px 0; }
+  ul, ol { padding-left: 22px; }
+  li { margin: 4px 0; }
+  code { background: var(--code); padding: 1px 6px; border-radius: 5px; font-size: .88em; font-family: "Cascadia Code", Consolas, monospace; }
+  pre { background: var(--code); border: 1px solid var(--border); padding: 14px 16px; border-radius: 12px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .muted { color: var(--text-2); }
+  .back { padding: 14px 0 0; font-size: 14px; } .back a { text-decoration: none; font-weight: 700; }
+
+  header.hero { padding: 60px 0 40px; }
+  .brand { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
+  .brand span { color: var(--primary); }
+  .hero h1 { font-size: clamp(30px, 4.6vw, 42px); line-height: 1.25; margin: 0 0 14px; letter-spacing: -.03em; }
+  .hero h1 em { font-style: normal; color: var(--primary); }
+  .hero p { color: var(--text-2); font-size: 17px; margin: 0 0 18px; max-width: 820px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px; font-size: 13px; white-space: nowrap; }
+  .note { background: var(--accent-soft); border-radius: 12px; padding: 12px 16px; font-size: 14px; margin-top: 18px; }
+
+  nav.toc ol { columns: 3; column-gap: 28px; padding-left: 22px; margin: 0; }
+  nav.toc li { margin: 3px 0; break-inside: avoid; }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .card h4 { margin-top: 6px; }
+  .card p, .card ul { color: var(--text-2); font-size: 15px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: var(--primary-soft); color: var(--primary); }
+  .tag.blue { background: var(--accent-soft); color: var(--accent); }
+  .tag.green { background: var(--ok-soft); color: var(--ok); }
+  .tag.yellow { background: var(--warn-soft); color: var(--warn); }
+
+  /* why / concept boxes */
+  .why { background: var(--surface); border: 1px solid var(--border); border-left: 5px solid var(--primary); border-radius: 12px; padding: 14px 18px; margin: 14px 0; }
+  .why b.t { display: block; color: var(--primary); font-size: 14px; margin-bottom: 2px; }
+  .concepts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 14px 0; }
+  .concept { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .concept h4 { margin: 0 0 4px; font-size: 15px; display: flex; gap: 8px; align-items: baseline; }
+  .concept h4::before { content: "개념"; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-soft); border-radius: 5px; padding: 1px 6px; }
+  .concept p { margin: 0; font-size: 14.5px; color: var(--text-2); }
+  .concept p + p { margin-top: 6px; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  th { background: var(--surface-2); font-size: 13px; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+  td.secret { color: var(--primary); font-weight: 800; white-space: nowrap; }
+  td.public { color: var(--ok); font-weight: 800; white-space: nowrap; }
+
+  .arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; overflow-x: auto; margin: 14px 0; }
+  .arch svg { display: block; width: 100%; min-width: 760px; height: auto; }
+  .arch text { fill: var(--text); font: 13px "Malgun Gothic", system-ui, sans-serif; }
+  .arch .b { font-weight: 700; }
+  .arch .sub { fill: var(--text-2); font-size: 11.5px; }
+  .arch .err { fill: var(--primary); font-size: 12px; }
+  .arch .box { fill: var(--surface-2); stroke: var(--border); }
+  .arch .core { fill: var(--primary-soft); stroke: var(--primary); }
+  .arch .ext { fill: var(--accent-soft); stroke: var(--accent); }
+  .arch .ci { fill: var(--ok-soft); stroke: var(--ok); }
+  .arch .warnbox { fill: var(--warn-soft); stroke: var(--warn); }
+  .arch .ln { stroke: var(--text-2); stroke-width: 1.4; fill: none; }
+  .arch .life { stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 4 4; }
+  .arch .dash { stroke-dasharray: 5 4; }
+  .arch .red { stroke: var(--primary); }
+  .cap { font-size: 13px; color: var(--text-2); margin: -6px 0 14px; }
+
+  .flow { counter-reset: step; list-style: none; padding: 0; margin: 12px 0; }
+  .flow li { position: relative; padding: 0 0 10px 40px; }
+  .flow li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; font-size: 13px; display: grid; place-items: center; }
+
+  .trouble { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin: 12px 0; }
+  .trouble h4 { margin: 0 0 8px; }
+  .trouble dl { display: grid; grid-template-columns: 70px 1fr; gap: 4px 12px; margin: 0; font-size: 15px; }
+  .trouble dt { font-weight: 800; color: var(--text-2); }
+  .trouble dd { margin: 0; }
+
+  @media screen and (max-width: 860px) {
+    .grid, .grid.two, .concepts { grid-template-columns: 1fr; }
+    nav.toc ol { columns: 1; }
+    section { padding: 36px 0; }
+    .trouble dl { grid-template-columns: 1fr; }
+  }
+  @page { size: A4; margin: 12mm; }
+  @media print {
+    .back { display: none; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 12px; }
+    :root { --bg: #fff; }
+    section { padding: 20px 0; }
+    pre { font-size: 10px; white-space: pre-wrap; }
+    table { font-size: 11px; } td code { white-space: normal; }
+    .arch { overflow: visible; } .arch svg { min-width: 0; }
+    .table-wrap { overflow: visible; }
+    .card, .concept, .why, .arch, .trouble, tr { break-inside: avoid; }
+    h2, h3, h4, .eyebrow, .lead { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<nav class="back"><div class="wrap"><a href="../../">← 포트폴리오 목록</a> · <a href="./">Popspot 포트폴리오</a></div></nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">Pop<span>spot</span> <span style="color:var(--text-2);font-size:16px;font-weight:700;letter-spacing:0">기술 노트</span></div>
+    <h1>왜 이 기술을 골랐고,<br><em>어떻게 엮어서 돌아가는가</em></h1>
+    <p>팝업스토어 회차 예약 서비스 Popspot을 만들며 사용한 기술을 <b>선택 이유 → 꼭 알아야 할 핵심 개념 → 이 프로젝트에서의 실제 구성 → 동작 흐름(도식)</b> 순서로 정리한 공부용 문서입니다. 환경 변수 하나하나가 어디서 정해지고 누가 읽는지, 작업하며 막혔던 문제와 원인까지 함께 기록했습니다.</p>
+    <div class="chips">
+      <span class="chip">Spring Boot 4.1 · Java 21</span><span class="chip">Next.js 16 · React 19</span><span class="chip">Supabase (Postgres 17 · Auth)</span>
+      <span class="chip">Flyway</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Google Cloud Run</span><span class="chip">Vercel</span>
+    </div>
+    <p class="note">기능 소개와 화면은 <a href="./">포트폴리오 문서</a>에 있습니다. 서비스 <a href="https://popspot-gold.vercel.app">popspot-gold.vercel.app</a> · API는 Google Cloud Run(서울 리전) · 작성 2026-10-11</p>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <p class="eyebrow">CONTENTS</p>
+    <h2>목차</h2>
+    <nav class="toc" aria-label="목차"><ol>
+      <li><a href="#choice">기술 선택 요약</a></li>
+      <li><a href="#arch">전체 구성과 저장소</a></li>
+      <li><a href="#spring">Spring Boot</a></li>
+      <li><a href="#next">Next.js</a></li>
+      <li><a href="#supabase">Supabase · PostgreSQL</a></li>
+      <li><a href="#flyway">Flyway</a></li>
+      <li><a href="#docker">Docker</a></li>
+      <li><a href="#actions">GitHub Actions</a></li>
+      <li><a href="#gcp">Google Cloud Run</a></li>
+      <li><a href="#vercel">Vercel</a></li>
+      <li><a href="#env">환경 변수 총정리</a></li>
+      <li><a href="#tests">테스트</a></li>
+      <li><a href="#trouble">트러블슈팅</a></li>
+      <li><a href="#review">교차 리뷰로 잡은 결함</a></li>
+      <li><a href="#next-steps">남은 과제</a></li>
+    </ol></nav>
+  </div>
+</section>
+
+<!-- 1 -->
+<section id="choice">
+  <div class="wrap">
+    <p class="eyebrow">1 · WHY</p>
+    <h2>기술 선택 요약</h2>
+    <p class="lead">설계 원칙은 세 가지입니다. ① 경쟁 상태(동시 예약)는 서버와 DB에서 해결한다 ② 비밀값과 토큰은 브라우저에 두지 않는다 ③ 새 라이브러리는 꼭 필요할 때만 추가한다.</p>
+    <div class="table-wrap"><table>
+      <tr><th>기술</th><th>맡은 역할</th><th>선택 이유</th><th>검토한 대안</th></tr>
+      <tr><td><b>Spring Boot 4.1</b> + Java 21</td><td>비즈니스 API, 인증·인가, 예약 트랜잭션</td><td>트랜잭션·보안(Resource Server)·검증·헬스체크가 표준으로 갖춰져 있음. "신뢰 경계"를 명확하게 둘 수 있음</td><td>Next.js API Route만으로 처리 → 트랜잭션·잠금 제어와 서버 분리 측면에서 불리</td></tr>
+      <tr><td><b>JdbcClient</b> (Spring JDBC)</td><td>SQL 실행</td><td>조건부 UPDATE, <code>FOR SHARE/UPDATE</code>, <code>ON CONFLICT</code>를 SQL 그대로 표현. 무슨 쿼리가 나가는지 숨김 없음</td><td>JPA → 엔티티 매핑·영속성 컨텍스트가 이 규모와 동시성 제어엔 오히려 간접 단계</td></tr>
+      <tr><td><b>Next.js 16</b> App Router</td><td>고객 웹 + 관리자 콘솔 (한 앱)</td><td>서버 컴포넌트·서버 액션으로 <b>브라우저가 API·토큰을 직접 다루지 않게</b> 할 수 있음. Vercel 배포가 간단</td><td>React SPA + CORS API → 토큰을 브라우저 JS가 다뤄야 함</td></tr>
+      <tr><td><b>Supabase</b></td><td>관리형 PostgreSQL + 로그인(Auth)</td><td>DB와 회원가입·로그인·소셜 로그인을 한 번에. JWT를 비대칭키로 서명해 Spring이 공개키로 검증 가능</td><td>직접 Auth 구현 → 비밀번호 저장·메일·OAuth를 모두 만들어야 함</td></tr>
+      <tr><td><b>Flyway</b></td><td>DB 스키마 버전 관리</td><td>SQL 파일 그대로, 앱 기동 시 자동 적용. 로컬·CI·운영 DB가 같은 스키마</td><td>수동 SQL 실행 → 환경마다 스키마가 어긋남</td></tr>
+      <tr><td><b>Docker</b> · Compose</td><td>로컬 DB+API, 운영 이미지</td><td>"내 PC에선 되는데" 제거. 같은 이미지를 CI에서 테스트하고 운영에 배포</td><td>로컬 PostgreSQL 설치 → 버전·설정 차이</td></tr>
+      <tr><td><b>GitHub Actions</b></td><td>CI(테스트) · CD(배포) · 롤백 · 백업</td><td>저장소와 통합, OIDC로 클라우드에 <b>키 파일 없이</b> 인증 가능</td><td>Vercel/Cloud Build 각각의 자동 배포 → 테스트 게이트를 한곳에서 관리하기 어려움</td></tr>
+      <tr><td><b>Google Cloud Run</b></td><td>Spring 컨테이너 실행</td><td>컨테이너 그대로 실행, 요청 없으면 0대(비용 0), 리비전 단위 롤백, 서울 리전(Supabase와 같은 지역)</td><td>Vercel → 장기 실행 JVM 불가 / EC2 → 서버 관리 부담</td></tr>
+      <tr><td><b>Vercel</b></td><td>Next.js 호스팅</td><td>Next.js 제작사의 플랫폼, CDN·HTTPS·프리뷰 기본 제공</td><td>Cloud Run에 Next도 올리기 → 가능하지만 캐시·CDN 설정을 직접 해야 함</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="arch">
+  <div class="wrap">
+    <p class="eyebrow">2 · ARCHITECTURE</p>
+    <h2>전체 구성과 저장소</h2>
+    <p class="lead">브라우저는 <b>Next.js 서버만</b> 부릅니다. Next 서버가 쿠키에서 토큰을 꺼내 Spring에 전달하고, Spring이 검증 후 DB를 다룹니다. 그래서 Spring에 CORS를 열 필요가 없고, 토큰이 브라우저 JS에 노출되지 않습니다.</p>
+    <div class="arch">
+      <svg viewBox="0 0 980 435" role="img" aria-label="실행 구성과 배포 경로">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <rect class="box" x="20" y="60" width="150" height="64" rx="12"/><text x="36" y="88">브라우저</text><text class="sub" x="36" y="108">고객 · 관리자</text>
+        <rect class="core" x="230" y="40" width="210" height="110" rx="14"/><text class="b" x="246" y="66">Next.js 16 (Vercel)</text>
+        <text class="sub" x="246" y="88">서버 컴포넌트 · 서버 액션</text><text class="sub" x="246" y="106">proxy: 세션 갱신 · 경로 보호</text><text class="sub" x="246" y="124">httpOnly 쿠키에 Supabase 세션</text>
+        <rect class="core" x="520" y="40" width="210" height="110" rx="14"/><text class="b" x="536" y="66">Spring Boot (Cloud Run)</text>
+        <text class="sub" x="536" y="88">JWT 검증 · 역할 판정</text><text class="sub" x="536" y="106">예약 트랜잭션 · 감사 로그</text><text class="sub" x="536" y="124">Flyway 마이그레이션</text>
+        <rect class="ext" x="790" y="20" width="170" height="60" rx="12"/><text x="806" y="46">Supabase Auth</text><text class="sub" x="806" y="66">가입·로그인 · JWKS 공개키</text>
+        <rect class="ext" x="790" y="110" width="170" height="60" rx="12"/><text x="806" y="136">Supabase Postgres</text><text class="sub" x="806" y="156">popspot 스키마 · pooler</text>
+        <path class="ln" d="M170 92 H226" marker-end="url(#ar)"/><text class="sub" x="176" y="84">HTTPS</text>
+        <path class="ln" d="M440 95 H516" marker-end="url(#ar)"/><text class="sub" x="446" y="86">Bearer JWT</text>
+        <path class="ln" d="M440 60 C 560 0, 700 10, 786 44" marker-end="url(#ar)"/><text class="sub" x="560" y="16">로그인·회원가입 (publishable key)</text>
+        <path class="ln dash" d="M730 70 H786" marker-end="url(#ar)"/><text class="sub" x="736" y="64">JWKS</text>
+        <path class="ln" d="M730 130 H786" marker-end="url(#ar)"/><text class="sub" x="736" y="124">JDBC</text>
+        <rect class="ci" x="20" y="250" width="200" height="92" rx="12"/><text class="b" x="36" y="276">GitHub (main)</text><text class="sub" x="36" y="298">push → CI 4개 잡</text><text class="sub" x="36" y="316">통과 시 Deploy 워크플로</text>
+        <rect class="ci" x="300" y="230" width="220" height="56" rx="12"/><text x="316" y="254">Artifact Registry</text><text class="sub" x="316" y="274">API 이미지 (digest)</text>
+        <rect class="ci" x="300" y="306" width="220" height="56" rx="12"/><text x="316" y="330">Vercel CLI (prebuilt)</text><text class="sub" x="316" y="350">pull → build → deploy</text>
+        <rect class="ext" x="600" y="230" width="190" height="56" rx="12"/><text x="616" y="254">GCP 인증</text><text class="sub" x="616" y="274">Workload Identity (키 없음)</text>
+        <rect class="ext" x="600" y="306" width="190" height="56" rx="12"/><text x="616" y="330">Secret Manager</text><text class="sub" x="616" y="350">DB 비밀번호</text>
+        <path class="ln" d="M220 280 H296" marker-end="url(#ar)"/><path class="ln" d="M220 312 H296" marker-end="url(#ar)"/>
+        <path class="ln dash" d="M520 258 C 560 200, 600 170, 620 154" marker-end="url(#ar)"/><text class="sub" x="540" y="205">gcloud run deploy</text>
+        <path class="ln dash" d="M300 334 H262 V156" marker-end="url(#ar)"/><text class="sub" x="270" y="200">vercel deploy --prod</text>
+        <path class="ln dash" d="M695 306 V 290"/><path class="ln dash" d="M695 230 C 700 190, 680 170, 660 154" marker-end="url(#ar)"/>
+        <text class="sub" x="20" y="400">실선: 실행 중 요청 · 점선: 배포/키 조회 경로</text>
+        <text class="sub" x="20" y="420">로컬에서는 Docker Compose가 PostgreSQL + Spring을 띄우고, Next는 npm run web:dev로 실행합니다.</text>
+      </svg>
+    </div>
+    <h3>저장소 구조 (모노레포)</h3>
+    <pre><code>2_reserve_system/
+├─ apps/api/                      # Spring Boot (Gradle wrapper, Dockerfile)
+│  ├─ src/main/java/com/popspot/api/
+│  │  ├─ auth/          SecurityConfig, JWT 디코더, RoleJwtConverter, /api/me
+│  │  ├─ common/        오류 형식(problem+json), Clock, RequestIdFilter, JsonConfig
+│  │  ├─ popup/         팝업 조회, 예약 상태 계산(ReservationStatus)
+│  │  ├─ reservation/   예약 생성·조회·취소 (동시성 핵심)
+│  │  ├─ admin/         대시보드, 팝업·회차, 예약 운영, 감사 로그
+│  │  └─ ops/           SANDBOX 운영 테스트
+│  ├─ src/main/resources/  application*.properties, db/migration(V1~V4), db/seed(V1000)
+│  └─ src/test/...         Testcontainers 통합 테스트
+├─ apps/web/                      # Next.js 16
+│  ├─ src/app/(customer)/      고객 화면 (route group: URL에 안 나옴)
+│  ├─ src/app/admin/(console)/ 관리자 콘솔
+│  ├─ src/lib/                 api.ts, session.ts, time.ts, supabase/, oauth.ts …
+│  ├─ src/proxy.ts             Next 16의 미들웨어 (세션 갱신·경로 보호)
+│  └─ e2e/                     Playwright
+├─ .github/workflows/  ci.yml · deploy.yml · rollback.yml · backup.yml
+├─ scripts/  gradle.mjs · check-tracked-files.mjs · db-backup.sh · db-restore.sh
+└─ docker-compose.yml · package.json(공용 명령: web:dev, api:dev, stack:up, check)</code></pre>
+    <p class="muted">계획·보고서·AI 지침 같은 문서는 <code>.git/info/exclude</code>로 로컬에서만 관리하고, CI의 guard 잡이 실수로 추적된 문서·비밀값을 막습니다.</p>
+  </div>
+</section>
+
+<!-- 3 SPRING -->
+<section id="spring">
+  <div class="wrap">
+    <p class="eyebrow">3 · SPRING BOOT</p>
+    <h2>Spring Boot — 신뢰 경계</h2>
+    <div class="why"><b class="t">왜 Spring인가</b>화면에서 버튼을 숨기는 것은 보안이 아닙니다. "이 사용자가 이 예약을 해도 되는가, 좌석이 남았는가"를 최종 결정하는 곳이 하나 있어야 하고, 그곳은 트랜잭션과 인증을 표준으로 다룰 수 있는 서버여야 합니다.</div>
+
+    <h3>핵심 개념</h3>
+    <div class="concepts">
+      <div class="concept"><h4>IoC 컨테이너 · 빈 · DI</h4><p>Spring이 객체(빈)를 만들고 생성자에 필요한 의존성을 넣어 줍니다. <code>ReservationService</code>는 <code>JdbcClient</code>, <code>Clock</code>을 생성자로 받습니다. 테스트에서는 <code>Clock</code> 빈만 바꿔 시간을 고정할 수 있습니다.</p></div>
+      <div class="concept"><h4>Auto-configuration · 외부 설정</h4><p>의존성만 추가하면 DataSource, Flyway, Security가 자동 구성됩니다. 값은 <code>application.properties</code>의 <code>${ENV:기본값}</code>으로 환경 변수에서 받습니다. 우선순위: 환경 변수 &gt; <code>.env</code> import &gt; properties 기본값.</p></div>
+      <div class="concept"><h4>프로필 (Profile)</h4><p><code>SPRING_PROFILES_ACTIVE=prod</code>면 <code>application-prod.properties</code>가 기본 설정을 덮어씁니다. 운영에서만 JSON 로그, API 문서 끔, 운영 테스트 끔.</p></div>
+      <div class="concept"><h4>Security Filter Chain</h4><p>요청은 컨트롤러 전에 필터 체인을 통과합니다. <code>BearerTokenAuthenticationFilter</code>가 헤더의 JWT를 꺼내 <code>JwtDecoder</code>로 검증하고, 성공하면 <code>Authentication</code>을 만들어 경로별 권한 규칙을 적용합니다.</p></div>
+      <div class="concept"><h4>OAuth2 Resource Server · JWT</h4><p>토큰을 <b>발급하지 않고 검증만</b> 하는 서버. JWT = header.payload.signature. 검증 항목: 서명(공개키), <code>iss</code>(발급자), <code>aud</code>(대상), <code>exp</code>(만료). 통과하면 <code>sub</code>를 사용자 ID로 씁니다.</p></div>
+      <div class="concept"><h4>JWKS · 비대칭 서명</h4><p>Supabase가 개인키로 서명(ES256)하고 공개키 목록을 <code>/.well-known/jwks.json</code>에 공개합니다. Spring은 공개키만 받아 검증 → 서명용 비밀을 공유할 필요가 없고, 키 교체(<code>kid</code>)도 자동으로 따라갑니다.</p></div>
+      <div class="concept"><h4>@Transactional</h4><p>메서드 시작에 트랜잭션을 열고, 정상 종료 시 COMMIT, <b>런타임 예외 시 ROLLBACK</b>. 예약 중 매진 예외가 나면 앞에서 넣은 멱등성 키 INSERT까지 모두 취소됩니다.</p></div>
+      <div class="concept"><h4>격리 수준 · 행 잠금</h4><p>PostgreSQL 기본은 READ COMMITTED. 같은 행을 UPDATE하는 트랜잭션은 앞 트랜잭션이 끝날 때까지 기다린 뒤 <b>최신 값으로 조건을 다시 평가</b>합니다. <code>FOR SHARE</code>(읽기 잠금, 서로 공유) / <code>FOR UPDATE</code>(쓰기 잠금, 배타)로 순서를 강제할 수 있습니다.</p></div>
+      <div class="concept"><h4>멱등성 (Idempotency)</h4><p>같은 요청을 여러 번 보내도 결과가 한 번 보낸 것과 같은 성질. 클라이언트가 만든 키를 DB 유니크 제약으로 "먼저 선점한 요청만 처리"하게 만들면 재시도·더블클릭이 안전해집니다.</p></div>
+      <div class="concept"><h4>HikariCP 커넥션 풀</h4><p>DB 연결을 미리 만들어 재사용합니다. <code>maximum-pool-size</code>가 인스턴스당 최대 연결 수. 인스턴스 수 × 풀 크기가 DB 쪽 한도를 넘으면 기동 실패(실제 장애 원인).</p></div>
+      <div class="concept"><h4>Actuator 헬스 그룹</h4><p><code>liveness</code>(프로세스가 살아 있나) / <code>readiness</code>(요청 받을 준비가 됐나). readiness에만 DB를 포함해 DB 장애 시 트래픽은 끊되 컨테이너 재시작 반복은 막습니다.</p></div>
+      <div class="concept"><h4>RFC 9457 problem+json</h4><p>오류 응답 표준 형식. <code>{status, code, detail, errors[]}</code>로 통일해 웹이 <code>code</code>로 한국어 메시지를 고릅니다.</p></div>
+    </div>
+
+    <h3>워크플로 ① 로그인부터 API 호출까지 (인증 시퀀스)</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 560" role="img" aria-label="로그인과 인증된 API 호출 시퀀스 다이어그램">
+        <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <rect class="box" x="10" y="14" width="140" height="42" rx="10"/><text class="b" x="50" y="40">브라우저</text>
+        <rect class="core" x="220" y="14" width="140" height="42" rx="10"/><text class="b" x="240" y="40">Next.js 서버</text>
+        <rect class="ext" x="430" y="14" width="140" height="42" rx="10"/><text class="b" x="446" y="40">Supabase Auth</text>
+        <rect class="core" x="640" y="14" width="140" height="42" rx="10"/><text class="b" x="680" y="40">Spring</text>
+        <rect class="ext" x="830" y="14" width="140" height="42" rx="10"/><text class="b" x="862" y="40">Postgres</text>
+        <path class="life" d="M80 56 V550"/><path class="life" d="M290 56 V550"/><path class="life" d="M500 56 V550"/><path class="life" d="M710 56 V550"/><path class="life" d="M900 56 V550"/>
+        <path class="ln" d="M80 95 H286" marker-end="url(#a2)"/><text x="90" y="88">① 로그인 폼 제출 (서버 액션)</text>
+        <path class="ln" d="M290 135 H496" marker-end="url(#a2)"/><text x="300" y="128">② signInWithPassword</text>
+        <path class="ln dash" d="M500 175 H294" marker-end="url(#a2)"/><text x="300" y="168">③ access JWT(ES256) + refresh</text>
+        <path class="ln dash" d="M290 215 H84" marker-end="url(#a2)"/><text x="90" y="208">④ Set-Cookie (httpOnly)</text>
+        <path class="ln" d="M80 265 H286" marker-end="url(#a2)"/><text x="90" y="258">⑤ GET /reservations (쿠키)</text>
+        <rect class="warnbox" x="180" y="280" width="230" height="38" rx="8"/><text class="sub" x="192" y="304">proxy.ts: getClaims() · 만료 시 갱신</text>
+        <path class="ln" d="M290 350 H706" marker-end="url(#a2)"/><text x="300" y="343">⑥ GET /api/reservations · Authorization: Bearer &lt;JWT&gt;</text>
+        <path class="ln dash" d="M710 390 H504" marker-end="url(#a2)"/><text x="520" y="383">⑦ JWKS 공개키 (최초 1회 · 캐시)</text>
+        <rect class="warnbox" x="600" y="402" width="220" height="30" rx="8"/><text class="sub" x="610" y="422">서명 · iss · aud · exp 검증</text>
+        <path class="ln" d="M710 455 H896" marker-end="url(#a2)"/><text x="718" y="448">⑧ user_roles → ROLE_*</text>
+        <path class="ln dash" d="M710 495 H294" marker-end="url(#a2)"/><text x="300" y="488">⑨ 200 JSON  /  401·403 problem+json</text>
+        <path class="ln dash" d="M290 535 H84" marker-end="url(#a2)"/><text x="90" y="528">⑩ 서버 렌더링 HTML</text>
+      </svg>
+    </div>
+    <p class="cap">토큰은 ③~⑥ 동안 Next 서버와 쿠키 사이에서만 움직이고, 브라우저 JavaScript는 토큰 값을 읽을 수 없습니다(httpOnly).</p>
+    <div class="table-wrap"><table>
+      <tr><th>JwtDecoder 구성 (SecurityConfig)</th><th>동작</th><th>쓰는 곳</th></tr>
+      <tr><td><code>AUTH_JWKS_URI</code> 설정 시</td><td>JWKS 공개키로 ES256/RS256 검증</td><td>운영, 로컬 api:dev</td></tr>
+      <tr><td><code>AUTH_JWT_SECRET</code> 설정 시</td><td>공유 비밀키로 HS256 검증</td><td>Docker Compose, CI</td></tr>
+      <tr><td><code>DEV_AUTH_*</code> 추가 설정 시</td><td>위 검증 실패 시 개발용 HS256 토큰을 한 번 더 시도(E2E 전용). <b>prod 프로필에서 설정돼 있으면 기동 거부</b></td><td>로컬·CI E2E</td></tr>
+    </table></div>
+    <pre><code>// 경로별 권한 (SecurityConfig 요약)
+.requestMatchers("/actuator/health", "/actuator/health/**", "/v3/api-docs", "/error").permitAll()
+.requestMatchers(HttpMethod.GET, "/api/popups", "/api/popups/**").permitAll()   // 비로그인 탐색
+.requestMatchers("/api/admin/**").hasRole("ADMIN")
+.requestMatchers("/api/ops/**").hasRole("OPS_TEST")
+.anyRequest().authenticated()</code></pre>
+    <p><b>역할은 토큰을 믿지 않습니다.</b> <code>RoleJwtConverter</code>가 <code>sub</code>로 <code>popspot.user_roles</code>를 조회해 권한을 만들고, 처음 온 사용자는 <code>app_users</code>에 등록 + CUSTOMER 부여. 그래서 Supabase 쪽 메타데이터를 사용자가 조작해도 관리자가 될 수 없습니다.</p>
+
+    <h3>워크플로 ② 예약 생성 트랜잭션</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 560" role="img" aria-label="예약 생성 트랜잭션의 단계와 실패 분기">
+        <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker>
+        <marker id="a3r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--primary)"/></marker></defs>
+        <rect class="ci" x="20" y="10" width="440" height="40" rx="10"/><text class="b" x="36" y="35">BEGIN — @Transactional (READ COMMITTED)</text>
+        <rect class="box" x="20" y="68" width="440" height="44" rx="10"/><text x="36" y="88">1. 멱등성 키 선점</text><text class="sub" x="36" y="104">insert into idempotency_keys … on conflict do nothing</text>
+        <rect class="box" x="20" y="130" width="440" height="44" rx="10"/><text x="36" y="150">2. 회차 + 팝업 조회, 팝업 행 공유 잠금</text><text class="sub" x="36" y="166">select … from slots join popups … for share of p</text>
+        <rect class="box" x="20" y="192" width="440" height="44" rx="10"/><text x="36" y="212">3. 서버 시계로 오픈 여부 · 회차 시작 · 인원 검사</text><text class="sub" x="36" y="228">Clock.instant() 기준 (사용자 PC 시각 무관)</text>
+        <rect class="box" x="20" y="254" width="440" height="44" rx="10"/><text x="36" y="274">4. 같은 회차 활성 예약 존재 확인</text><text class="sub" x="36" y="290">select exists(… status &lt;&gt; 'CANCELLED')</text>
+        <rect class="core" x="20" y="316" width="440" height="44" rx="10"/><text class="b" x="36" y="336">5. 좌석 차감 (조건부 UPDATE)</text><text class="sub" x="36" y="352">update slots set reserved_count += n where reserved_count + n &lt;= capacity</text>
+        <rect class="box" x="20" y="378" width="440" height="44" rx="10"/><text x="36" y="398">6. 예약 INSERT (예약번호 PS-YYMMDD-NNNN)</text><text class="sub" x="36" y="414">부분 유니크 인덱스 · 복합 FK가 최종 안전망</text>
+        <rect class="box" x="20" y="440" width="440" height="44" rx="10"/><text x="36" y="460">7. 이벤트 기록 · 멱등성 키에 예약 ID 연결</text><text class="sub" x="36" y="476">reservation_events, idempotency_keys</text>
+        <rect class="ci" x="20" y="502" width="440" height="44" rx="10"/><text class="b" x="36" y="529">COMMIT → 201 Created</text>
+        <path class="ln" d="M240 50 V64" marker-end="url(#a3)"/><path class="ln" d="M240 112 V126" marker-end="url(#a3)"/><path class="ln" d="M240 174 V188" marker-end="url(#a3)"/><path class="ln" d="M240 236 V250" marker-end="url(#a3)"/><path class="ln" d="M240 298 V312" marker-end="url(#a3)"/><path class="ln" d="M240 360 V374" marker-end="url(#a3)"/><path class="ln" d="M240 422 V436" marker-end="url(#a3)"/><path class="ln" d="M240 484 V498" marker-end="url(#a3)"/>
+        <path class="ln red" d="M460 90 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="86">0행 = 이미 처리된 키 → 같은 내용이면 기존 예약 200</text><text class="err" x="544" y="102">내용이 다르면 422 IDEMPOTENCY_KEY_REUSED</text>
+        <path class="ln red" d="M460 152 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="156">없음 · 초안 팝업 → 404</text>
+        <path class="ln red" d="M460 214 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="210">409 RESERVATION_NOT_OPEN / SLOT_UNAVAILABLE</text><text class="err" x="544" y="226">400 PARTY_SIZE_EXCEEDED</text>
+        <path class="ln red" d="M460 276 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="280">409 DUPLICATE_RESERVATION</text>
+        <path class="ln red" d="M460 338 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="342">0행 → 409 SOLD_OUT</text>
+        <path class="ln red" d="M460 400 H536" marker-end="url(#a3r)"/><text class="err" x="544" y="404">유니크 위반(다른 키로 동시 요청) → 409 DUPLICATE</text>
+        <rect class="warnbox" x="540" y="452" width="420" height="72" rx="10"/><text class="b" x="556" y="476">실패 = 예외 = ROLLBACK</text><text class="sub" x="556" y="496">멱등성 키 · 좌석 차감까지 전부 원상 복구</text><text class="sub" x="556" y="514">같은 키로 다시 시도하면 처음부터 다시 처리됨</text>
+      </svg>
+    </div>
+    <p><b>왜 정원을 절대 넘지 않나</b>: 5단계 UPDATE는 같은 회차 행에 대해 한 번에 하나씩만 실행됩니다(행 쓰기 잠금). 뒤에 온 트랜잭션은 앞 트랜잭션의 COMMIT을 기다렸다가 <b>바뀐 reserved_count로 조건을 다시 계산</b>하므로, 남은 좌석보다 많이 차감될 수 없습니다. 거기에 <code>check (reserved_count between 0 and capacity)</code>가 마지막 안전망입니다.</p>
+    <p><b>왜 팝업에 FOR SHARE를 거나</b>: 관리자가 "초안으로 되돌리기"를 하는 순간 예약이 끼어들면 초안 팝업에 예약이 남습니다. 예약은 팝업을 <code>FOR SHARE</code>, 관리자 변경은 <code>FOR UPDATE</code>로 잡아 서로 순서를 지키게 했습니다(공유 잠금끼리는 동시에 가능하므로 예약끼리는 막히지 않음).</p>
+    <p>취소도 같은 원리: <code>update reservations set status='CANCELLED' where id=? and status='CONFIRMED' and now &lt; 취소기한 returning …</code>이 1행을 바꿨을 때만 좌석을 반환 → 동시에 16번 취소해도 좌석은 한 번만 돌아옵니다.</p>
+
+    <h3>예약 상태는 "저장"하지 않고 "계산"한다</h3>
+    <p>오픈 대기 → 예약 가능 전환을 스케줄러로 하면 스케줄러가 늦거나 멈출 때 상태가 틀립니다. <code>ReservationStatus.resolve(popup, slots, now)</code>가 요청마다 계산합니다. 우선순위: 게시 종료·수동 마감 → 마감 시각 경과 → 오픈 전(WAITING) → 미래 회차 없음(CLOSED) → 모두 매진(SOLD_OUT) → OPEN. 오픈 1초 전/정각/1초 후를 표 기반 테스트로 고정.</p>
+
+    <h3>시간 규칙: UTC 저장 · KST 표시 · 오프셋 필수</h3>
+    <ul>
+      <li>DB <code>timestamptz</code>(내부적으로 UTC), API는 ISO-8601 (<code>2026-10-21T01:00:00Z</code>).</li>
+      <li>화면은 <code>Intl.DateTimeFormat("ko-KR", {timeZone: "Asia/Seoul"})</code>로 명시 변환 → 서버(Vercel, UTC)에서 렌더링해도 KST.</li>
+      <li>관리자 입력 <code>datetime-local</code>(KST) → <code>"…T10:00:00+09:00"</code>로 보냄. 오프셋 없는 값은 <code>JsonConfig</code>의 역직렬화기가 400으로 거부(Jackson 기본은 UTC로 받아들여 9시간 어긋남).</li>
+    </ul>
+
+    <h3>관측성 · 오류 · 감사</h3>
+    <ul>
+      <li><b>요청 ID</b>: Next가 <code>X-Request-Id</code>를 붙이고 Spring <code>RequestIdFilter</code>가 MDC에 넣음 → 웹 로그와 API 로그를 한 ID로 연결.</li>
+      <li><b>구조화 로그</b>: prod는 <code>logging.structured.format.console=ecs</code>(한 줄 JSON). 5xx는 <code>event=http_server_error</code>, 1초 이상은 <code>http_slow_request</code>, 409는 <code>business_conflict</code>.</li>
+      <li><b>개인정보</b>: 예외는 클래스 이름만 기록(제약 위반 메시지에 연락처가 들어갈 수 있음). 감사 로그에는 자유 입력 사유 대신 길이만.</li>
+      <li><b>감사 로그</b>: 팝업·회차·정원 변경, 관리자 취소, 체크인, 연락처 원문 조회, 운영 테스트 실행을 <code>audit_logs</code>에 기록.</li>
+    </ul>
+
+    <h3>프로필과 커넥션 풀 계산</h3>
+    <pre><code># application-prod.properties
+popspot.ops-tests.enabled=false            # 운영 테스트 강제 비활성
+springdoc.api-docs.enabled=false           # API 문서 비노출
+logging.structured.format.console=ecs      # JSON 로그
+server.shutdown=graceful                   # 배포 시 진행 중 요청 마무리
+spring.datasource.hikari.maximum-pool-size=${DB_POOL_SIZE:2}
+# 배포 중 최악: (구·신 리비전 2) × (최대 3대) × 풀 2 + 로컬 개발 2 = 14 &lt; Supabase session pooler 한도 15</code></pre>
+  </div>
+</section>
+
+<!-- 4 NEXT -->
+<section id="next">
+  <div class="wrap">
+    <p class="eyebrow">4 · NEXT.JS</p>
+    <h2>Next.js — 서버에서 그리는 웹</h2>
+    <div class="why"><b class="t">왜 Next.js인가</b>예약 서비스의 데이터는 로그인한 사용자 기준이고 실시간 잔여석이 중요합니다. 서버 컴포넌트로 매 요청 최신 데이터를 서버에서 그리면, 브라우저는 API 주소·토큰을 몰라도 되고 첫 화면이 빠릅니다. 고객 웹과 관리자 콘솔을 한 앱에서 경로와 권한으로 나눌 수 있습니다.</div>
+    <h3>핵심 개념</h3>
+    <div class="concepts">
+      <div class="concept"><h4>App Router · 파일 기반 라우팅</h4><p><code>src/app/popups/[id]/page.tsx</code> → <code>/popups/1</code>. <code>layout.tsx</code>는 하위 페이지를 감싸고 이동해도 유지됩니다. <code>(customer)</code>처럼 괄호 폴더는 <b>route group</b>: URL에는 안 나오고 레이아웃만 나눕니다.</p></div>
+      <div class="concept"><h4>서버 컴포넌트 (기본값)</h4><p>서버에서만 실행되어 HTML로 보내지는 컴포넌트. <code>async</code>로 직접 데이터를 가져오고, 코드·비밀값이 브라우저 번들에 들어가지 않습니다.</p></div>
+      <div class="concept"><h4>클라이언트 컴포넌트</h4><p>파일 맨 위 <code>"use client"</code>. 상태·이벤트가 필요한 부분(인원 카운터, 다이얼로그, 폼 상태)만 클라이언트로 두고 나머지는 서버에 둡니다.</p></div>
+      <div class="concept"><h4>서버 액션</h4><p><code>"use server"</code> 함수를 <code>&lt;form action={…}&gt;</code>에 연결하면 제출 시 서버에서 실행됩니다. 별도 API Route 없이 폼 → 서버 로직. JS가 없어도 동작합니다.</p></div>
+      <div class="concept"><h4>useActionState</h4><p>서버 액션의 반환값(오류·입력값)을 상태로 받는 React 19 훅. React 19는 액션 후 폼을 리셋하므로, 실패 시 입력값을 state로 돌려받아 다시 채웁니다.</p></div>
+      <div class="concept"><h4>proxy.ts (구 middleware)</h4><p>모든 요청 앞에서 실행되는 코드. Next 16에서 이름이 <code>middleware</code> → <code>proxy</code>로 바뀌었습니다. 여기서 Supabase 세션을 갱신하고 보호 경로를 로그인으로 보냅니다.</p></div>
+      <div class="concept"><h4>동적 렌더링 · 캐시</h4><p><code>cookies()</code>를 읽는 화면은 요청마다 렌더링됩니다. <code>fetch</code>는 <code>cache: "no-store"</code>로 잔여석을 항상 최신으로. Next 16의 <code>cacheComponents</code>는 이 구조와 충돌해 껐습니다.</p></div>
+      <div class="concept"><h4>NEXT_PUBLIC_ 환경 변수</h4><p>이 접두사가 붙은 값만 브라우저 코드에서 쓸 수 있고, <b>빌드 시점에 코드에 문자열로 박힙니다</b>. 값을 바꾸면 다시 빌드해야 합니다. 접두사 없는 값(<code>API_BASE_URL</code>)은 서버에서 실행 시점에 읽힙니다.</p></div>
+    </div>
+
+    <h3>워크플로 ③ 한 페이지 요청의 생명주기</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 290" role="img" aria-label="Next.js 요청 생명주기와 서버 액션 흐름">
+        <defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <text class="b" x="0" y="18">페이지 보기 (GET)</text>
+        <rect class="box" x="0" y="30" width="170" height="74" rx="10"/><text x="14" y="56">요청</text><text class="sub" x="14" y="76">GET /admin/reservations</text><text class="sub" x="14" y="92">쿠키: Supabase 세션</text>
+        <rect class="warnbox" x="200" y="30" width="180" height="74" rx="10"/><text x="214" y="56">proxy.ts</text><text class="sub" x="214" y="76">getClaims()로 세션 갱신</text><text class="sub" x="214" y="92">비로그인 → /login?next=</text>
+        <rect class="core" x="410" y="30" width="180" height="74" rx="10"/><text x="424" y="56">layout.tsx (서버)</text><text class="sub" x="424" y="76">/api/admin/session 확인</text><text class="sub" x="424" y="92">401 로그인 · 403 권한 없음</text>
+        <rect class="core" x="620" y="30" width="170" height="74" rx="10"/><text x="634" y="56">page.tsx (서버)</text><text class="sub" x="634" y="76">apiFetch → Spring</text><text class="sub" x="634" y="92">Bearer + X-Request-Id</text>
+        <rect class="ci" x="820" y="30" width="160" height="74" rx="10"/><text x="834" y="56">HTML 응답</text><text class="sub" x="834" y="76">클라이언트 컴포넌트</text><text class="sub" x="834" y="92">만 hydrate</text>
+        <path class="ln" d="M170 67 H196" marker-end="url(#a4)"/><path class="ln" d="M380 67 H406" marker-end="url(#a4)"/><path class="ln" d="M590 67 H616" marker-end="url(#a4)"/><path class="ln" d="M790 67 H816" marker-end="url(#a4)"/>
+        <text class="b" x="0" y="150">폼 제출 (서버 액션 POST)</text>
+        <rect class="box" x="0" y="162" width="170" height="74" rx="10"/><text x="14" y="188">&lt;form action&gt;</text><text class="sub" x="14" y="208">hidden: 멱등성 키</text><text class="sub" x="14" y="224">버튼 pending 비활성</text>
+        <rect class="core" x="200" y="162" width="250" height="74" rx="10"/><text x="214" y="188">서버 액션 (서버에서 실행)</text><text class="sub" x="214" y="208">입력 검증 → apiFetch POST</text><text class="sub" x="214" y="224">Idempotency-Key 헤더</text>
+        <rect class="ci" x="490" y="162" width="220" height="74" rx="10"/><text x="504" y="188">성공</text><text class="sub" x="504" y="208">redirect("/…/complete")</text><text class="sub" x="504" y="224">revalidate 불필요(no-store)</text>
+        <rect class="warnbox" x="740" y="162" width="240" height="74" rx="10"/><text x="754" y="188">실패 (ApiError)</text><text class="sub" x="754" y="208">code → 한국어 메시지</text><text class="sub" x="754" y="224">입력값 state로 반환해 유지</text>
+        <path class="ln" d="M170 199 H196" marker-end="url(#a4)"/><path class="ln" d="M450 190 H486" marker-end="url(#a4)"/><path class="ln" d="M450 226 Q 640 300 850 240" marker-end="url(#a4)"/>
+      </svg>
+    </div>
+
+    <h3>구성 요점</h3>
+    <div class="grid two">
+      <div class="card"><span class="tag blue">src/lib/api.ts</span><h4>apiFetch (서버 전용)</h4><ul><li>쿠키의 access token → <code>Authorization: Bearer</code></li><li><code>X-Request-Id</code>, <code>cache: "no-store"</code></li><li>실패는 <code>ApiError(status, code, message, fieldErrors)</code>로 통일</li><li>운영에서 <code>API_BASE_URL</code>이 없으면 localhost로 추측하지 않고 <code>API_NOT_CONFIGURED</code></li></ul></div>
+      <div class="card"><span class="tag blue">@supabase/ssr</span><h4>쿠키 기반 Supabase 클라이언트</h4><ul><li><code>supabase/server.ts</code>: 서버 컴포넌트·액션용 (쿠키 읽기/쓰기)</li><li><code>supabase/proxy.ts</code>: proxy에서 세션 갱신 후 응답 쿠키 갱신</li><li>OAuth·확인 메일은 PKCE → <code>/auth/callback</code>에서 code를 세션으로 교환</li><li><code>safeNextPath</code>: 같은 사이트 경로만 허용(오픈 리디렉트 방지)</li></ul></div>
+      <div class="card"><span class="tag blue">dev auth</span><h4>개발용 로그인</h4><p>E2E가 메일 없이 여러 사용자를 만들도록 <code>DEV_AUTH_ENABLED=true</code>일 때만 Next가 HS256 개발 토큰을 발급. 운영 Vercel(<code>VERCEL_ENV=production</code>)에선 꺼지고, Spring도 prod에선 개발 토큰 설정을 거부.</p></div>
+      <div class="card"><span class="tag blue">OAuth</span><h4>소셜 로그인 (코드 준비 완료)</h4><p><code>AUTH_PROVIDERS=google,kakao</code>에 적은 공급자만 버튼 표시 → 서버 액션 <code>signInWithOAuth</code>. 돌아올 주소는 Host 헤더가 아닌 <code>NEXT_PUBLIC_SITE_URL</code>만 사용, 운영은 https만 허용.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 SUPABASE -->
+<section id="supabase">
+  <div class="wrap">
+    <p class="eyebrow">5 · SUPABASE · POSTGRESQL</p>
+    <h2>Supabase — 관리형 Postgres + 로그인</h2>
+    <div class="why"><b class="t">왜 Supabase인가, 그리고 어디까지만 쓰나</b>회원가입·비밀번호 저장·소셜 로그인·메일을 직접 만들지 않으려고 Auth를 쓰고, DB는 표준 PostgreSQL이라 Spring이 JDBC로 붙습니다. 다만 Supabase의 대표 기능인 <b>Data API(브라우저가 DB를 직접 조회) + RLS</b>는 쓰지 않았습니다. 예약 규칙을 SQL 정책에 흩어 놓는 대신 Spring 한곳에 모으기 위해서입니다.</div>
+    <h3>핵심 개념</h3>
+    <div class="concepts">
+      <div class="concept"><h4>Supabase Auth의 토큰</h4><p>로그인 시 <b>access token</b>(JWT, 기본 1시간)과 <b>refresh token</b>(새 access를 받는 용도)을 발급. access의 <code>sub</code>=사용자 UUID, <code>aud</code>=authenticated, <code>iss</code>=<code>https://&lt;ref&gt;.supabase.co/auth/v1</code>.</p></div>
+      <div class="concept"><h4>JWT 서명 키: 대칭 vs 비대칭</h4><p>레거시는 HS256(공유 비밀키: 검증하려면 비밀을 알아야 함). 이 프로젝트는 <b>ECC P-256(ES256)</b>: 개인키는 Supabase만, 공개키는 JWKS로 공개 → Spring에 비밀이 필요 없음.</p></div>
+      <div class="concept"><h4>publishable key vs secret key</h4><p><code>sb_publishable_…</code>: 브라우저에 노출돼도 되는 키(로그인 API 호출용, 권한은 RLS가 제한). <code>sb_secret_…</code>/service_role: 모든 권한을 우회하는 키 → <b>이 프로젝트 어디에도 두지 않음</b>.</p></div>
+      <div class="concept"><h4>Data API · RLS</h4><p>Supabase는 <code>public</code> 스키마 테이블을 REST로 자동 노출하고 Row Level Security 정책으로 보호합니다. 업무 테이블을 <code>popspot</code> 스키마에 두어 <b>노출 경로 자체를 없앴습니다</b>.</p></div>
+      <div class="concept"><h4>연결 방식: Direct · Session · Transaction pooler</h4><p>Direct(5432)는 IPv6 전용. <b>Session pooler(5432)</b>는 IPv4 + 연결 하나를 세션 동안 점유(JDBC prepared statement 호환). Transaction pooler(6543)는 트랜잭션 단위 공유(prepared statement 제약). Session 모드 동시 연결 한도 15가 풀 계산의 기준.</p></div>
+      <div class="concept"><h4>PostgreSQL 역할 · 소유권 · 권한</h4><p>테이블은 만든 역할(Flyway를 실행한 <code>popspot_api</code>)이 소유자. 다른 역할은 <code>GRANT</code>가 있어야 접근. PG16부터 소유권 이전·SET ROLE에는 그 역할로 "전환 가능"해야 합니다.</p></div>
+    </div>
+    <h3>이 프로젝트의 설정</h3>
+    <div class="table-wrap"><table>
+      <tr><th>항목</th><th>설정</th><th>이유</th></tr>
+      <tr><td>Auth · Email</td><td>이메일·비밀번호 가입, <b>Confirm email 끔</b>(시연용)</td><td>기본 메일 서버는 조직 멤버에게만, 시간당 소량 발송 → 일반 사용자가 인증 메일을 못 받음. 실서비스는 외부 SMTP 필요</td></tr>
+      <tr><td>Auth · URL</td><td>Site URL = Vercel 주소, Redirect URLs = <code>…/auth/callback</code></td><td>확인 메일·OAuth가 돌아올 수 있는 주소 허용 목록</td></tr>
+      <tr><td>JWT 서명</td><td>ECC P-256</td><td>Spring은 JWKS 공개키로만 검증</td></tr>
+      <tr><td>스키마</td><td><code>popspot</code></td><td>Data API 비노출</td></tr>
+      <tr><td>DB 계정</td><td><code>popspot_api</code> (최소 권한, 테이블 소유자)</td><td>관리자 <code>postgres</code> 대신 사용, 유출 피해 범위 축소</td></tr>
+      <tr><td>접속</td><td>Session pooler <code>aws-0-&lt;region&gt;.pooler.supabase.com:5432</code>, SSL, 사용자명 <code>popspot_api.&lt;ref&gt;</code></td><td>IPv4 환경(Cloud Run·GitHub)에서 접속, 사용자명의 <code>.ref</code>로 프로젝트 식별</td></tr>
+    </table></div>
+    <pre><code>-- SQL Editor에서 1회 실행 (스키마 주인은 postgres: PG16의 SET ROLE 규칙 때문)
+create role popspot_api with login password '…';
+create schema if not exists popspot;
+grant usage, create on schema popspot to popspot_api;
+alter role popspot_api set search_path = popspot;
+
+-- 관리자 지정: 테이블 주인이 popspot_api라 잠깐 그 역할로 전환
+grant popspot_api to postgres with inherit false, set true;   -- 최초 1회
+set role popspot_api;
+insert into popspot.user_roles (user_id, role)
+select id, 'ADMIN' from popspot.app_users where email = '…' on conflict do nothing;
+reset role;</code></pre>
+    <p class="muted">Authentication → Users(<code>auth.users</code>)와 앱 계정(<code>popspot.app_users</code>)은 별개입니다. 앱 계정은 그 사용자가 처음 Spring API를 호출할 때 생깁니다.</p>
+    <h3>스키마 요약</h3>
+    <div class="table-wrap"><table>
+      <tr><th>테이블</th><th>역할</th><th>핵심 제약</th></tr>
+      <tr><td><code>app_users</code>, <code>user_roles</code></td><td>Supabase 사용자 ↔ 앱 역할</td><td>(user_id, role) PK</td></tr>
+      <tr><td><code>popups</code></td><td>팝업, 게시 상태, 오픈·마감 시각</td><td><code>updated_at</code> 비교로 동시 수정 감지(낙관적 잠금)</td></tr>
+      <tr><td><code>slots</code></td><td>회차, 정원, 예약 인원</td><td><code>check (reserved_count between 0 and capacity)</code>, (popup_id, starts_at) 유니크</td></tr>
+      <tr><td><code>reservations</code></td><td>예약</td><td>활성 예약 (user, slot) 부분 유니크 인덱스, (slot_id, popup_id) 복합 FK</td></tr>
+      <tr><td><code>reservation_events</code>, <code>audit_logs</code></td><td>상태 이력, 관리자 감사</td><td>개인정보 원문 미저장</td></tr>
+      <tr><td><code>idempotency_keys</code></td><td>재시도 안전</td><td>(user_id, operation, idem_key) PK</td></tr>
+      <tr><td><code>operation_test_runs</code></td><td>운영 테스트 기록</td><td>결과 jsonb, RUNNING은 부분 유니크 인덱스로 1건만</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 6 FLYWAY -->
+<section id="flyway">
+  <div class="wrap">
+    <p class="eyebrow">6 · FLYWAY</p>
+    <h2>Flyway — 스키마도 코드처럼</h2>
+    <div class="why"><b class="t">왜 Flyway인가</b>로컬 Docker DB, CI의 Testcontainers DB, 운영 Supabase가 항상 같은 스키마여야 합니다. SQL 파일을 버전 순서대로 기록·적용하면 "어느 DB에 뭐가 적용됐는지"를 사람이 기억할 필요가 없습니다.</div>
+    <div class="concepts">
+      <div class="concept"><h4>Versioned migration</h4><p><code>V2__core_schema.sql</code>처럼 버전 + 설명. 한 번 적용된 파일은 <b>수정 금지</b>(체크섬이 달라지면 기동 실패). 변경은 새 버전 파일로.</p></div>
+      <div class="concept"><h4>flyway_schema_history</h4><p>적용한 버전·체크섬·시각을 기록하는 테이블. 기동 시 이 표와 파일 목록을 비교해 미적용 버전만 실행합니다.</p></div>
+      <div class="concept"><h4>locations</h4><p>마이그레이션을 찾을 경로. 데모 데이터는 <code>db/seed</code>에 두고 필요한 환경에서만 <code>FLYWAY_LOCATIONS</code>에 추가합니다.</p></div>
+      <div class="concept"><h4>outOfOrder</h4><p>기본적으로 이미 적용된 최고 버전보다 낮은 새 버전은 거부. seed가 V1000이라 나중에 만든 V3·V4가 "낮은 버전"이 되어 seed 환경에서만 허용했습니다.</p></div>
+    </div>
+    <div class="arch">
+      <svg viewBox="0 0 980 120" role="img" aria-label="Flyway 기동 시 마이그레이션 흐름">
+        <defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <rect class="box" x="0" y="20" width="148" height="76" rx="10"/><text x="12" y="48">Spring 기동</text><text class="sub" x="12" y="68">DataSource 생성</text>
+        <rect class="box" x="166" y="20" width="148" height="76" rx="10"/><text x="178" y="48">이력 테이블 읽기</text><text class="sub" x="178" y="68">flyway_schema</text><text class="sub" x="178" y="84">_history</text>
+        <rect class="box" x="332" y="20" width="148" height="76" rx="10"/><text x="344" y="48">미적용 버전 찾기</text><text class="sub" x="344" y="68">locations의 V*.sql</text>
+        <rect class="warnbox" x="498" y="20" width="148" height="76" rx="10"/><text x="510" y="48">검증</text><text class="sub" x="510" y="68">체크섬 · 순서</text><text class="sub" x="510" y="84">(outOfOrder)</text>
+        <rect class="core" x="664" y="20" width="148" height="76" rx="10"/><text x="676" y="48">버전별 적용</text><text class="sub" x="676" y="68">각각 트랜잭션</text><text class="sub" x="676" y="84">+ 이력 기록</text>
+        <rect class="ci" x="830" y="20" width="148" height="76" rx="10"/><text x="842" y="48">앱 기동 계속</text><text class="sub" x="842" y="68">실패 시 기동 중단</text>
+        <path class="ln" d="M148 58 H162" marker-end="url(#a5)"/><path class="ln" d="M314 58 H328" marker-end="url(#a5)"/><path class="ln" d="M480 58 H494" marker-end="url(#a5)"/><path class="ln" d="M646 58 H660" marker-end="url(#a5)"/><path class="ln" d="M812 58 H826" marker-end="url(#a5)"/>
+      </svg>
+    </div>
+    <div class="table-wrap"><table>
+      <tr><th>파일</th><th>내용</th></tr>
+      <tr><td><code>V1__baseline</code></td><td>Flyway 동작 확인용</td></tr>
+      <tr><td><code>V2__core_schema</code></td><td>업무 테이블 전체 + CHECK · 부분 유니크 인덱스</td></tr>
+      <tr><td><code>V3__reservation_slot_popup_consistency</code></td><td>예약의 팝업 = 회차의 팝업을 보장하는 복합 FK (리뷰 지적 반영)</td></tr>
+      <tr><td><code>V4__ops_test_runs</code></td><td>합성 팝업 구분 컬럼, 운영 테스트 결과</td></tr>
+      <tr><td><code>db/seed/V1000__demo_seed</code></td><td>데모 팝업 5개, 7일치 회차 (seed 환경만)</td></tr>
+    </table></div>
+    <p class="muted">다음에는 seed를 버전 마이그레이션이 아닌 repeatable(<code>R__</code>) 파일이나 별도 스크립트로 두어 outOfOrder가 필요 없게 하겠습니다.</p>
+  </div>
+</section>
+
+<!-- 7 DOCKER -->
+<section id="docker">
+  <div class="wrap">
+    <p class="eyebrow">7 · DOCKER</p>
+    <h2>Docker — 같은 환경을 어디서나</h2>
+    <div class="concepts">
+      <div class="concept"><h4>이미지 · 컨테이너</h4><p>이미지 = 실행에 필요한 파일·설정의 읽기 전용 묶음, 컨테이너 = 이미지를 실행한 프로세스. CI에서 테스트한 이미지를 그대로 Cloud Run에 배포합니다.</p></div>
+      <div class="concept"><h4>멀티 스테이지 빌드</h4><p>1단계(JDK)에서 Gradle로 jar 빌드 → 2단계(JRE)에 jar만 복사. 최종 이미지에 빌드 도구·소스가 없어 작고 안전합니다.</p></div>
+      <div class="concept"><h4>Compose · 네트워크 · healthcheck</h4><p>여러 컨테이너를 한 파일로. 같은 네트워크 안에서는 서비스 이름(<code>db</code>)이 호스트명. <code>depends_on: condition: service_healthy</code>로 DB 준비 후 API 시작.</p></div>
+      <div class="concept"><h4>컨테이너 메모리와 JVM</h4><p>JVM이 컨테이너 한도를 기준으로 힙을 잡도록 <code>-XX:MaxRAMPercentage=75</code>, 메모리 부족 시 이상한 상태로 버티지 말고 종료되도록 <code>-XX:+ExitOnOutOfMemoryError</code>(재시작은 플랫폼이).</p></div>
+    </div>
+    <pre><code># apps/api/Dockerfile (요약)
+FROM eclipse-temurin:21-jdk AS build      # 1단계: 빌드
+COPY . . ; RUN ./gradlew bootJar -x test
+FROM eclipse-temurin:21-jre               # 2단계: 실행
+RUN useradd … app ; USER app              # root가 아닌 사용자로 실행
+COPY --from=build …/app.jar app.jar
+ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# docker-compose.yml (요약)
+db:  postgres:17-alpine, ports ${DB_PORT:-5432}, healthcheck pg_isready
+api: build apps/api, ports ${API_PORT:-8080}, depends_on db(healthy)
+     DB_URL=jdbc:postgresql://db:5432/popspot, DB_POOL_SIZE=10,
+     FLYWAY_LOCATIONS=classpath:db/migration,classpath:db/seed, OPS_TESTS_ENABLED=true</code></pre>
+  </div>
+</section>
+
+<!-- 8 ACTIONS -->
+<section id="actions">
+  <div class="wrap">
+    <p class="eyebrow">8 · GITHUB ACTIONS</p>
+    <h2>GitHub Actions — 테스트 게이트와 자동 배포</h2>
+    <div class="why"><b class="t">왜 Actions로 배포까지 하나</b>Vercel·Cloud Run 각자의 자동 배포를 켜면 "테스트를 통과했는가"와 무관하게 배포됩니다. 배포를 한 워크플로에 모아 <b>CI가 성공한 main 커밋만</b> API → 웹 순서로 배포되게 했습니다.</div>
+    <h3>핵심 개념</h3>
+    <div class="concepts">
+      <div class="concept"><h4>workflow · job · step · runner</h4><p>워크플로(yml 파일) 안에 잡이 있고, 잡은 별도 가상 머신(runner, <code>ubuntu-latest</code>)에서 step들을 순서대로 실행합니다. 잡끼리는 기본 병렬, <code>needs</code>로 순서 지정.</p></div>
+      <div class="concept"><h4>트리거: push · pull_request · workflow_run · workflow_dispatch · schedule</h4><p><code>workflow_run</code>은 "다른 워크플로가 끝났을 때" 실행. Deploy는 CI 완료 시 실행되고 <code>if</code>로 성공·push·main·같은 저장소인지 확인합니다. <code>workflow_dispatch</code>는 수동 실행 버튼.</p></div>
+      <div class="concept"><h4>permissions · GITHUB_TOKEN</h4><p>워크플로마다 자동 발급되는 토큰의 권한. 기본을 <code>contents: read</code>로 최소화하고, 배포 잡에만 <code>id-token: write</code>(OIDC 토큰 발급 권한)를 줍니다.</p></div>
+      <div class="concept"><h4>OIDC (OpenID Connect)</h4><p>GitHub이 "이 실행은 어느 저장소·브랜치·워크플로다"라고 서명한 단기 JWT를 발급. 클라우드가 이를 검증하고 임시 자격 증명을 줌 → <b>장기 키를 GitHub에 저장하지 않음</b>.</p></div>
+      <div class="concept"><h4>Secrets · Variables · Environment</h4><p>Secrets: 다시 볼 수 없고 로그에서 <code>***</code>. Variables: 보이는 설정값. Environment(<code>production</code>): 배포 잡 전용 값·승인 규칙을 묶는 단위.</p></div>
+      <div class="concept"><h4>concurrency · artifact</h4><p><code>concurrency</code>로 같은 그룹 실행을 직렬화(배포 중복 방지)하거나 이전 실행 취소(CI). artifact는 잡 결과 파일 보관(실패 테스트 리포트, 암호화 백업).</p></div>
+    </div>
+
+    <h3>워크플로 ④ push부터 배포까지</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 445" role="img" aria-label="CI 잡과 Deploy 워크플로의 순서">
+        <defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <text class="b" x="0" y="14">ci.yml (모든 push · PR)</text>
+        <rect class="box" x="0" y="64" width="120" height="50" rx="10"/><text x="14" y="86">push / PR</text><text class="sub" x="14" y="104">any branch</text>
+        <rect class="ci" x="170" y="24" width="230" height="44" rx="10"/><text x="184" y="44">guard</text><text class="sub" x="184" y="60">추적 문서 · 비밀값 검사</text>
+        <rect class="ci" x="170" y="78" width="230" height="44" rx="10"/><text x="184" y="98">web</text><text class="sub" x="184" y="114">lint · typecheck · vitest · build</text>
+        <rect class="ci" x="170" y="132" width="230" height="44" rx="10"/><text x="184" y="152">api</text><text class="sub" x="184" y="168">gradle build · docker build</text>
+        <rect class="ci" x="450" y="105" width="210" height="44" rx="10"/><text x="464" y="125">e2e (needs web, api)</text><text class="sub" x="464" y="141">compose up · Playwright</text>
+        <rect class="box" x="710" y="64" width="150" height="50" rx="10"/><text x="724" y="86">CI 결과</text><text class="sub" x="724" y="104">success / failure</text>
+        <path class="ln" d="M120 89 C 145 89, 145 46, 166 46" marker-end="url(#a6)"/><path class="ln" d="M120 89 C 145 89, 145 100, 166 100" marker-end="url(#a6)"/><path class="ln" d="M120 89 C 145 89, 145 154, 166 154" marker-end="url(#a6)"/>
+        <path class="ln" d="M400 100 C 425 100, 425 127, 446 127" marker-end="url(#a6)"/><path class="ln" d="M400 154 C 425 154, 425 127, 446 127" marker-end="url(#a6)"/>
+        <path class="ln" d="M400 46 C 560 46, 640 80, 706 84" marker-end="url(#a6)"/><path class="ln" d="M660 127 C 685 127, 690 100, 706 96" marker-end="url(#a6)"/>
+        <path class="ln dash" d="M785 114 V200 H160 V218" marker-end="url(#a6)"/>
+        <text class="b" x="0" y="200">deploy.yml</text>
+        <rect class="warnbox" x="0" y="222" width="640" height="44" rx="10"/><text x="14" y="242">workflow_run 조건</text><text class="sub" x="14" y="258">conclusion=success · event=push · head_branch=main · 같은 저장소 (또는 main 수동 실행)</text>
+        <text class="b" x="0" y="310">api 잡</text>
+        <rect class="core" x="80" y="288" width="200" height="40" rx="10"/><text x="94" y="313">① GCP 인증 (WIF)</text>
+        <rect class="core" x="300" y="288" width="200" height="40" rx="10"/><text x="314" y="313">② 이미지 build · push</text>
+        <rect class="core" x="520" y="288" width="220" height="40" rx="10"/><text x="534" y="313">③ run deploy (digest, 시크릿)</text>
+        <rect class="core" x="760" y="288" width="210" height="40" rx="10"/><text x="774" y="313">④ readiness 200 대기</text>
+        <path class="ln" d="M280 308 H296" marker-end="url(#a6)"/><path class="ln" d="M500 308 H516" marker-end="url(#a6)"/><path class="ln" d="M740 308 H756" marker-end="url(#a6)"/>
+        <path class="ln" d="M160 266 V284" marker-end="url(#a6)"/>
+        <text class="b" x="0" y="380">web 잡</text><text class="sub" x="0" y="396">needs: api</text>
+        <rect class="ext" x="80" y="358" width="160" height="40" rx="10"/><text x="94" y="383">⑤ Vercel 설정 점검</text>
+        <rect class="ext" x="260" y="358" width="160" height="40" rx="10"/><text x="274" y="383">⑥ vercel pull</text>
+        <rect class="ext" x="440" y="358" width="160" height="40" rx="10"/><text x="454" y="383">⑦ vercel build</text>
+        <rect class="ext" x="620" y="358" width="190" height="40" rx="10"/><text x="634" y="383">⑧ deploy --prebuilt</text>
+        <rect class="ext" x="830" y="358" width="140" height="40" rx="10"/><text x="844" y="383">⑨ /login 200</text>
+        <path class="ln" d="M240 378 H256" marker-end="url(#a6)"/><path class="ln" d="M420 378 H436" marker-end="url(#a6)"/><path class="ln" d="M600 378 H616" marker-end="url(#a6)"/><path class="ln" d="M810 378 H826" marker-end="url(#a6)"/>
+        <path class="ln dash" d="M865 328 V342 H160 V354" marker-end="url(#a6)"/><text class="sub" x="0" y="432">※ api 잡이 Cloud Run URL을 outputs로 넘기면 ⑧에서 --env API_BASE_URL로 주입합니다.</text>
+      </svg>
+    </div>
+
+    <h3>ci.yml 잡 상세</h3>
+    <div class="table-wrap"><table>
+      <tr><th>잡 (필수 체크 이름)</th><th>하는 일</th><th>포인트</th></tr>
+      <tr><td><b>Repository policy (docs &amp; secrets)</b></td><td><code>scripts/check-tracked-files.mjs</code>: 추적 파일 중 계획·보고서·AI 지침·.env·Supabase secret key·개인키·JWT 리터럴·비밀번호 포함 DB URL을 찾으면 실패</td><td>"문서는 로컬 전용" 규칙을 기계적으로 강제</td></tr>
+      <tr><td><b>Web lint, types, unit tests, build</b></td><td><code>npm ci → lint → typecheck → vitest → next build</code></td><td>Supabase 값은 placeholder로 빌드</td></tr>
+      <tr><td><b>API tests (Testcontainers) and image build</b></td><td><code>./gradlew build</code> → <code>docker build</code></td><td>러너의 Docker로 PostgreSQL 컨테이너 실행, 실패 시 리포트 artifact</td></tr>
+      <tr><td><b>E2E on the Docker stack</b></td><td>매 실행 새 비밀값 생성(<code>openssl rand</code> + <code>::add-mask::</code>) → compose up → Playwright</td><td>고정 비밀값이 저장소에 없음</td></tr>
+    </table></div>
+
+    <h3>deploy.yml 핵심</h3>
+    <pre><code>on:
+  workflow_run: { workflows: [CI], types: [completed], branches: [main] }
+  workflow_dispatch:
+env:
+  SHA: ${{ github.event.workflow_run.head_sha || github.sha }}   # CI가 검증한 바로 그 커밋
+jobs:
+  api:
+    if: (dispatch &amp;&amp; ref == main) || (success &amp;&amp; event == push &amp;&amp; head_branch == main &amp;&amp; 같은 저장소)
+    environment: production
+    permissions: { contents: read, id-token: write }
+    steps:
+      - google-github-actions/auth@v2   (workload_identity_provider, service_account)
+      - docker build/push → ${REGION}-docker.pkg.dev/${PROJECT}/popspot/api:${SHA}
+      - gcloud run deploy popspot-api --image &lt;digest&gt; --set-env-vars "^@^…" --set-secrets DB_PASSWORD=popspot-db-password:latest
+      - curl /actuator/health/readiness (최대 20회 재시도)
+  web:
+    needs: api
+    env: { VERCEL_ORG_ID: secrets…, VERCEL_PROJECT_ID: secrets… }   # 저장소 루트에서 CLI 실행
+    steps:
+      - Check Vercel settings   # 형식 · 토큰 권한을 Vercel API로 점검 (값은 출력 안 함)
+      - npx vercel@60.1.1 pull --environment=production
+      - npx vercel@60.1.1 build --prod
+      - npx vercel@60.1.1 deploy --prebuilt --prod --env API_BASE_URL=${{ needs.api.outputs.url }}
+      - curl /login</code></pre>
+    <ul>
+      <li><b>digest로 배포</b>: 태그는 덮어쓸 수 있지만 digest(<code>sha256:…</code>)는 내용 해시 → 검증한 이미지 그대로.</li>
+      <li><b>CLI 버전 고정</b>: <code>vercel@60.1.1</code>, 액션도 메이저 버전 고정 → 예고 없는 변경 방지.</li>
+      <li><b>CLI는 저장소 루트에서</b>: Vercel 프로젝트 Root Directory가 <code>apps/web</code>이라 그 안에서 실행하면 <code>apps/web/apps/web</code>을 찾음.</li>
+    </ul>
+    <h3>rollback.yml · backup.yml</h3>
+    <div class="grid two">
+      <div class="card"><span class="tag green">rollback.yml (수동)</span><h4>API 되돌리기</h4><p>입력한 리비전 이름을 정규식으로 검증 → <code>gcloud run services update-traffic --to-revisions &lt;rev&gt;=100</code> → readiness 확인. 새 이미지를 빌드하지 않고 트래픽만 옮기므로 수 초 내 복구. 웹은 Vercel의 "Promote to Production".</p></div>
+      <div class="card"><span class="tag green">backup.yml (주간)</span><h4>암호화 백업</h4><p>매주 월 03:00 KST <code>pg_dump --schema=popspot</code> → <b>GPG AES-256(변조 검출 포함)</b> → 14일 보관 artifact. 복구 스크립트는 복호화 검증 후 <code>--clean --single-transaction</code>으로 원자적 복구. 공개 저장소라 평문은 올리지 않음.</p></div>
+    </div>
+    <h3>브랜치 보호</h3>
+    <p>main ruleset에 위 4개 잡을 필수 상태 체크로 지정 → PR이 테스트를 통과해야 병합. 새 ruleset은 Enforcement가 Disabled로 만들어질 수 있어 <b>Active 확인</b>이 필요합니다.</p>
+  </div>
+</section>
+
+<!-- 9 GCP -->
+<section id="gcp">
+  <div class="wrap">
+    <p class="eyebrow">9 · GOOGLE CLOUD</p>
+    <h2>Google Cloud Run — 서버리스 컨테이너</h2>
+    <div class="concepts">
+      <div class="concept"><h4>Cloud Run 서비스 · 리비전</h4><p>배포할 때마다 변경 불가능한 <b>리비전</b>이 생기고, 트래픽을 리비전별로 나눌 수 있습니다. 롤백 = 이전 리비전으로 트래픽 100%.</p></div>
+      <div class="concept"><h4>오토스케일 · 콜드 스타트</h4><p>요청량에 따라 인스턴스 0~N대. 0대에서 첫 요청이 오면 컨테이너를 띄우는 동안 지연(Spring은 수 초). <code>--cpu-boost</code>로 기동 단축, 시연 날은 최소 1대 권장.</p></div>
+      <div class="concept"><h4>서비스 계정 · IAM</h4><p>사람이 아닌 프로그램용 계정. "배포하는 계정"과 "실행되는 계정"을 분리해 각자 필요한 권한만 부여(최소 권한).</p></div>
+      <div class="concept"><h4>Workload Identity Federation</h4><p>외부(GitHub)의 OIDC 토큰을 GCP 단기 토큰으로 교환. Provider의 <b>조건식</b>으로 어떤 저장소·브랜치·워크플로만 허용할지 정합니다.</p></div>
+      <div class="concept"><h4>Artifact Registry</h4><p>컨테이너 이미지 저장소. Cloud Run과 같은 리전에 두어 이미지 풀링이 빠름.</p></div>
+      <div class="concept"><h4>Secret Manager</h4><p>비밀값 저장소. Cloud Run이 실행 계정 권한으로 직접 읽어 환경 변수로 주입 → GitHub에도 이미지에도 비밀번호가 없음.</p></div>
+    </div>
+    <h3>워크플로 ⑤ 키 파일 없는 GitHub → GCP 인증</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 190" role="img" aria-label="Workload Identity Federation 토큰 교환 흐름">
+        <defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <rect class="ci" x="0" y="30" width="200" height="90" rx="12"/><text class="b" x="14" y="56">GitHub 러너</text><text class="sub" x="14" y="78">deploy.yml · main</text><text class="sub" x="14" y="96">permissions: id-token: write</text>
+        <rect class="ext" x="260" y="30" width="210" height="90" rx="12"/><text class="b" x="274" y="56">GCP STS</text><text class="sub" x="274" y="78">Pool github / Provider</text><text class="sub" x="274" y="96">reserve-system 조건식 검사</text>
+        <rect class="ext" x="530" y="30" width="210" height="90" rx="12"/><text class="b" x="544" y="56">IAM Credentials</text><text class="sub" x="544" y="78">popspot-deployer 가장</text><text class="sub" x="544" y="96">(workloadIdentityUser)</text>
+        <rect class="core" x="800" y="30" width="180" height="90" rx="12"/><text class="b" x="814" y="56">GCP API 호출</text><text class="sub" x="814" y="78">Artifact Registry push</text><text class="sub" x="814" y="96">Cloud Run deploy</text>
+        <path class="ln" d="M200 75 H256" marker-end="url(#a7)"/><path class="ln" d="M470 75 H526" marker-end="url(#a7)"/><path class="ln" d="M740 75 H796" marker-end="url(#a7)"/>
+        <text class="sub" x="204" y="145">① GitHub OIDC JWT</text><text class="sub" x="204" y="161">repository · ref · workflow_ref</text>
+        <text class="sub" x="474" y="145">② 연합 토큰</text>
+        <text class="sub" x="744" y="145">③ 1시간 액세스 토큰</text>
+      </svg>
+    </div>
+    <pre><code># Provider 조건: 이 저장소 main의 deploy.yml / rollback.yml만 (교차 리뷰 지적 반영)
+assertion.repository=='DongHyeon9/reserve-system' &amp;&amp; assertion.ref=='refs/heads/main' &amp;&amp;
+(assertion.workflow_ref=='…/deploy.yml@refs/heads/main' || assertion.workflow_ref=='…/rollback.yml@refs/heads/main')</code></pre>
+    <div class="table-wrap"><table>
+      <tr><th>리소스</th><th>값</th><th>권한 / 역할</th></tr>
+      <tr><td>프로젝트</td><td>GCP 프로젝트 1개 (ID 비공개)</td><td>결제 계정 연결 필수 (시연 규모는 무료 사용량 안)</td></tr>
+      <tr><td>Artifact Registry</td><td><code>asia-northeast3 / popspot</code></td><td>API 이미지</td></tr>
+      <tr><td>Secret Manager</td><td><code>popspot-db-password</code></td><td>DB 비밀번호</td></tr>
+      <tr><td>배포 계정</td><td><code>popspot-deployer</code></td><td>run.admin · artifactregistry.writer · 실행 계정에 대한 serviceAccountUser</td></tr>
+      <tr><td>실행 계정</td><td><code>popspot-runtime</code></td><td>해당 비밀에 대한 secretAccessor만</td></tr>
+    </table></div>
+    <div class="table-wrap"><table>
+      <tr><th>gcloud run deploy 옵션</th><th>의미</th></tr>
+      <tr><td><code>--allow-unauthenticated</code></td><td>Vercel 서버가 인터넷으로 호출하므로 공개. 인가는 Spring이 JWT로</td></tr>
+      <tr><td><code>--cpu 1 --memory 1Gi --cpu-boost</code></td><td>기동 시 CPU 추가로 콜드 스타트 단축</td></tr>
+      <tr><td><code>--min-instances ${API_MIN_INSTANCES:-0} --max-instances 3</code></td><td>평소 0대(비용 0). 최대 3대 × 풀 2 → DB 연결 계산의 근거</td></tr>
+      <tr><td><code>--set-env-vars "^@^A=1@B=2"</code></td><td>구분자를 <code>@</code>로 바꾸는 문법. DB_URL에 <code>,</code> <code>&amp;</code>가 있어 기본 구분자(쉼표) 회피</td></tr>
+      <tr><td><code>--set-secrets DB_PASSWORD=popspot-db-password:latest</code></td><td>Secret Manager 값을 환경 변수로 주입</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 10 VERCEL -->
+<section id="vercel">
+  <div class="wrap">
+    <p class="eyebrow">10 · VERCEL</p>
+    <h2>Vercel — Next.js 호스팅</h2>
+    <div class="concepts">
+      <div class="concept"><h4>프로젝트 · Root Directory</h4><p>모노레포에서 Next 앱 위치(<code>apps/web</code>)를 지정. CLI는 저장소 루트에서 실행해야 이 경로를 올바르게 찾습니다.</p></div>
+      <div class="concept"><h4>환경: Production · Preview · Development</h4><p>환경 변수는 환경별로 따로. <code>vercel pull --environment=production</code>은 Production 값만 받아옵니다.</p></div>
+      <div class="concept"><h4>prebuilt 배포</h4><p>보통은 Vercel 서버가 빌드하지만, 여기서는 GitHub 러너가 <code>vercel build</code>로 <code>.vercel/output</code>을 만들고 결과물만 업로드 → 테스트 통과한 커밋만 배포.</p></div>
+      <div class="concept"><h4>환경 변수 Type: Config vs Secret(Sensitive)</h4><p>Secret 타입은 값을 다시 읽을 수 없어 <b>외부 빌드(vercel pull)가 실제 값을 받지 못합니다</b>. prebuilt 구조에서는 Config 타입이어야 합니다(실제 장애 원인).</p></div>
+    </div>
+    <ul>
+      <li><code>apps/web/vercel.json</code>: <code>{"git": {"deploymentEnabled": false}}</code> → Vercel의 Git 자동 배포를 끄고 Actions만 배포(CI 전 배포·이중 배포 방지).</li>
+      <li><code>NEXT_PUBLIC_*</code>는 빌드 시 코드에 박히므로 값 변경 후 반드시 재배포.</li>
+      <li><code>API_BASE_URL</code>은 서버 런타임 값이라 <code>deploy --env</code>로 배포 시 주입(Cloud Run URL이 API 잡 결과로 정해지기 때문).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 ENV -->
+<section id="env">
+  <div class="wrap">
+    <p class="eyebrow">11 · ENVIRONMENT VARIABLES</p>
+    <h2>환경 변수 총정리</h2>
+    <p class="lead">"이 값은 어디에 넣고, 어떤 경로로 전달되고, 누가 읽는가." <span class="tag">비밀</span> 값은 Git · 채팅 · 로그에 절대 남기지 않습니다.</p>
+    <h3>워크플로 ⑥ 운영 환경 변수가 흘러가는 길</h3>
+    <div class="arch">
+      <svg viewBox="0 0 980 300" role="img" aria-label="운영 환경 변수 전달 경로">
+        <defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
+        <text class="b" x="0" y="16">Spring (Cloud Run)</text>
+        <rect class="ci" x="0" y="28" width="210" height="58" rx="10"/><text x="14" y="52">GitHub Variables</text><text class="sub" x="14" y="72">DB_URL · AUTH_ISSUER …</text>
+        <rect class="ci" x="250" y="28" width="210" height="58" rx="10"/><text x="264" y="52">deploy.yml</text><text class="sub" x="264" y="72">--set-env-vars</text>
+        <rect class="ext" x="500" y="28" width="210" height="58" rx="10"/><text x="514" y="52">Cloud Run 리비전</text><text class="sub" x="514" y="72">컨테이너 환경 변수</text>
+        <rect class="core" x="750" y="28" width="230" height="58" rx="10"/><text x="764" y="52">application.properties</text><text class="sub" x="764" y="72">${DB_URL} 등으로 읽음</text>
+        <rect class="ext" x="250" y="96" width="210" height="50" rx="10"/><text x="264" y="117">Secret Manager</text><text class="sub" x="264" y="136">popspot-db-password</text>
+        <path class="ln" d="M210 57 H246" marker-end="url(#a8)"/><path class="ln" d="M460 57 H496" marker-end="url(#a8)"/><path class="ln" d="M710 57 H746" marker-end="url(#a8)"/>
+        <path class="ln dash" d="M460 122 C 490 122, 520 110, 560 90" marker-end="url(#a8)"/><text class="sub" x="474" y="140">--set-secrets (실행 시 직접 읽음)</text>
+        <text class="b" x="0" y="176">Next.js (Vercel)</text>
+        <rect class="ext" x="0" y="188" width="210" height="58" rx="10"/><text x="14" y="212">Vercel 환경 변수</text><text class="sub" x="14" y="232">Type = Config</text>
+        <rect class="ci" x="250" y="188" width="210" height="58" rx="10"/><text x="264" y="212">vercel pull (러너)</text><text class="sub" x="264" y="232">.vercel/.env.production.local</text>
+        <rect class="ci" x="500" y="188" width="210" height="58" rx="10"/><text x="514" y="212">vercel build</text><text class="sub" x="514" y="232">NEXT_PUBLIC_* 코드에 인라인</text>
+        <rect class="core" x="750" y="188" width="230" height="58" rx="10"/><text x="764" y="212">Vercel 런타임 process.env</text><text class="sub" x="764" y="232">서버 전용 값 실행 시 읽음</text>
+        <rect class="ci" x="500" y="256" width="210" height="36" rx="10"/><text class="sub" x="514" y="279">deploy --env API_BASE_URL</text>
+        <path class="ln" d="M210 217 H246" marker-end="url(#a8)"/><path class="ln" d="M460 217 H496" marker-end="url(#a8)"/><path class="ln" d="M710 217 H746" marker-end="url(#a8)"/><path class="ln dash" d="M710 274 C 740 274, 760 260, 800 250" marker-end="url(#a8)"/>
+      </svg>
+    </div>
+    <p class="cap">로컬: Spring은 <code>apps/api/.env</code>(<code>spring.config.import=optional:file:.env[.properties]</code>), Next는 <code>apps/web/.env.local</code>, Compose는 루트 <code>.env</code>. 셋 다 Git 제외.</p>
+
+    <h3>Spring API (apps/api)</h3>
+    <div class="table-wrap"><table>
+      <tr><th>이름</th><th>의미</th><th>값 예 / 기본값</th><th>설정 위치</th><th>구분</th></tr>
+      <tr><td><code>PORT</code></td><td>HTTP 포트 (<code>server.port</code>)</td><td>8080</td><td>Cloud Run 자동 주입</td><td class="public">공개</td></tr>
+      <tr><td><code>SPRING_PROFILES_ACTIVE</code></td><td><code>prod</code>면 application-prod 적용(운영 테스트·API 문서 끔, JSON 로그, dev 토큰 거부)</td><td>prod</td><td>deploy.yml</td><td class="public">공개</td></tr>
+      <tr><td><code>DB_URL</code></td><td>JDBC 주소. Supabase는 pooler + <code>sslmode=require&amp;currentSchema=popspot</code></td><td><code>jdbc:postgresql://localhost:5432/popspot</code></td><td>.env · compose · GitHub Variables</td><td class="public">공개*</td></tr>
+      <tr><td><code>DB_USERNAME</code></td><td>DB 계정. pooler는 <code>계정.프로젝트ref</code></td><td><code>popspot_api.&lt;project-ref&gt;</code></td><td>.env · compose · GitHub Variables</td><td class="public">공개</td></tr>
+      <tr><td><code>DB_PASSWORD</code></td><td>DB 비밀번호</td><td>—</td><td>.env · compose(<code>POSTGRES_PASSWORD</code>) · <b>Secret Manager</b></td><td class="secret">비밀</td></tr>
+      <tr><td><code>DB_POOL_SIZE</code> / <code>DB_POOL_MIN_IDLE</code></td><td>Hikari 최대/최소 연결</td><td>2 / 1 (compose·테스트 10)</td><td>기본값 · compose</td><td class="public">공개</td></tr>
+      <tr><td><code>AUTH_ISSUER</code></td><td>신뢰할 발급자(<code>iss</code>)</td><td><code>https://&lt;ref&gt;.supabase.co/auth/v1</code></td><td>.env · compose · Variables</td><td class="public">공개</td></tr>
+      <tr><td><code>AUTH_JWKS_URI</code></td><td>공개키 목록 주소</td><td><code>…/auth/v1/.well-known/jwks.json</code></td><td>.env · Variables</td><td class="public">공개</td></tr>
+      <tr><td><code>AUTH_JWT_SECRET</code></td><td>HS256 검증 비밀키 (JWKS 대신)</td><td>32자 이상</td><td>루트 .env · CI 생성</td><td class="secret">비밀</td></tr>
+      <tr><td><code>DEV_AUTH_ISSUER</code> / <code>DEV_AUTH_JWT_SECRET</code></td><td>E2E 개발 토큰 대체 검증 (prod면 기동 거부)</td><td><code>popspot-dev</code> / 32자 이상</td><td>.env · compose · CI</td><td class="secret">비밀(로컬)</td></tr>
+      <tr><td><code>FLYWAY_LOCATIONS</code></td><td>마이그레이션 경로 (seed 포함 여부)</td><td><code>classpath:db/migration[,classpath:db/seed]</code></td><td>.env · compose · Variables</td><td class="public">공개</td></tr>
+      <tr><td><code>FLYWAY_OUT_OF_ORDER</code></td><td>seed(V1000) 이후 낮은 버전 허용</td><td>seed 환경만 true</td><td>.env · compose · Variables</td><td class="public">공개</td></tr>
+      <tr><td><code>OPS_TESTS_ENABLED</code></td><td>운영 테스트 기능 (prod 강제 false)</td><td>false (compose true)</td><td>compose</td><td class="public">공개</td></tr>
+      <tr><td><code>API_DOCS_ENABLED</code></td><td><code>/v3/api-docs</code> 노출</td><td>false (테스트 true)</td><td>테스트 설정</td><td class="public">공개</td></tr>
+      <tr><td><code>JAVA_TOOL_OPTIONS</code></td><td>JVM 옵션</td><td>Dockerfile 고정</td><td>Dockerfile</td><td class="public">공개</td></tr>
+    </table></div>
+    <p class="muted">* DB_URL에는 비밀번호를 넣지 않으므로 공개 값으로 취급 (CI guard가 비밀번호 포함 URL 차단).</p>
+
+    <h3>Next.js 웹 (apps/web)</h3>
+    <div class="table-wrap"><table>
+      <tr><th>이름</th><th>의미</th><th>읽는 곳</th><th>설정 위치</th><th>구분</th></tr>
+      <tr><td><code>API_BASE_URL</code></td><td>Spring 주소 (서버 전용, 런타임)</td><td><code>lib/api.ts</code></td><td>.env.local · Vercel · deploy <code>--env</code></td><td class="public">공개</td></tr>
+      <tr><td><code>NEXT_PUBLIC_SUPABASE_URL</code></td><td>Supabase 프로젝트 주소 (빌드 시 인라인)</td><td><code>lib/supabase/*</code>, proxy</td><td>.env.local · Vercel(Config)</td><td class="public">공개</td></tr>
+      <tr><td><code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code></td><td><code>sb_publishable_…</code> 공개 키</td><td><code>lib/supabase/*</code>, proxy</td><td>.env.local · Vercel(Config)</td><td class="public">공개</td></tr>
+      <tr><td><code>NEXT_PUBLIC_SITE_URL</code></td><td>메일·OAuth 복귀 주소, 운영 https만</td><td><code>lib/site-url.ts</code></td><td>Vercel</td><td class="public">공개</td></tr>
+      <tr><td><code>AUTH_PROVIDERS</code></td><td>소셜 로그인 버튼 목록</td><td><code>lib/oauth.ts</code></td><td>.env.local · Vercel</td><td class="public">공개</td></tr>
+      <tr><td><code>AUTH_KAKAO_WITHOUT_EMAIL</code></td><td>비즈 앱 아닐 때 이메일 없이 카카오</td><td><code>lib/oauth.ts</code></td><td>.env.local · Vercel</td><td class="public">공개</td></tr>
+      <tr><td><code>DEV_AUTH_ENABLED</code></td><td>개발용 로그인 (운영 false)</td><td><code>lib/dev-auth.ts</code></td><td>Playwright · Vercel false</td><td class="public">공개</td></tr>
+      <tr><td><code>DEV_AUTH_ISSUER</code> / <code>DEV_AUTH_JWT_SECRET</code></td><td>개발 토큰 발급자·서명키 (Spring과 같은 값)</td><td><code>app/auth-actions.ts</code></td><td>.env.local · CI</td><td class="secret">비밀(로컬)</td></tr>
+      <tr><td><code>NEXT_DIST_DIR</code></td><td>빌드 폴더 (E2E는 <code>.next-e2e</code>)</td><td><code>next.config.ts</code></td><td>Playwright 설정</td><td class="public">공개</td></tr>
+      <tr><td><code>E2E_API_BASE_URL</code></td><td>E2E 서버가 붙을 API</td><td><code>playwright.config.ts</code></td><td>실행 시</td><td class="public">공개</td></tr>
+      <tr><td><code>NODE_ENV</code> / <code>VERCEL_ENV</code></td><td>실행 환경 (자동)</td><td>api.ts, dev-auth.ts, site-url.ts</td><td>자동</td><td class="public">공개</td></tr>
+    </table></div>
+
+    <h3>로컬 Docker Compose (루트 .env)</h3>
+    <div class="table-wrap"><table>
+      <tr><th>이름</th><th>의미</th><th>구분</th></tr>
+      <tr><td><code>POSTGRES_PASSWORD</code></td><td>로컬 PostgreSQL 비밀번호 (API의 DB_PASSWORD로도 전달)</td><td class="secret">비밀(로컬)</td></tr>
+      <tr><td><code>API_PORT</code> / <code>DB_PORT</code></td><td>호스트 포트 (기본 8080/5432). 여러 스택 동시 실행 시 변경</td><td class="public">공개</td></tr>
+      <tr><td><code>COMPOSE_PROJECT_NAME</code></td><td>별도 스택 이름 (깨끗한 DB로 재현할 때)</td><td class="public">공개</td></tr>
+    </table></div>
+
+    <h3>GitHub Actions</h3>
+    <div class="table-wrap"><table>
+      <tr><th>이름</th><th>종류</th><th>의미</th><th>쓰는 워크플로</th></tr>
+      <tr><td><code>GCP_PROJECT_ID</code></td><td>Variable</td><td>GCP 프로젝트 ID (이미지 경로)</td><td>deploy</td></tr>
+      <tr><td><code>GCP_REGION</code></td><td>Variable</td><td><code>asia-northeast3</code></td><td>deploy, rollback</td></tr>
+      <tr><td><code>GCP_WIF_PROVIDER</code></td><td>Variable</td><td>Workload Identity provider 전체 경로</td><td>deploy, rollback</td></tr>
+      <tr><td><code>GCP_DEPLOY_SA</code> / <code>GCP_RUNTIME_SA</code></td><td>Variable</td><td>배포용 / 실행용 서비스 계정</td><td>deploy</td></tr>
+      <tr><td><code>AUTH_ISSUER</code>, <code>AUTH_JWKS_URI</code></td><td>Variable</td><td>Cloud Run Spring의 인증 설정</td><td>deploy</td></tr>
+      <tr><td><code>DB_URL</code>, <code>DB_USERNAME</code></td><td>Variable</td><td>Cloud Run Spring의 DB 접속 정보</td><td>deploy, backup</td></tr>
+      <tr><td><code>FLYWAY_LOCATIONS</code>, <code>FLYWAY_OUT_OF_ORDER</code></td><td>Variable</td><td>운영 DB에 데모 seed 포함</td><td>deploy</td></tr>
+      <tr><td><code>API_MIN_INSTANCES</code></td><td>Variable</td><td>Cloud Run 최소 인스턴스 (기본 0)</td><td>deploy</td></tr>
+      <tr><td><code>BACKUP_PGHOST</code></td><td>Variable</td><td>백업 대상 호스트 (없으면 건너뜀)</td><td>backup</td></tr>
+      <tr><td><code>VERCEL_TOKEN</code></td><td><b>Secret</b></td><td>Vercel API 토큰 (Scope = 프로젝트 소유 팀)</td><td>deploy</td></tr>
+      <tr><td><code>VERCEL_ORG_ID</code> / <code>VERCEL_PROJECT_ID</code></td><td><b>Secret</b></td><td><code>team_…</code> / <code>prj_…</code>, 따옴표 없이</td><td>deploy</td></tr>
+      <tr><td><code>BACKUP_DB_PASSWORD</code> / <code>BACKUP_PASSPHRASE</code></td><td><b>Secret</b></td><td>백업용 DB 비밀번호 / GPG 암호 문구</td><td>backup</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 12 TESTS -->
+<section id="tests">
+  <div class="wrap">
+    <p class="eyebrow">12 · TESTING</p>
+    <h2>테스트 전략</h2>
+    <div class="concepts">
+      <div class="concept"><h4>Testcontainers</h4><p>테스트 실행 시 진짜 PostgreSQL 컨테이너를 띄워 연결. H2 같은 가짜 DB로는 <code>FOR SHARE</code>, 부분 인덱스, <code>ON CONFLICT</code> 동작을 검증할 수 없습니다.</p></div>
+      <div class="concept"><h4>테스트 피라미드</h4><p>빠르고 많은 단위 테스트(웹 111) → DB 포함 통합 테스트(API 94) → 느리지만 실제 브라우저로 끝까지(E2E 11).</p></div>
+      <div class="concept"><h4>Playwright</h4><p>실제 Chrome을 조작하는 E2E 도구. 역할·이름으로 요소를 찾고(<code>getByRole</code>), 자동 대기로 비동기 화면도 안정적으로 검사.</p></div>
+      <div class="concept"><h4>axe-core</h4><p>WCAG 접근성 규칙 자동 검사 엔진. 17개 화면을 순회하며 위반 0건을 확인하고, 일부러 위반을 넣은 페이지로 검사기 자체가 동작하는지도 확인(자가 검증).</p></div>
+    </div>
+    <div class="grid">
+      <div class="card"><span class="tag green">API 94</span><h4>진짜 DB 통합 테스트</h4><ul><li>인증 경계: 위조·만료·발급자·역할, 로컬 JWKS 서버로 ES256</li><li>동시성: 80명 예약, 같은 키 20회, 16명 동시 취소</li><li>잠금 대기 경합, 뮤테이션 검증</li><li>OpenAPI 스냅샷, 로그 개인정보 검사</li></ul></div>
+      <div class="card"><span class="tag green">웹 111</span><h4>Vitest + Testing Library</h4><ul><li>KST 변환 경계(자정), 오류 코드 → 메시지</li><li>폼 실패 시 입력 유지, 다이얼로그 포커스</li><li>proxy 리디렉트, 오픈 리디렉트 차단, https 규칙</li></ul></div>
+      <div class="card"><span class="tag green">E2E 11</span><h4>Playwright on Docker</h4><ul><li>로그인·권한, 탐색·오픈 대기, 예약·매진 경쟁, 취소</li><li>관리자 팝업·회차·예약 운영, 운영 테스트</li><li>17개 화면 axe + 390px 가로 넘침</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 TROUBLE -->
+<section id="trouble">
+  <div class="wrap">
+    <p class="eyebrow">13 · TROUBLESHOOTING</p>
+    <h2>작업 중 만난 문제와 해결</h2>
+    <p class="lead">대부분 코드 버그보다 "플랫폼 규칙·설정"이 원인이었습니다. 증상 → 원인 → 해결 → 배운 점 순으로.</p>
+    <h3>배포</h3>
+    <div class="trouble"><h4>Cloud Run 새 버전 기동 실패</h4><dl>
+      <dt>증상</dt><dd>"container failed to start and listen on PORT=8080". 로그엔 <code>adminCatalogController</code> 빈 생성 실패만 보임.</dd>
+      <dt>원인</dt><dd>같은 이미지를 로컬에서 같은 DB로 실행해 재현: <code>FATAL: (EMAXCONNSESSION) max clients reached in session mode - pool_size: 15</code>. Hikari 기본 풀 10 × (구 리비전 + 로컬 + 새 리비전) &gt; 15. Flyway가 연결을 못 얻어 실패 → 그에 의존하는 첫 빈 이름으로 보였을 뿐.</dd>
+      <dt>해결</dt><dd>풀 2, 최소 유휴 1, 유휴 반납 60초. 롤링 배포 최악값 3×2×2+2=14를 주석으로 문서화. 운영 이미지에 동시 요청 40개를 보내 연결 수가 풀 크기를 넘지 않음 확인.</dd>
+      <dt>배운 점</dt><dd>"빈 생성 실패"는 결과일 때가 많다. 맨 끝 <code>Caused by</code>를 봐야 한다.</dd></dl></div>
+    <div class="trouble"><h4>Vercel: Could not retrieve Project Settings</h4><dl>
+      <dt>원인</dt><dd>토큰·팀 ID·프로젝트 ID 조합 불일치 시 CLI는 이 일반 문구만 출력. Secrets는 다시 볼 수 없어 추측이 어려움.</dd>
+      <dt>해결</dt><dd><code>vercel link</code>로 정확한 ID를 얻어 재입력, 토큰을 팀 Scope로 재발급. 배포 전 "Check Vercel settings" 단계 추가(형식 검사, Vercel API 200/401/403/404를 원인 문장으로).</dd></dl></div>
+    <div class="trouble"><h4>배포 사이트 "로그인을 사용할 수 없습니다"</h4><dl>
+      <dt>원인</dt><dd>Vercel 환경 변수를 <b>Secret</b> 타입으로 생성 → 러너의 <code>vercel pull</code>이 실제 값을 못 받음 → 잘못된 키로 빌드 → Supabase "Invalid API key".</dd>
+      <dt>해결</dt><dd>Config 타입으로 재생성 후 재배포. 진단 기준: 없는 계정으로 로그인 시 "비밀번호 확인" 문구가 나와야 정상.</dd></dl></div>
+    <div class="trouble"><h4>관리자 페이지 "This page couldn't load"</h4><dl>
+      <dt>원인</dt><dd>첫 배포본에 <code>API_BASE_URL</code> 없음 → 서버가 <code>localhost:8080</code>으로 접속 → 레이아웃이 예외를 다시 던짐.</dd>
+      <dt>해결</dt><dd>운영에서 주소가 없으면 <code>API_NOT_CONFIGURED</code>로 명확히 실패 + "서버에 연결할 수 없습니다" 안내 화면. 배포 시 <code>--env</code>로 주입.</dd></dl></div>
+    <h3>Supabase · PostgreSQL</h3>
+    <div class="trouble"><h4>권한 3종: SET ROLE · search_path · 소유자</h4><dl>
+      <dt>증상</dt><dd>① <code>must be able to SET ROLE "popspot_api"</code> ② <code>relation "user_roles" does not exist</code> ③ <code>permission denied for table user_roles</code></dd>
+      <dt>원인</dt><dd>① PG16부터 소유권 이전에 역할 전환 권한 필요 ② SQL Editor는 <code>public</code>만 찾음 ③ 테이블 주인이 <code>popspot_api</code></dd>
+      <dt>해결</dt><dd>스키마는 postgres 소유 + GRANT, 테이블명에 <code>popspot.</code> 명시, <code>grant popspot_api to postgres with inherit false, set true</code> 후 필요할 때만 <code>set role</code>.</dd></dl></div>
+    <div class="trouble"><h4>이메일 가입 불가</h4><dl>
+      <dt>원인</dt><dd>기본 메일 서버는 조직 멤버에게만 발송. 앱은 오류 코드를 버리고 한 문구만 보여 원인이 안 보였음.</dd>
+      <dt>해결</dt><dd>오류 코드별 메시지 + 서버 로그엔 코드만. 시연용 이메일 인증 끄기, 소셜 로그인 준비, 실서비스는 외부 SMTP.</dd></dl></div>
+    <h3>Spring · Next.js · 테스트</h3>
+    <div class="trouble"><h4>오프셋 없는 시각이 UTC로 저장될 뻔함</h4><dl>
+      <dt>원인</dt><dd>Jackson 기본 역직렬화가 <code>"2031-04-25T14:00:00"</code>를 UTC로 받아들임 → KST 입력이 9시간 어긋날 수 있음.</dd>
+      <dt>해결</dt><dd>오프셋 필수 역직렬화기 전역 등록 → 400.</dd></dl></div>
+    <div class="trouble"><h4>Flyway가 V3를 순서 위반으로 거부</h4><dl>
+      <dt>원인</dt><dd>seed를 V1000으로 관리 → 나중의 V3가 더 낮은 버전.</dd>
+      <dt>해결</dt><dd>seed 환경에서만 <code>FLYWAY_OUT_OF_ORDER=true</code>.</dd></dl></div>
+    <div class="trouble"><h4>readiness가 DB 장애를 못 봄</h4><dl>
+      <dt>해결</dt><dd><code>management.endpoint.health.group.readiness.include=readinessState,db</code>, liveness는 DB 제외.</dd></dl></div>
+    <div class="trouble"><h4>테스트가 개발자 .env를 읽어 대량 실패</h4><dl>
+      <dt>원인</dt><dd><code>spring.config.import=optional:file:.env</code>가 테스트에도 적용 → 진짜 JWKS로 테스트 토큰 검증.</dd>
+      <dt>해결</dt><dd>테스트 설정에서 인증 값을 전부(빈 값 포함) 고정.</dd></dl></div>
+    <div class="trouble"><h4>Next.js 16 관련</h4><dl>
+      <dt>내용</dt><dd>① <code>cacheComponents</code>가 쿠키를 읽는 레이아웃과 충돌 → 끔 ② 폴더당 dev 서버 1개 제한 → E2E는 <code>.next-e2e</code> 프로덕션 빌드로 분리 ③ 그 산출물이 lint·tsconfig 오염 → 제외 ④ middleware → <code>proxy.ts</code>.</dd></dl></div>
+    <div class="trouble"><h4>작은 함정들</h4><dl>
+      <dt>내용</dt><dd>Java 텍스트 블록이 앞 공백을 지워 <code>"… p" + "where"</code>가 <code>pwhere</code> · Playwright 셀 부분 일치·Next route announcer·모바일 표 role 손실로 오탐 → exact·필터·텍스트 기준 · 실행 중 Gradle이 wrapper jar를 잠가 병합 중단 → 브랜치 포인터만 이동 · 복구 리허설에서 기존 스키마 충돌 → <code>--clean</code>.</dd></dl></div>
+  </div>
+</section>
+
+<!-- 14 REVIEW -->
+<section id="review">
+  <div class="wrap">
+    <p class="eyebrow">14 · CROSS REVIEW</p>
+    <h2>AI 교차 리뷰로 잡은 결함</h2>
+    <p class="lead">Claude가 구현, Codex(gpt-5.5)가 서브컨텍스트마다 최대 2라운드 리뷰. 테스트를 통과한 코드에서도 아래 결함이 나왔습니다.</p>
+    <div class="table-wrap"><table>
+      <tr><th>대상</th><th>지적</th><th>반영</th></tr>
+      <tr><td>예약·관리자</td><td>초안 전환 순간 들어온 예약이 초안 팝업에 남을 수 있음</td><td>예약 <code>FOR SHARE</code> / 관리자 <code>FOR UPDATE</code> 후 재검증</td></tr>
+      <tr><td>회차 삭제</td><td>삭제 중 예약이 들어오면 500</td><td>회차 행 잠금 후 확인·삭제 → 409</td></tr>
+      <tr><td>로그</td><td>예외 전체 로그로 연락처 유출 가능</td><td>클래스 이름만</td></tr>
+      <tr><td>스키마</td><td>예약의 팝업 ≠ 회차의 팝업 가능</td><td>V3 복합 FK</td></tr>
+      <tr><td>가입 메일</td><td>확인 링크가 Host 헤더 신뢰</td><td><code>NEXT_PUBLIC_SITE_URL</code>만, https만</td></tr>
+      <tr><td>감사 로그</td><td>자유 입력 사유에 개인정보</td><td>길이만 기록</td></tr>
+      <tr><td>운영 테스트</td><td>관리자 API로 합성 팝업 접근</td><td>합성 대상 404</td></tr>
+      <tr><td>배포</td><td>PR·fork CI 성공으로 배포 / WIF가 저장소만 확인</td><td>main push만 / main + 워크플로 파일 제한</td></tr>
+      <tr><td>백업</td><td>복구 비원자적 / CBC에 변조 검출 없음</td><td><code>--single-transaction</code> / GPG 인증 암호화</td></tr>
+      <tr><td>준비도 점검</td><td>경로만 비교해 잘못된 화면도 통과</td><td>화면별 기대 콘텐츠 + axe 자가 검증</td></tr>
+      <tr><td>커넥션 풀</td><td>롤링 배포 중 합산 시 한도 초과</td><td>풀 3 → 2, 계산식 문서화</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- 15 NEXT -->
+<section id="next-steps">
+  <div class="wrap">
+    <p class="eyebrow">15 · NEXT</p>
+    <h2>남은 과제</h2>
+    <div class="grid">
+      <div class="card"><span class="tag yellow">운영</span><h4>운영 승인 전 확인</h4><ul><li>브랜치 보호 ruleset Active</li><li>롤백 리허설 1회</li><li>업타임 체크 · 5xx 알림 · 백업 Secret</li><li>배포 환경 LCP 재측정</li></ul></div>
+      <div class="card"><span class="tag yellow">인증</span><h4>소셜 로그인 · 메일</h4><ul><li>Google OAuth 게시</li><li>카카오 (비즈 앱 여부)</li><li>외부 SMTP 후 이메일 인증 재활성화</li></ul></div>
+      <div class="card"><span class="tag yellow">개선</span><h4>다음에 다르게 할 것</h4><ul><li>seed는 별도 스크립트로</li><li>dev/prod Supabase 프로젝트 분리</li><li>배포 스모크에 로그인 경로 포함</li></ul></div>
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>

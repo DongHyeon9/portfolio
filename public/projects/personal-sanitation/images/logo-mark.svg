@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="분리집사 로고">
+  <!-- 집(지붕) + 집사의 나비넥타이. 넥타이 두 날개를 두 색으로 나눠 '분리'를 표현 -->
+  <path d="M32 7 L57 28 V52 a5 5 0 0 1 -5 5 H12 a5 5 0 0 1 -5 -5 V28 Z" fill="#13795b" stroke="#13795b" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M28.5 39 L16 31.5 V46.5 Z" fill="#ffffff" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M35.5 39 L48 31.5 V46.5 Z" fill="#f2a93b" stroke="#f2a93b" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="32" cy="39" r="3.6" fill="#ffffff"/>
+</svg>
