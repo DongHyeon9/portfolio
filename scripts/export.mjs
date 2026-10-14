@@ -54,13 +54,20 @@ async function exportSlug(slug) {
 
   // 1. HTML -> PDF
   const page = await browser.newPage();
-  await page.goto(pathToFileURL(html).href, { waitUntil: 'load' });
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    await Promise.all([...document.images].map((img) => img.decode().catch(() => {})));
-  });
-  await page.pdf({ path: pdfPath, format: 'A4', printBackground: true, preferCSSPageSize: true });
-  await page.close();
+  try {
+    await page.goto(pathToFileURL(html).href, { waitUntil: 'load' });
+    const broken = await page.evaluate(async () => {
+      await document.fonts.ready;
+      // src 없는 img(확대용 <dialog> 안의 빈 img)는 제외
+      const imgs = [...document.images].filter((img) => img.getAttribute('src'));
+      const results = await Promise.all(imgs.map((img) => img.decode().then(() => null, () => img.getAttribute('src'))));
+      return results.filter(Boolean);
+    });
+    if (broken.length) throw new Error(`broken images: ${broken.join(', ')}`);
+    await page.pdf({ path: pdfPath, format: 'A4', printBackground: true, preferCSSPageSize: true });
+  } finally {
+    await page.close();
+  }
 
   // 2. PDF -> PNG per page, rendered by pdf.js inside the browser
   const pdfBytes = fs.readFileSync(pdfPath);

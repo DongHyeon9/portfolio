@@ -443,9 +443,12 @@
 <dialog id="zoom"><img alt=""></dialog>
 <script>
   const dlg = document.getElementById('zoom');
-  document.querySelectorAll('main img, header img').forEach(img => img.addEventListener('click', () => {
-    dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal();
-  }));
+  const open = img => { dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal(); };
+  document.querySelectorAll('main img, header img').forEach(img => {
+    img.tabIndex = 0; img.setAttribute('role', 'button');
+    img.addEventListener('click', () => open(img));
+    img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); } });
+  });
   dlg.addEventListener('click', () => dlg.close());
 </script>
 </body>
