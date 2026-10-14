@@ -10,9 +10,9 @@ const skillGroups = [
   { name: 'C++', items: ['STL', 'Boost.Asio', 'Unreal Engine', 'Protobuf', 'spdlog'] },
   { name: 'TypeScript', items: ['NestJS', 'Next.js', 'React Native (Expo)', 'TypeORM'] },
   { name: 'Java', items: ['Spring Boot'] },
-  { name: 'Database', items: ['PostgreSQL', 'MSSQL'] },
-  { name: 'Infra · DevOps', items: ['Docker', 'AWS', 'Jenkins', 'GitHub Actions'] },
-  { name: '장비 · VR', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker'] },
+  { name: 'Database', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
+  { name: 'Infra · DevOps', items: ['Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
+  { name: '하드웨어', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker', 'BLE'] },
 ];
 
 const careers: { company: string; range: Range; role: string; works: string[]; stack: string[] }[] = [
@@ -29,16 +29,18 @@ const careers: { company: string; range: Range; role: string; works: string[]; s
     role: '백엔드 · 서버 개발',
     works: [
       '메이플스토리 라이브 서비스 서버 개발',
-      '유저 정보 저장 최적화, 데이터 파일 암호화',
-      '서버 모니터링 및 인하우스 툴 유지보수',
-      'JSON 데이터 생성 코드를 C++17 템플릿으로 리팩터링',
+      '유저 정보 저장 최적화',
+      '데이터 파일 암호화',
+      '서버 모니터링',
+      '인하우스 툴 유지보수',
+      '패치 프로세스 리팩터링',
     ],
-    stack: ['C++', 'MSSQL'],
+    stack: ['C++', 'C#', 'JavaScript', 'Python', 'MSSQL', 'Jenkins'],
   },
   {
     company: '빅게임스튜디오 · BCM 클라이언트 Cell',
     range: { start: '2025.05', end: '2025.11' },
-    role: '게임 클라이언트 개발',
+    role: '프론트엔드 클라이언트 개발',
     works: ['전투 시스템 개발 (시뮬레이션 전투, 링크 패시브)', '떠돌이 상인 콘텐츠 개발', 'Jenkins 기반 빌드 · 배포 자동화'],
     stack: ['Jenkins'],
   },
@@ -66,13 +68,6 @@ const careers: { company: string; range: Range; role: string; works: string[]; s
     ],
     stack: ['Unreal Engine (C++)', 'VR', 'Vive Tracker', 'Google STT'],
   },
-];
-
-const stats = [
-  { value: <CareerMonths ranges={careers.map((c) => c.range)} builtAt={builtAt} />, label: '총 경력' },
-  { value: '7건', label: 'SI 납품' },
-  { value: '3곳', label: '근무 회사' },
-  { value: '3개', label: '개인 프로젝트' },
 ];
 
 const projects = [
@@ -109,6 +104,7 @@ export default function Home() {
       <nav className="nav">
         <a href="#top" className="brand">DH<span>.</span></a>
         <div>
+          <a href="#skills">기술스택</a>
           <a href="#career">경력</a>
           <a href="#projects">프로젝트</a>
         </div>
@@ -133,27 +129,22 @@ export default function Home() {
           </div>
         </header>
 
-        <ul className="stats">
-          {stats.map((s) => (
-            <li key={s.label} className="glass reveal">
-              <strong className="grad">{s.value}</strong>
-              <span>{s.label}</span>
-            </li>
-          ))}
-        </ul>
-
-        <ul className="skill-groups">
-          {skillGroups.map((g) => (
-            <li key={g.name} className="glass reveal">
-              <h3>{g.name}</h3>
-              <ul className="chips small">
-                {g.items.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+        <section id="skills">
+          <p className="eyebrow">Skills</p>
+          <h2>기술스택</h2>
+          <ul className="skill-groups">
+            {skillGroups.map((g) => (
+              <li key={g.name} className="glass reveal">
+                <h3>{g.name}</h3>
+                <ul className="chips small">
+                  {g.items.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section id="career">
           <p className="eyebrow">Career</p>
