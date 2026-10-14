@@ -13,6 +13,7 @@ const skillGroups = [
   { name: 'Database', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
   { name: 'Infra · DevOps', items: ['Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
   { name: '하드웨어', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker', 'BLE'] },
+  { name: '기타 언어', items: ['C#', 'JavaScript', 'Python'] },
 ];
 
 const careers: { company: string; range: Range; role: string; works: string[]; stack: string[] }[] = [
