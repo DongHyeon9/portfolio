@@ -89,9 +89,9 @@ const projects = [
   },
   {
     slug: 'jenkins-local-test',
-    title: 'Jenkins VPN 사용자 관리',
-    summary: 'VPN · SVN · Jenkins 계정 생성 · 수정 · 삭제를 Jenkins 파이프라인 하나로 자동화',
-    stack: ['Jenkins Pipeline', 'Job DSL', 'Groovy', 'Python', 'WireGuard'],
+    title: 'Ubuntu 서버 구축 및 서버 운영환경 구축',
+    summary: 'Windows 데스크톱을 Ubuntu Server로 전환해 VPN · SVN · Jenkins 운영환경과 계정 관리 자동화까지 구축',
+    stack: ['Ubuntu Server', 'WireGuard', 'Docker', 'Apache SVN', 'Jenkins'],
     thumb: null,
     accent: '#ea580c',
   },
