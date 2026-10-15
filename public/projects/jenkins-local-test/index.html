@@ -122,6 +122,7 @@
     <div class="brand">jenkins-<span>local-test</span></div>
     <h1>Jenkins 파이프라인으로 <em>VPN · SVN · Jenkins 계정</em>을<br>한 번에 만들고 고치고 지우기</h1>
     <p class="intro">LAN 서버 한 대에서 운영하는 <b>WireGuard VPN, SVN(Apache), Jenkins</b> 세 시스템의 사용자 계정을 Jenkins 파이프라인 3개(생성 · 수정 · 삭제)로 관리하는 프로젝트입니다. 관리자가 Jenkins 화면에서 파라미터만 입력하면 세 시스템에 같은 사용자가 스테이지별로 반영되고, 중간에 실패하면 완료된 단계만 되돌립니다. 파이프라인 정의 자체도 <b>SVN에 커밋하면 자동으로 Jenkins에 반영</b>됩니다.</p>
+    <p class="no-print" style="margin:0 0 20px"><a href="tech-doc.html"><b>기술 노트: Ubuntu 홈서버 구축 →</b></a> 이 파이프라인이 돌아가는 서버를 설치부터 SSH · WireGuard · 포트포워딩 · Docker · SVN · Jenkins · WOL까지 만든 과정</p>
     <dl class="meta">
       <div><dt>역할</dt><dd>1인 (설계 · 구현 · 서버 반영)</dd></div>
       <div><dt>형태</dt><dd>인프라 자동화 (Jenkins + 리눅스 호스트)</dd></div>
