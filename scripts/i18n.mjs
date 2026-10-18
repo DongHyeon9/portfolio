@@ -22,6 +22,7 @@ export function parseCsv(text) {
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (q) {
+      if (c === '\r' && text[i + 1] === '\n') continue; // 셀 안 줄바꿈은 LF로 (git autocrlf 대비)
       if (c !== '"') f += c;
       else if (text[i + 1] === '"') { f += '"'; i++; }
       else if (i + 1 < text.length && !',\r\n'.includes(text[i + 1])) throw new Error(`CSV: text after closing quote near: ${f.slice(-40)}`);
