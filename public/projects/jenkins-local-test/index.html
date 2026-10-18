@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ubuntu 서버 구축 및 서버 운영환경 구축</title>
+<title>서버 운영 환경 구축 및 자동화 (CI/CD)</title>
 <style>
   :root {
     --bg: #f7f8fa; --surface: #ffffff; --surface-2: #eef1f5; --text: #16191d; --text-2: #565d66; --border: #dde2e8;
@@ -49,7 +49,6 @@
   .card p { color: var(--text-2); margin: 0; font-size: 15px; }
   .card ul { color: var(--text-2); margin: 0; padding-left: 18px; font-size: 15px; }
   .card li { margin: 4px 0; }
-  .card.wide { grid-column: span 2; }
   .tag { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
   .tag.p { background: var(--primary-soft); color: var(--primary); }
   .tag.green { background: var(--ok-soft); color: var(--ok); }
@@ -59,7 +58,6 @@
   .arch text { fill: var(--text); font: 13px "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   .arch .b { font-weight: 700; }
   .arch .sub { fill: var(--text-2); font-size: 11px; }
-  .arch .err { fill: var(--primary); font-size: 11.5px; }
   .arch .box { fill: var(--surface-2); stroke: var(--border); }
   .arch .core { fill: var(--primary-soft); stroke: var(--primary); }
   .arch .ext { fill: var(--accent-soft); stroke: var(--accent); }
@@ -82,17 +80,12 @@
   .tech td:last-child { color: var(--text-2); }
   .tech tr.cat td { background: var(--surface-2); color: var(--primary); font-size: 12px; letter-spacing: .06em; padding: 5px 14px; }
 
-  .roles { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); font-size: 14px; }
-  .roles th, .roles td { text-align: left; padding: 9px 14px; border-top: 1px solid var(--border); }
-  .roles th { background: var(--surface-2); font-size: 13px; }
-
   .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; gap: 12px; } .back a { text-decoration: none; font-weight: 700; }
   footer { padding: 40px 0 60px; border-top: 1px solid var(--border); color: var(--text-2); font-size: 14px; }
 
   @media screen and (max-width: 860px) {
     .tech td:first-child { white-space: normal; }
     .grid, .grid.two { grid-template-columns: 1fr; }
-    .card.wide { grid-column: auto; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     .meta { grid-template-columns: repeat(2, auto); }
     section { padding: 40px 0; }
@@ -103,15 +96,15 @@
     :root { --bg: #fff; --shadow: none; }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 12px; }
     header.hero { padding: 0 0 12px; }
-    footer, .no-print, .back { display: none; }
+    footer, .back { display: none; }
     .hero h1 { font-size: 28px; margin: 10px 0; }
     .hero .intro { font-size: 14px; }
     section { padding: 10px 0; }
     h2 { font-size: 22px; } h3 { font-size: 15px; }
     .lead { font-size: 13px; margin-bottom: 14px; }
     .card { padding: 14px; } .card p, .card ul { font-size: 12px; }
-    .tech, .roles { font-size: 10.5px; } .tech th, .tech td, .roles th, .roles td { padding: 4px 10px; }
-    .tech tr, .roles tr, .cap, .card, .stat, .arch, .lead { break-inside: avoid; }
+    .tech { font-size: 10.5px; } .tech th, .tech td { padding: 4px 10px; }
+    .tech tr, .cap, .card, .stat, .arch, .lead { break-inside: avoid; }
     h2, h3, .eyebrow { break-after: avoid; }
     .arch { overflow: visible; padding: 8px; } .arch svg { min-width: 0; }
     .arch + .cap + h3 { margin-top: 14px; }
@@ -134,14 +127,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="brand">ubuntu-<span>server</span></div>
-    <h1>Ubuntu 서버 구축 및<br><em>서버 운영환경 구축</em></h1>
-    <p class="intro">Windows 데스크톱을 밀고 <b>Ubuntu Server 24.04 LTS</b>를 설치해, AWS EC2처럼 모니터 없이 SSH로만 관리하는 홈서버로 바꾼 프로젝트입니다. 디스크 구성부터 원격 접속 · VPN · 포트포워딩 · Docker · SVN · Jenkins · 원격 전원(WOL)까지 서버 운영에 필요한 환경을 직접 구축했고, 그 위에서 <b>VPN · SVN · Jenkins 계정을 Jenkins 파이프라인으로 관리하는 자동화</b>까지 만들었습니다.</p>
-    <p class="no-print" style="margin:0 0 20px"><a href="tech-doc.html"><b>기술 노트: 구축 과정 상세 →</b></a> 단계별 명령어 · 설정 파일 · 선택 이유 · 트러블슈팅</p>
+    <div class="brand">jenkins-<span>operations</span></div>
+    <h1>서버 운영 환경 구축 및<br><em>자동화 (CI/CD)</em></h1>
+    <p class="intro">내부망 Ubuntu 서버에 <b>Jenkins 기반 운영 자동화</b>를 구축했습니다. GitHub 저장소를 테스트 서버로 생성하고, 배포 · 중지 · 삭제 · DB 마이그레이션과 초기화를 파이프라인으로 실행합니다. Docker Compose 서비스는 nginx를 통해서만 공개하고, 모든 결과는 <b>Discord 웹훅으로 원인과 해결 방법까지</b> 알립니다.</p>
     <dl class="meta">
-      <div><dt>역할</dt><dd>1인 (설치 · 구성 · 자동화)</dd></div>
-      <div><dt>형태</dt><dd>홈서버 구축 · 인프라 자동화</dd></div>
-      <div><dt>협업 방식</dt><dd>AI 2종(Claude · Codex) 교차 리뷰</dd></div>
+      <div><dt>역할</dt><dd>1인 (설계 · 구축 · 자동화)</dd></div>
+      <div><dt>범위</dt><dd>Jenkins · Docker · nginx · Discord</dd></div>
+      <div><dt>운영 대상</dt><dd>내부망 로컬 테스트 서버</dd></div>
     </dl>
   </div>
 </header>
@@ -149,62 +141,22 @@
 <main>
 <section>
   <div class="wrap">
-    <p class="eyebrow">BUILT</p>
-    <h2>구축한 것</h2>
-    <p class="lead">한 대의 PC 위에 아래 11가지를 순서대로 올렸습니다. 원칙은 하나 — <b>인터넷에 여는 입구는 WireGuard 하나</b>, 나머지 서비스는 VPN 안이나 집 LAN에서만 닿게 합니다.</p>
-    <div class="grid">
-      <div class="card"><span class="tag p">01 · OS</span><h3>Ubuntu Server 24.04 설치</h3><ul>
-        <li>기존 SVN 저장소 백업 후 Windows 제거</li>
-        <li>MSI BIOS UEFI 설정, LVM 설치, OpenSSH 포함</li>
-        <li>GUI 없이 EC2와 같은 LTS 버전</li>
-      </ul></div>
-      <div class="card"><span class="tag p">02 · DISK</span><h3>디스크 3개 역할 분리</h3><ul>
-        <li>500GB → OS, 512GB SSD → <code>/data</code>, 4TB HDD → <code>/backup</code></li>
-        <li>남은 LVM 정리 → GPT · ext4 포맷</li>
-        <li><code>fstab</code> UUID + <code>nofail</code> 자동 마운트</li>
-      </ul></div>
-      <div class="card"><span class="tag p">03 · BASE</span><h3>기본 운영 설정</h3><ul>
-        <li>시간대 · 자동 보안 업데이트(unattended-upgrades)</li>
-        <li>관리자 계정 <code>sudo</code> 그룹</li>
-        <li>UFW 허용 규칙 (LAN · wg0 한정)</li>
-      </ul></div>
-      <div class="card"><span class="tag">04 · SSH</span><h3>원격 접속</h3><ul>
-        <li>OpenSSH, LAN 대역 · VPN 인터페이스에서만 22번 허용</li>
-        <li>모니터 · 키보드 없이 운영</li>
-      </ul></div>
-      <div class="card"><span class="tag">05 · VPN</span><h3>WireGuard VPN</h3><ul>
-        <li><code>wg0</code> 10.10.0.0/24, 기기별 키 쌍</li>
-        <li>외부 노트북 → VPN → 서버 SSH · SVN · Jenkins</li>
-        <li><code>wg-quick@wg0</code>로 부팅 시 자동 기동</li>
-      </ul></div>
-      <div class="card"><span class="tag">06 · NAT</span><h3>공유기 포트포워딩</h3><ul>
-        <li>UDP 51820 하나만 서버로 포워딩</li>
-        <li>DHCP 예약으로 서버 내부 IP 고정</li>
-        <li>SSH · SVN · Jenkins 포트는 포워딩하지 않음</li>
-      </ul></div>
-      <div class="card"><span class="tag">07 · DOCKER</span><h3>Docker · Compose</h3><ul>
-        <li>Docker 공식 저장소로 Engine + Compose 설치</li>
-        <li>볼륨은 SSD <code>/data</code>, <code>restart: unless-stopped</code></li>
-      </ul></div>
-      <div class="card"><span class="tag">08 · SVN</span><h3>SVN 서버 (Apache)</h3><ul>
-        <li><code>mod_dav_svn</code> + <code>SVNParentPath</code>로 여러 저장소</li>
-        <li>저장소는 HDD, <code>htpasswd</code>(bcrypt) 인증 · authz 쓰기 제한</li>
-        <li>VisualSVN(Windows) 대체</li>
-      </ul></div>
-      <div class="card"><span class="tag">09 · CI</span><h3>Jenkins</h3><ul>
-        <li>Docker 컨테이너, 홈은 SSD에 보존</li>
-        <li>LAN · VPN IP에만 8082 게시</li>
-        <li>Docker 소켓 미연결 — 호스트 작업은 SSH 에이전트로 분리</li>
-      </ul></div>
-      <div class="card"><span class="tag green">10 · POWER</span><h3>WOL + 부팅 자동 기동</h3><ul>
-        <li>WOL로 전원만 켜면 서비스가 사람 손 없이 기동</li>
-        <li>systemd <code>enable</code> + Docker 재시작 정책</li>
-        <li>재부팅 후 <code>is-enabled</code> · 재시작 정책 점검</li>
-      </ul></div>
-      <div class="card wide"><span class="tag green">11 · AUTOMATION</span><h3>VPN 사용자 관리 파이프라인</h3><ul>
-        <li>WireGuard · SVN · Jenkins 계정을 Jenkins 잡 3개(생성 · 수정 · 삭제)로 한 번에 관리</li>
-        <li>파이프라인 정의는 SVN 커밋 → seed 잡으로 자동 반영 — <a href="#pipeline">아래 상세</a></li>
-      </ul></div>
+    <p class="eyebrow">OVERVIEW</p>
+    <h2>운영 작업을 Jenkins 잡으로 표준화</h2>
+    <p class="lead">관리자가 매번 서버에 접속해 명령을 조합하지 않아도, 같은 검증 · 배포 · 복구 절차를 Jenkins 화면에서 반복할 수 있게 만들었습니다.</p>
+    <div class="stats">
+      <div class="stat"><b>6개</b><span>server-local 운영 잡</span></div>
+      <div class="stat"><b>3종</b><span>웹 · 관리자 · API 역할</span></div>
+      <div class="stat"><b>1대</b><span>동시에 실행하는 테스트 서버</span></div>
+      <div class="stat"><b>자동</b><span>Discord 결과 · 장애 안내</span></div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card"><span class="tag p">create</span><h3>테스트 서버 생성</h3><p>허용된 GitHub 계정의 저장소만 clone하고 Compose 구성을 검사합니다. 환경 파일과 서버용 override를 만든 뒤 기동하고 nginx에 등록합니다.</p></div>
+      <div class="card"><span class="tag">deploy</span><h3>업데이트 · 재배포</h3><p>원격 브랜치의 최신 커밋으로 갱신해 다시 빌드합니다. 기동 실패 시 이전 커밋으로 되돌려 재기동합니다.</p></div>
+      <div class="card"><span class="tag">stop</span><h3>실행 서버 중지</h3><p>nginx 프록시를 해제하고 Compose 프로젝트를 내립니다. 이미지 · 작업본 · 데이터는 남겨 다시 배포할 수 있습니다.</p></div>
+      <div class="card"><span class="tag p">remove</span><h3>서버 삭제</h3><p>nginx → 컨테이너 → 작업본 순서로 제거합니다. 데이터와 named volume 삭제는 대상 이름 재입력을 요구하는 선택지로 분리했습니다.</p></div>
+      <div class="card"><span class="tag green">db-migrate</span><h3>DB 마이그레이션</h3><p>실행 중인 API 컨테이너에서 TypeORM <code>migration:run</code> 후 <code>migration:show</code>로 적용 상태를 확인합니다.</p></div>
+      <div class="card"><span class="tag p">db-reset</span><h3>DB 초기화</h3><p>대상 이름을 다시 확인한 뒤 <code>schema:drop</code> → <code>migration:run</code> → <code>migration:show</code>를 실행합니다.</p></div>
     </div>
   </div>
 </section>
@@ -212,304 +164,117 @@
 <section>
   <div class="wrap">
     <p class="eyebrow">ARCHITECTURE</p>
-    <h2>최종 구성</h2>
-    <p class="lead">외부에서 들어오는 길은 WireGuard 하나뿐입니다. IP는 모두 예시 값입니다.</p>
+    <h2>Jenkins · 호스트 에이전트 · nginx 분리</h2>
+    <p class="lead">Jenkins 컨트롤러는 권한과 파이프라인을 관리하고, root 작업은 호스트의 검증된 <code>server-ctl</code> 한 곳으로 제한했습니다. 컨테이너 포트는 loopback에만 게시합니다.</p>
     <div class="arch">
-      <svg viewBox="0 0 980 400" role="img" aria-label="외부 노트북이 WireGuard로 공유기를 통해 Ubuntu 서버에 접속하고, 서버 안에서 SSH, SVN, Jenkins, Docker가 동작하는 전체 구성">
-        <defs>
-          <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
-          <marker id="g1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahr" d="M0 0L10 5L0 10z"/></marker>
-          <marker id="g1g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahg" d="M0 0L10 5L0 10z"/></marker>
-        </defs>
-        <rect class="ext" x="10" y="40" width="190" height="96" rx="10"/>
-        <text class="b" x="105" y="68" text-anchor="middle">외부 노트북 (Mac · Win)</text>
-        <text x="105" y="90" text-anchor="middle">WireGuard 클라이언트</text>
-        <text class="sub" x="105" y="110" text-anchor="middle">VPN IP 10.10.0.2 ~</text>
-        <text class="sub" x="105" y="126" text-anchor="middle">카페 · 핫스팟 등 외부망</text>
-
-        <rect class="box" x="10" y="250" width="190" height="96" rx="10"/>
-        <text class="b" x="105" y="278" text-anchor="middle">집 안 Windows PC</text>
-        <text x="105" y="300" text-anchor="middle">같은 공유기 LAN</text>
-        <text class="sub" x="105" y="320" text-anchor="middle">192.168.0.0/24</text>
-        <text class="sub" x="105" y="336" text-anchor="middle">VPN 없이 직접 접속</text>
-
-        <rect class="core" x="270" y="40" width="170" height="96" rx="10"/>
-        <text class="b" x="355" y="68" text-anchor="middle">집 공유기</text>
-        <text x="355" y="90" text-anchor="middle">UDP 51820만 포워딩</text>
-        <text class="sub" x="355" y="110" text-anchor="middle">→ 서버 192.168.0.10</text>
-        <text class="sub" x="355" y="126" text-anchor="middle">DHCP 예약으로 IP 고정</text>
-        <path class="ln red" d="M200 88H268" marker-end="url(#g1r)"/>
-        <text class="err" x="234" y="78" text-anchor="middle">인터넷</text>
-
-        <rect class="zone" x="490" y="14" width="480" height="372" rx="14"/>
-        <text class="b" x="730" y="38" text-anchor="middle">Ubuntu Server 24.04 (BarraCuda 500GB, LVM)</text>
-
-        <rect class="ci" x="510" y="56" width="200" height="70" rx="10"/>
-        <text class="b" x="610" y="82" text-anchor="middle">wg0 · 10.10.0.1</text>
-        <text class="sub" x="610" y="102" text-anchor="middle">wg-quick@wg0 (systemd)</text>
-        <text class="sub" x="610" y="117" text-anchor="middle">peer 공개키로 기기 인증</text>
-        <path class="ln red" d="M440 88H508" marker-end="url(#g1r)"/>
-
-        <rect class="box" x="510" y="146" width="140" height="62" rx="9"/>
-        <text class="b" x="580" y="172" text-anchor="middle">OpenSSH</text>
-        <text class="sub" x="580" y="192" text-anchor="middle">TCP 22</text>
-        <rect class="box" x="665" y="146" width="140" height="62" rx="9"/>
-        <text class="b" x="735" y="172" text-anchor="middle">Apache + SVN</text>
-        <text class="sub" x="735" y="192" text-anchor="middle">TCP 80 · /svn/</text>
-        <rect class="box" x="820" y="146" width="136" height="62" rx="9"/>
-        <text class="b" x="888" y="172" text-anchor="middle">Jenkins (Docker)</text>
-        <text class="sub" x="888" y="192" text-anchor="middle">TCP 8082 → 8080</text>
-        <path class="ln" d="M610 126V144" marker-end="url(#g1)"/>
-        <path class="ln" d="M680 126L725 144" marker-end="url(#g1)"/>
-        <path class="ln" d="M700 126L870 144" marker-end="url(#g1)"/>
-
-        <rect class="box" x="510" y="228" width="446" height="56" rx="9"/>
-        <text class="b" x="733" y="252" text-anchor="middle">UFW — LAN 대역 · wg0 인터페이스에서만 22 / 80 / 8082 허용</text>
-        <text class="sub" x="733" y="272" text-anchor="middle">외부에 열린 포트는 UDP 51820 하나</text>
-
-        <rect class="ext" x="510" y="304" width="215" height="66" rx="9"/>
-        <text class="b" x="617" y="330" text-anchor="middle">/data · Imation SSD 512GB</text>
-        <text class="sub" x="617" y="350" text-anchor="middle">Docker 볼륨 · Jenkins 홈</text>
-        <rect class="ext" x="741" y="304" width="215" height="66" rx="9"/>
-        <text class="b" x="848" y="330" text-anchor="middle">/backup · Seagate HDD 4TB</text>
-        <text class="sub" x="848" y="350" text-anchor="middle">SVN 저장소 · 백업</text>
-
-        <path class="ln grn" d="M200 298H400V240H508" marker-end="url(#g1g)"/>
-        <text class="sub" x="300" y="288" text-anchor="middle">LAN 직접 (포워딩 불필요)</text>
+      <svg viewBox="0 0 980 390" role="img" aria-label="Jenkins가 호스트 에이전트의 server-ctl을 통해 저장소를 Docker Compose로 실행하고 nginx와 Discord에 연결하는 구성">
+        <defs><marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="core" x="20" y="30" width="190" height="86" rx="10"/><text class="b" x="115" y="60" text-anchor="middle">Jenkins 컨트롤러</text><text x="115" y="83" text-anchor="middle">잡 · 권한 · 파라미터</text><text class="sub" x="115" y="103" text-anchor="middle">Docker Compose로 실행</text>
+        <rect class="ext" x="270" y="30" width="190" height="86" rx="10"/><text class="b" x="365" y="60" text-anchor="middle">SSH 호스트 에이전트</text><text x="365" y="83" text-anchor="middle">sudo server-ctl</text><text class="sub" x="365" y="103" text-anchor="middle">입력 검증 · 서버별 잠금</text>
+        <rect class="box" x="520" y="30" width="190" height="86" rx="10"/><text class="b" x="615" y="60" text-anchor="middle">GitHub 저장소</text><text x="615" y="83" text-anchor="middle">clone · fetch · reset</text><text class="sub" x="615" y="103" text-anchor="middle">허용 소유자만</text>
+        <rect class="ci" x="770" y="30" width="190" height="86" rx="10"/><text class="b" x="865" y="60" text-anchor="middle">Discord</text><text x="865" y="83" text-anchor="middle">성공 · 실패 알림</text><text class="sub" x="865" y="103" text-anchor="middle">원인 · 단계 · 해결 방법</text>
+        <path class="ln" d="M210 73H268" marker-end="url(#a0)"/><path class="ln" d="M460 73H518" marker-end="url(#a0)"/><path class="ln dash" d="M115 116V138H740V73H768" marker-end="url(#a0)"/>
+        <rect class="zone" x="20" y="166" width="940" height="196" rx="14"/><text class="b" x="490" y="193" text-anchor="middle">내부망 테스트 실행 영역</text>
+        <rect class="box" x="50" y="220" width="190" height="92" rx="10"/><text class="b" x="145" y="250" text-anchor="middle">server-ctl</text><text x="145" y="273" text-anchor="middle">Compose 검사 · override</text><text class="sub" x="145" y="295" text-anchor="middle">host network 거부</text>
+        <rect class="ci" x="290" y="220" width="190" height="92" rx="10"/><text class="b" x="385" y="250" text-anchor="middle">Docker Compose</text><text x="385" y="273" text-anchor="middle">build · up · down</text><text class="sub" x="385" y="295" text-anchor="middle">127.0.0.1에만 게시</text>
+        <rect class="ext" x="530" y="220" width="190" height="92" rx="10"/><text class="b" x="625" y="250" text-anchor="middle">nginx</text><text x="625" y="273" text-anchor="middle">LAN · VPN 프록시</text><text class="sub" x="625" y="295" text-anchor="middle">WebSocket 전달 · 설정 검사</text>
+        <rect class="box" x="770" y="220" width="160" height="92" rx="10"/><text class="b" x="850" y="250" text-anchor="middle">사용자</text><text x="850" y="273" text-anchor="middle">웹 · 관리자 · API</text><text class="sub" x="850" y="295" text-anchor="middle">내부망에서만 접근</text>
+        <path class="ln" d="M240 266H288" marker-end="url(#a0)"/><path class="ln" d="M480 266H528" marker-end="url(#a0)"/><path class="ln" d="M720 266H768" marker-end="url(#a0)"/>
+        <path class="ln dash" d="M365 116V145H145V218" marker-end="url(#a0)"/>
       </svg>
     </div>
-    <p class="cap">SSH · SVN · Jenkins는 인터넷에 직접 노출하지 않고, VPN 터널(<code>wg0</code>)이나 집 LAN을 거쳐야만 닿습니다.</p>
+    <p class="cap">OS 설치, WireGuard · SSH 외부 접속, SVN 구축은 <a data-project-link href="../internal-linux-server/">내부망 Linux 서버 구축</a> 페이지에서 별도로 설명합니다.</p>
   </div>
 </section>
 
-<section id="pipeline" class="page-break">
+<section class="page-break">
   <div class="wrap">
-    <p class="eyebrow">11 · PIPELINE</p>
-    <h2>VPN 사용자 관리 파이프라인</h2>
-    <p class="lead">이렇게 만든 서버에서 사용자 한 명을 추가하려면 SSH로 들어가 <code>wg0.conf</code>에 peer를 넣고, <code>htpasswd</code>로 SVN 계정을 만들고, Jenkins 화면에서 계정과 권한을 따로 만들어야 했습니다. 이 작업을 Jenkins 잡으로 옮기고, 잡 정의까지 저장소 코드로 관리합니다.</p>
-    <div class="grid">
-      <div class="card"><span class="tag p">문제</span><h3>계정이 세 곳에 흩어짐</h3><p>VPN · SVN · Jenkins 계정을 각각 손으로 관리하면 이름이나 비밀번호가 어긋나고, 삭제할 때 한 곳을 빠뜨리기 쉽습니다. 서버 root 권한도 매번 필요합니다.</p></div>
-      <div class="card"><span class="tag">해결</span><h3>사용자 1명 = 잡 1회 실행</h3><p><code>vpn-user-create / update / delete</code> 잡이 세 시스템을 스테이지별로 처리합니다. root 작업은 검증된 CLI 하나(<code>vpn-user</code>)만 sudo로 허용합니다.</p></div>
-      <div class="card"><span class="tag">운영</span><h3>커밋 = 배포</h3><p><code>pipelines/</code> 아래에 Jenkinsfile을 추가 · 삭제하고 커밋하면 post-commit 훅 → seed 잡이 잡과 상단 탭을 만들거나 지웁니다. Jenkins 홈은 저장소에 두지 않습니다.</p></div>
-    </div>
-    <h3 style="margin-top:28px">한눈에 보기</h3>
-    <div class="stats">
-      <div class="stat"><b>3개</b><span>사용자 관리 파이프라인 (생성 · 수정 · 삭제)</span></div>
-      <div class="stat"><b>3개 시스템</b><span>WireGuard · SVN · Jenkins 계정 동시 관리</span></div>
-      <div class="stat"><b>12개</b><span>CLI 하위 명령 (<code>vpn-user</code>)</span></div>
-      <div class="stat"><b>18건</b><span>Python 단위 테스트 (root · wg 없이 실행)</span></div>
+    <p class="eyebrow">WORKFLOW</p>
+    <h2>생성부터 배포 · 복구까지</h2>
+    <p class="lead">입력을 먼저 검증하고, 다른 테스트 서버를 내린 뒤 대상만 올립니다. 성공 후에는 접속 정보와 용량을 남기고, 실패하면 작업 종류에 맞춰 정리하거나 롤백합니다.</p>
+    <div class="arch">
+      <svg viewBox="0 0 980 330" role="img" aria-label="입력 검증부터 Git 갱신, Docker Compose 실행, nginx 등록, Discord 알림과 실패 롤백까지의 파이프라인 흐름">
+        <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker><marker id="a1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahr" d="M0 0L10 5L0 10z"/></marker><marker id="a1g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahg" d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="core" x="10" y="30" width="140" height="64" rx="8"/><text class="b" x="80" y="56" text-anchor="middle">권한 · 입력 검증</text><text class="sub" x="80" y="78" text-anchor="middle">이름 · URL · 용량</text>
+        <rect class="ext" x="175" y="30" width="140" height="64" rx="8"/><text class="b" x="245" y="56" text-anchor="middle">Git 작업</text><text class="sub" x="245" y="78" text-anchor="middle">clone / update</text>
+        <rect class="box" x="340" y="30" width="140" height="64" rx="8"/><text class="b" x="410" y="56" text-anchor="middle">환경 구성</text><text class="sub" x="410" y="78" text-anchor="middle">.env · override</text>
+        <rect class="box" x="505" y="30" width="140" height="64" rx="8"/><text class="b" x="575" y="56" text-anchor="middle">다른 서버 중지</text><text class="sub" x="575" y="78" text-anchor="middle">고정 포트 확보</text>
+        <rect class="ci" x="670" y="30" width="140" height="64" rx="8"/><text class="b" x="740" y="56" text-anchor="middle">Compose 실행</text><text class="sub" x="740" y="78" text-anchor="middle">build · up</text>
+        <rect class="ext" x="835" y="30" width="135" height="64" rx="8"/><text class="b" x="902" y="56" text-anchor="middle">nginx 등록</text><text class="sub" x="902" y="78" text-anchor="middle">test · reload</text>
+        <path class="ln" d="M150 62H173" marker-end="url(#a1)"/><path class="ln" d="M315 62H338" marker-end="url(#a1)"/><path class="ln" d="M480 62H503" marker-end="url(#a1)"/><path class="ln" d="M645 62H668" marker-end="url(#a1)"/><path class="ln" d="M810 62H833" marker-end="url(#a1)"/>
+        <rect class="core" x="85" y="170" width="240" height="72" rx="9"/><text class="b" x="205" y="198" text-anchor="middle">생성 실패</text><text x="205" y="220" text-anchor="middle">nginx → 컨테이너 → 작업본 정리</text>
+        <rect class="core" x="370" y="170" width="240" height="72" rx="9"/><text class="b" x="490" y="198" text-anchor="middle">배포 실패</text><text x="490" y="220" text-anchor="middle">이전 커밋으로 재기동</text>
+        <rect class="ci" x="655" y="170" width="240" height="72" rx="9"/><text class="b" x="775" y="198" text-anchor="middle">항상 마지막</text><text x="775" y="220" text-anchor="middle">Discord 결과 · 복구 안내</text>
+        <path class="ln red dash" d="M740 96V132H205V168" marker-end="url(#a1r)"/><path class="ln red dash" d="M740 96V132H490V168" marker-end="url(#a1r)"/><path class="ln grn dash" d="M902 96V132H775V168" marker-end="url(#a1g)"/><path class="ln grn dash" d="M205 244V266H775V244" marker-end="url(#a1g)"/><path class="ln grn dash" d="M490 244V266H775V244" marker-end="url(#a1g)"/>
+        <text class="sub" x="490" y="285" text-anchor="middle">서버별 lock으로 create · deploy · remove 직렬화 / 파괴 작업은 대상 이름 재확인</text>
+      </svg>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">PIPELINE · FEATURES</p>
-    <h2>파이프라인 주요 기능</h2>
-    <p class="lead">세 잡 모두 관리자만 실행할 수 있고, 같은 잠금(<code>lock('vpn-user')</code>)을 공유해 동시에 같은 사용자를 바꾸지 못합니다.</p>
+    <p class="eyebrow">PIPELINE AS CODE</p>
+    <h2>커밋으로 Jenkins 잡 동기화</h2>
+    <p class="lead"><code>pipelines/탭/이름/Jenkinsfile</code> 구조를 seed 잡이 읽어 파이프라인과 상단 탭을 자동 생성합니다. Jenkins 화면에서 잡을 손으로 복제하지 않아도 저장소 상태와 운영 화면이 맞춰집니다.</p>
+    <div class="grid two">
+      <div class="card"><span class="tag">SVN → seed</span><h3>변경 즉시 반영</h3><p>SVN <code>post-commit</code> 훅이 토큰으로 seed를 호출합니다. seed는 Jenkinsfile을 스캔하고 Job DSL로 잡과 탭을 생성하며, 저장소에서 사라진 정의는 Jenkins에서도 삭제합니다.</p></div>
+      <div class="card"><span class="tag">parameters</span><h3>기존 설정 보존</h3><p>Job DSL 재생성 때 기존 <code>properties</code>와 <code>actions</code>를 보존합니다. 선언형 파라미터가 바뀐 잡만 갱신 실행하고 실제 작업 없이 <code>NOT_BUILT</code>로 끝냅니다.</p></div>
+      <div class="card"><span class="tag">shared library</span><h3>공통 운영 로직</h3><p><code>serverLocal</code>은 서버 목록 · 드롭다운 · 용량 · 접속 주소를, <code>notify</code>는 결과와 실패 정보를 담당합니다. 파이프라인은 작업 순서와 잡별 해결 안내에 집중합니다.</p></div>
+      <div class="card"><span class="tag">bootstrap</span><h3>재현 가능한 Jenkins</h3><p><code>setup-host.sh</code>와 <code>init.groovy.d</code>가 플러그인, 자격증명, SSH 노드, 전역 라이브러리, 권한, seed 잡을 멱등하게 구성합니다. 비밀값은 임시 파일에서 등록한 뒤 삭제합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="page-break">
+  <div class="wrap">
+    <p class="eyebrow">NOTIFICATION</p>
+    <h2>Discord 웹훅 운영 알림</h2>
+    <p class="lead">성공 여부만 보내지 않고, 실패했을 때 다음 행동까지 한 메시지에 담았습니다. 모든 server-local 잡은 롤백과 정리가 끝난 뒤 같은 채널로 최종 결과를 전송합니다.</p>
     <div class="grid">
-      <div class="card"><span class="tag">create</span><h3>사용자 생성</h3><ul>
-        <li>입력: 사용자명 · 비밀번호(SVN · Jenkins 공용) · WireGuard 공개키 · 권한</li>
-        <li>VPN 대역에서 다음 빈 IP를 자동 할당</li>
-        <li>마지막에 WireGuard 앱에 붙여넣을 클라이언트 설정을 로그로 출력 (개인키는 서버가 모르므로 출력하지 않음)</li>
-      </ul></div>
-      <div class="card"><span class="tag">update</span><h3>사용자 수정</h3><ul>
-        <li>드롭다운에서 사용자 선택 → 이름 · 비밀번호 · 공개키 · 권한 중 <b>입력한 항목만</b> 변경</li>
-        <li>입력이 없는 시스템의 스테이지는 <code>when</code>으로 건너뜀</li>
-        <li>이름 변경 시 SVN 비밀번호 해시와 Jenkins 권한 항목을 새 이름으로 이동</li>
-      </ul></div>
-      <div class="card"><span class="tag">delete</span><h3>사용자 삭제</h3><ul>
-        <li>드롭다운에서 선택 → Jenkins → SVN → WireGuard 순서로 삭제</li>
-        <li>모든 단계가 멱등이라 중간 실패 시 같은 사용자로 다시 실행하면 마무리</li>
-        <li>실행한 관리자 본인은 삭제 · 관리자 해제 불가 (관리자 잠김 방지)</li>
-      </ul></div>
+      <div class="card"><span class="tag green">성공</span><h3>운영 결과 요약</h3><ul><li>잡 이름 · 빌드 번호 · 대상 · 실행자</li><li>접속 역할, 커밋 변화, 내린 서버</li><li>서버 사용량과 HDD 남은 용량</li></ul></div>
+      <div class="card"><span class="tag p">실패</span><h3>원인과 복구 안내</h3><ul><li>실패한 stage와 실제 오류 한 줄 자동 추출</li><li>오류 패턴별 해결 방법 매칭</li><li>추가 로그와 빌드 링크 제공</li></ul></div>
+      <div class="card"><span class="tag">안전</span><h3>알림이 빌드를 깨지 않게</h3><ul><li>웹훅 URL은 Jenkins Secret text로 보관</li><li>Java HTTP API로 전송, 추가 플러그인 불필요</li><li>전송 실패는 경고만 남기고 빌드 결과 유지</li></ul></div>
     </div>
-    <h3 style="margin-top:28px">Jenkins 권한 역할</h3>
-    <table class="roles">
-      <tr><th>역할</th><th>부여 권한 (matrix-auth)</th></tr>
-      <tr><td><b>관리자</b></td><td>Overall/Administer — 사용자 관리 잡 포함 전체</td></tr>
-      <tr><td><b>일반</b></td><td>Job/Build, Job/Cancel — 조회는 로그인 사용자 공통 권한</td></tr>
-      <tr><td><b>읽기전용</b></td><td>추가 권한 없음 — 로그인 사용자 공통(Overall/Read, Job/Read)만</td></tr>
-    </table>
-    <p class="cap">역할을 따로 저장하지 않고 Jenkins 권한 설정 자체를 원본으로 씁니다. 사용자별 항목이 없으면 읽기전용입니다.</p>
   </div>
 </section>
 
-<section class="page-break">
+<section>
   <div class="wrap">
-    <p class="eyebrow">PIPELINE · WORKFLOW</p>
-    <h2>파이프라인 워크플로</h2>
-    <p class="lead">① 파이프라인 코드가 Jenkins에 반영되는 흐름과 ② 사용자 생성 잡이 실제로 서버를 바꾸는 흐름입니다.</p>
-
-    <h3>① 커밋 → 잡 자동 생성 (seed)</h3>
-    <div class="arch">
-      <svg viewBox="0 0 960 300" role="img" aria-label="SVN 커밋에서 post-commit 훅, seed 잡을 거쳐 Jenkins 잡과 탭이 생성되는 흐름">
-        <defs>
-          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
-        </defs>
-        <rect class="box" x="10" y="40" width="170" height="86" rx="10"/>
-        <text class="b" x="95" y="70" text-anchor="middle">관리자 PC</text>
-        <text x="95" y="92" text-anchor="middle">SVN 커밋</text>
-        <text class="sub" x="95" y="112" text-anchor="middle">pipelines/ · jenkins/ 수정</text>
-
-        <rect class="ext" x="230" y="40" width="190" height="86" rx="10"/>
-        <text class="b" x="325" y="70" text-anchor="middle">SVN 서버 (Apache)</text>
-        <text x="325" y="92" text-anchor="middle">post-commit 훅</text>
-        <text class="sub" x="325" y="112" text-anchor="middle">쓰기 = 관리자만 (svn-authz)</text>
-
-        <rect class="core" x="480" y="20" width="220" height="126" rx="10"/>
-        <text class="b" x="590" y="46" text-anchor="middle">seed 잡</text>
-        <text x="590" y="70" text-anchor="middle">1) checkout</text>
-        <text x="590" y="90" text-anchor="middle">2) pipelines/*/Jenkinsfile 스캔</text>
-        <text x="590" y="110" text-anchor="middle">3) jobDsl(seed.groovy)</text>
-        <text class="sub" x="590" y="132" text-anchor="middle">기존 잡 속성(파라미터) 보존</text>
-
-        <rect class="ci" x="760" y="20" width="190" height="126" rx="10"/>
-        <text class="b" x="855" y="46" text-anchor="middle">상단 탭 vpn-user</text>
-        <text x="855" y="72" text-anchor="middle">vpn-user-create</text>
-        <text x="855" y="94" text-anchor="middle">vpn-user-update</text>
-        <text x="855" y="116" text-anchor="middle">vpn-user-delete</text>
-        <text class="sub" x="855" y="136" text-anchor="middle">사라진 디렉터리 → 잡 삭제</text>
-
-        <path class="ln" d="M180 83H228" marker-end="url(#a1)"/>
-        <path class="ln" d="M420 83H478" marker-end="url(#a1)"/>
-        <text class="sub" x="449" y="72" text-anchor="middle">토큰</text>
-        <path class="ln" d="M700 83H758" marker-end="url(#a1)"/>
-
-        <rect class="box" x="480" y="200" width="220" height="76" rx="10"/>
-        <text class="b" x="590" y="226" text-anchor="middle">파라미터 갱신 실행</text>
-        <text x="590" y="248" text-anchor="middle">parameters 바뀐 잡만 1회 트리거</text>
-        <text class="sub" x="590" y="266" text-anchor="middle">첫 스테이지에서 NOT_BUILT로 종료</text>
-        <path class="ln dash" d="M590 146V198" marker-end="url(#a1)"/>
-        <path class="ln dash" d="M700 238H855V148" marker-end="url(#a1)"/>
-        <text class="sub" x="780" y="230" text-anchor="middle">새 파라미터 즉시 표시</text>
-
-        <rect class="box" x="10" y="200" width="410" height="76" rx="10"/>
-        <text class="b" x="215" y="226" text-anchor="middle">Jenkins 기동 시 bootstrap.groovy (멱등)</text>
-        <text x="215" y="248" text-anchor="middle">자격증명 · host 노드 · 라이브러리 ops · 권한 · seed 잡</text>
-        <text class="sub" x="215" y="266" text-anchor="middle">비밀값은 setup-host.sh가 임시 파일로 전달 → 등록 후 삭제</text>
-        <path class="ln dash" d="M420 238H450V140H478" marker-end="url(#a1)"/>
-      </svg>
-    </div>
-    <p class="cap">subversion 플러그인의 notifyCommit은 최신 Jenkins에서 CSRF crumb을 요구해 403이 나므로, build-token-root 토큰 엔드포인트로 seed를 호출합니다. 훅은 실패해도 커밋을 막지 않고 syslog에만 기록합니다.</p>
-
-    <h3>② 사용자 생성 잡 (vpn-user-create)</h3>
-    <div class="arch">
-      <svg viewBox="0 0 960 400" role="img" aria-label="vpn-user-create 잡의 스테이지 순서와 실패 시 롤백, 컨트롤러와 호스트 에이전트의 역할">
-        <defs>
-          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
-          <marker id="a2r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahr" d="M0 0L10 5L0 10z"/></marker>
-        </defs>
-        <!-- stage strip -->
-        <g>
-          <rect class="core" x="10" y="20" width="118" height="58" rx="8"/><text class="b" x="69" y="45" text-anchor="middle">권한 확인</text><text class="sub" x="69" y="64" text-anchor="middle">관리자만</text>
-          <rect class="ext" x="144" y="20" width="118" height="58" rx="8"/><text class="b" x="203" y="45" text-anchor="middle">입력 검증</text><text class="sub" x="203" y="64" text-anchor="middle">vpn-user check</text>
-          <rect class="ext" x="278" y="20" width="118" height="58" rx="8"/><text class="b" x="337" y="45" text-anchor="middle">WireGuard peer</text><text class="sub" x="337" y="64" text-anchor="middle">wg-add → IP</text>
-          <rect class="ext" x="412" y="20" width="118" height="58" rx="8"/><text class="b" x="471" y="45" text-anchor="middle">SVN 계정</text><text class="sub" x="471" y="64" text-anchor="middle">svn-add</text>
-          <rect class="core" x="546" y="20" width="118" height="58" rx="8"/><text class="b" x="605" y="45" text-anchor="middle">Jenkins 계정</text><text class="sub" x="605" y="64" text-anchor="middle">계정 + 역할</text>
-          <rect class="core" x="680" y="20" width="118" height="58" rx="8"/><text class="b" x="739" y="45" text-anchor="middle">목록 갱신</text><text class="sub" x="739" y="64" text-anchor="middle">드롭다운 재작성</text>
-          <rect class="ext" x="814" y="20" width="136" height="58" rx="8"/><text class="b" x="882" y="45" text-anchor="middle">클라이언트 설정</text><text class="sub" x="882" y="64" text-anchor="middle">client-config</text>
-          <path class="ln" d="M128 49H142" marker-end="url(#a2)"/><path class="ln" d="M262 49H276" marker-end="url(#a2)"/><path class="ln" d="M396 49H410" marker-end="url(#a2)"/>
-          <path class="ln" d="M530 49H544" marker-end="url(#a2)"/><path class="ln" d="M664 49H678" marker-end="url(#a2)"/><path class="ln" d="M798 49H812" marker-end="url(#a2)"/>
-        </g>
-        <!-- rollback -->
-        <path class="ln red dash" d="M605 80V106H337V82" marker-end="url(#a2r)"/>
-        <path class="ln red dash" d="M471 106V82" marker-end="url(#a2r)"/>
-        <text class="err" x="605" y="122" text-anchor="middle">실패 시 post failure: 완료된 단계만 역순 롤백 (SVN → WireGuard)</text>
-        <text class="sub" x="815" y="100" text-anchor="middle">이 두 단계 실패는 UNSTABLE만 표시</text>
-
-        <!-- legend -->
-        <rect class="core" x="10" y="142" width="14" height="14" rx="3"/><text class="sub" x="30" y="154">Jenkins 컨트롤러(컨테이너)에서 실행</text>
-        <rect class="ext" x="250" y="142" width="14" height="14" rx="3"/><text class="sub" x="270" y="154">호스트 SSH 에이전트(label host)에서 실행</text>
-
-        <!-- runtime structure -->
-        <rect class="zone" x="10" y="176" width="300" height="208" rx="12"/>
-        <text class="b" x="160" y="200" text-anchor="middle">Jenkins 컨트롤러 (Docker)</text>
-        <rect class="core" x="30" y="214" width="260" height="70" rx="8"/>
-        <text class="b" x="160" y="238" text-anchor="middle">전역 라이브러리 ops</text>
-        <text class="sub" x="160" y="258" text-anchor="middle">jenkinsUser · vpnUserJobs · pipelineParams</text>
-        <text class="sub" x="160" y="274" text-anchor="middle">Jenkins API 직접 호출 (신뢰 코드)</text>
-        <rect class="box" x="30" y="298" width="260" height="70" rx="8"/>
-        <text class="b" x="160" y="322" text-anchor="middle">matrix-auth 권한 · 사용자 DB</text>
-        <text class="sub" x="160" y="342" text-anchor="middle">비밀번호 평문은 @NonCPS 안에서만</text>
-        <text class="sub" x="160" y="358" text-anchor="middle">(빌드 상태 직렬화 방지)</text>
-        <path class="ln" d="M160 284V296" marker-end="url(#a2)"/>
-
-        <rect class="zone" x="360" y="176" width="590" height="208" rx="12"/>
-        <text class="b" x="655" y="200" text-anchor="middle">리눅스 호스트</text>
-        <rect class="ext" x="380" y="214" width="170" height="70" rx="8"/>
-        <text class="b" x="465" y="238" text-anchor="middle">jenkins-agent 계정</text>
-        <text class="sub" x="465" y="258" text-anchor="middle">sudo -n 은 아래 1개만</text>
-        <text class="sub" x="465" y="274" text-anchor="middle">비밀번호는 stdin으로만</text>
-        <rect class="core" x="580" y="214" width="170" height="70" rx="8"/>
-        <text class="b" x="665" y="238" text-anchor="middle">vpn-user (Python)</text>
-        <text class="sub" x="665" y="258" text-anchor="middle">root 소유 설치본</text>
-        <text class="sub" x="665" y="274" text-anchor="middle">입력 검증 · flock · 원자적 쓰기</text>
-        <path class="ln" d="M550 249H578" marker-end="url(#a2)"/>
-        <rect class="box" x="780" y="214" width="150" height="44" rx="8"/><text x="855" y="234" text-anchor="middle">wg0.conf + wg set</text><text class="sub" x="855" y="250" text-anchor="middle">WireGuard peer</text>
-        <rect class="box" x="780" y="266" width="150" height="44" rx="8"/><text x="855" y="286" text-anchor="middle">svn-passwd</text><text class="sub" x="855" y="302" text-anchor="middle">htpasswd -B (bcrypt)</text>
-        <rect class="box" x="780" y="318" width="150" height="44" rx="8"/><text x="855" y="338" text-anchor="middle">관리 사용자 목록</text><text class="sub" x="855" y="354" text-anchor="middle">수정 가능한 이름 한정</text>
-        <path class="ln" d="M750 240H778" marker-end="url(#a2)"/>
-        <path class="ln" d="M750 260L778 288" marker-end="url(#a2)"/>
-        <path class="ln" d="M720 284V340H778" marker-end="url(#a2)"/>
-        <rect class="box" x="380" y="298" width="310" height="64" rx="8"/>
-        <text class="sub" x="535" y="322" text-anchor="middle">태그(# vpn-user: 이름)된 peer · 관리 목록의 이름만 수정</text>
-        <text class="sub" x="535" y="342" text-anchor="middle">→ 기존 SVN 계정 · 수동으로 넣은 peer는 보호</text>
-
-        <path class="ln" d="M310 249H378" marker-end="url(#a2)" marker-start="url(#a2)"/>
-        <text class="sub" x="344" y="240" text-anchor="middle">SSH</text>
-      </svg>
-    </div>
-    <p class="cap">생성은 WireGuard를 먼저, 삭제는 WireGuard를 마지막에 처리합니다. peer 태그(관리 대상 표시)가 있어야 SVN 명령이 허용되기 때문에, SVN 단계는 항상 관리 대상 사용자만 건드리게 됩니다.</p>
-  </div>
-</section>
-
-<section class="page-break">
-  <div class="wrap">
-    <p class="eyebrow">PIPELINE · TECH STACK</p>
-    <h2>파이프라인 사용 기술과 선택 이유</h2>
-    <p class="lead">새 플러그인이나 외부 패키지를 최소로 두고, 서버에 이미 있던 도구(SVN · WireGuard · Docker)를 잇는 데 집중했습니다.</p>
+    <p class="eyebrow">TECH STACK</p>
+    <h2>사용 기술과 선택 이유</h2>
+    <p class="lead">Compose, 설치 스크립트, Jenkinsfile, Groovy 라이브러리와 Python CLI에서 확인한 역할만 정리했습니다.</p>
     <table class="tech">
       <tr><th>기술</th><th>왜 사용했는지</th></tr>
-      <tr class="cat"><td colspan="2">JENKINS</td></tr>
-      <tr><td>Jenkins LTS (Docker Compose)</td><td>서버에 이미 컨테이너로 운영 중이던 Jenkins를 그대로 씁니다. 홈 디렉터리만 호스트에 보존하고, 포트는 LAN · VPN 두 주소에만 바인딩해 다른 인터페이스로는 노출하지 않습니다.</td></tr>
-      <tr><td>Declarative Pipeline</td><td>시스템(WireGuard · SVN · Jenkins)마다 스테이지를 나눠 Stage View에서 어느 단계가 성공 · 실패 · 건너뜀인지 바로 보이게 했습니다. <code>post { failure }</code>로 롤백, <code>when { beforeAgent true }</code>로 불필요한 호스트 접속을 생략합니다.</td></tr>
-      <tr><td>Job DSL + seed 잡</td><td>디렉터리 1개 = 잡 1개, 2단계 디렉터리 = 상단 탭으로 규칙화해 잡을 화면에서 만들지 않습니다. 재생성 때 Job DSL이 지우는 잡 속성(파라미터)은 기존 <code>&lt;properties&gt;</code>를 복사해 보존합니다.</td></tr>
-      <tr><td>전역 Groovy 라이브러리 (vars/)</td><td>Jenkins 계정 · 권한 · 드롭다운 파라미터처럼 Jenkins API가 필요한 로직을 세 잡이 공유합니다. 전역 라이브러리는 샌드박스 밖에서 실행되므로 저장소 쓰기 권한을 관리자로 제한했습니다.</td></tr>
-      <tr><td>init.groovy.d (bootstrap)</td><td>자격증명 · SSH 노드 · 라이브러리 · 권한 · seed 잡을 Jenkins 기동 시 멱등하게 설정합니다. 화면 클릭 없이 서버를 재구성할 수 있고, 비밀값은 저장소가 아닌 임시 파일로 받아 등록 후 지웁니다.</td></tr>
-      <tr><td>matrix-auth</td><td>관리자 · 일반 · 읽기전용 3개 역할을 사용자별 권한 항목으로 표현합니다. 별도 역할 저장소 없이 Jenkins 설정 자체를 원본으로 둡니다.</td></tr>
-      <tr><td>build-token-root · lockable-resources · pipeline-stage-view</td><td>훅이 로그인 없이 토큰으로 seed를 호출하고(crumb 403 회피), 세 잡을 하나의 잠금으로 직렬화하며, 잡 화면에 스테이지 표를 띄우기 위해 추가했습니다.</td></tr>
-      <tr><td>SSH 에이전트 노드 (label host)</td><td>Jenkins 컨테이너에는 python3가 없고 WireGuard · SVN 파일은 호스트에 있으므로 호스트 자체를 에이전트로 붙였습니다. 호스트 키를 미리 받은 값으로 고정 검증합니다.</td></tr>
-      <tr class="cat"><td colspan="2">HOST · SCRIPT</td></tr>
-      <tr><td>Python 3 (표준 라이브러리만)</td><td>root 작업을 <code>vpn-user</code> CLI 하나로 모았습니다. 파라미터를 신뢰할 수 없는 입력으로 보고 이름 · 공개키(32바이트 base64) · 비밀번호를 검증하며, <code>flock</code> 잠금과 임시 파일 + <code>os.replace</code> 원자적 쓰기로 동시 실행과 중간 종료에 대비합니다. 외부 명령은 셸을 거치지 않고 인자 리스트로 실행합니다.</td></tr>
-      <tr><td>unittest</td><td>설정 파일 처리를 문자열만 다루는 순수 함수로 분리해, Windows 개발 PC에서도 root · wg 없이 18건의 테스트를 돌립니다.</td></tr>
-      <tr><td>sudoers (설치본 1개만)</td><td>에이전트 계정이 바꿀 수 있는 저장소 사본이 아니라 root 소유 설치본 <code>/usr/local/sbin/vpn-user</code>만 NOPASSWD로 허용해, 파일 교체로 root 권한을 얻는 경로를 막습니다.</td></tr>
-      <tr><td>WireGuard</td><td>peer를 <code>wg0.conf</code>에 기록하는 동시에 <code>wg set</code>으로 실행 중인 인터페이스에도 바로 반영해, 재시작 없이 접속이 열리고 닫힙니다.</td></tr>
-      <tr><td>Apache SVN + post-commit 훅</td><td>서버에서 이미 운영 중이던 SVN을 그대로 파이프라인 저장소로 사용합니다. 커밋 직후 훅이 seed를 호출하고, 실패해도 커밋을 막지 않도록 항상 0으로 종료합니다.</td></tr>
-      <tr><td>Bash (setup-host.sh) · ufw</td><td>JRE · 에이전트 계정 · sudoers · 훅 · 플러그인 · 방화벽을 한 번에 적용하는 멱등 설치 스크립트입니다. 컨테이너 대역을 고정해 ufw로 호스트 22(SSH) · 80(SVN)만 허용합니다.</td></tr>
+      <tr><td>Jenkins LTS · Declarative Pipeline</td><td>생성 · 배포 · 중지 · 삭제 · DB 작업을 권한과 stage가 보이는 반복 가능한 운영 절차로 만들었습니다. 컨트롤러는 Docker Compose로 실행하고 홈 디렉터리를 호스트에 보존합니다.</td></tr>
+      <tr><td>Job DSL · seed</td><td>Jenkinsfile 디렉터리 구조를 잡과 탭으로 동기화해 화면 수작업을 없애고, 추가 · 변경 · 삭제를 저장소 커밋으로 관리합니다.</td></tr>
+      <tr><td>Jenkins Shared Library</td><td>동적 서버 목록, 파라미터 갱신, 관리자 확인, Discord 알림처럼 여러 잡이 공유하는 Jenkins API 로직을 한 곳에 뒀습니다.</td></tr>
+      <tr><td>Docker Compose</td><td>프로젝트의 Compose 정의를 사용하되 서버 전용 override로 loopback 포트, 재시작 정책과 메모리 기본값을 강제합니다.</td></tr>
+      <tr><td>nginx</td><td>컨테이너는 <code>127.0.0.1</code>에만 게시하고 nginx만 LAN · VPN 인터페이스에서 받아 Docker의 방화벽 우회를 막습니다. WebSocket 헤더도 전달합니다.</td></tr>
+      <tr><td>Python 3 <code>server-ctl</code></td><td>git · Docker · nginx · 파일 작업을 인자 배열로 실행하고, 이름 · 경로 · 저장소 소유자 · Compose 구성을 검사하는 root 전용 경계로 사용했습니다.</td></tr>
+      <tr><td>TypeORM CLI</td><td>실행 중인 API 컨테이너 안에서 마이그레이션 적용과 스키마 초기화를 수행하고, 마지막 <code>migration:show</code> 결과를 Discord에 요약합니다.</td></tr>
+      <tr><td>Discord Webhook</td><td>별도 알림 플러그인 없이 Jenkins Java API로 최종 결과를 전송합니다. 웹훅은 탭별 Secret text 자격증명으로 분리합니다.</td></tr>
+      <tr><td>UFW · SSH agent · sudoers</td><td>Jenkins 컨테이너에 Docker 소켓을 주지 않고 호스트 에이전트를 사용하며, 에이전트 계정의 sudo는 root 소유 <code>server-ctl</code> 설치본으로 제한합니다.</td></tr>
     </table>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">PIPELINE · DECISIONS</p>
-    <h2>파이프라인 문제 해결 기록</h2>
-    <p class="lead">계획 문서(<code>plans/01~12</code>)에 남긴 결정 중 핵심만 정리했습니다. 각 단계는 실서버에서 테스트 사용자를 만들고 지우며 검증했습니다.</p>
+    <p class="eyebrow">OPERATING RULES</p>
+    <h2>실패와 위험을 다루는 방법</h2>
     <div class="grid two">
-      <div class="card"><span class="tag p">버그</span><h3>커밋하면 파라미터가 사라짐</h3><p>Job DSL이 잡 설정을 통째로 다시 만들면서 Jenkinsfile이 등록한 파라미터를 지워, 커밋 직후 생성 잡이 파라미터 없이 실행되어 실패했습니다. seed가 기존 잡의 <code>&lt;properties&gt;</code>를 복사해 보존하도록 고쳤습니다.</p></div>
-      <div class="card"><span class="tag p">개선</span><h3>파라미터 변경이 다음 실행에야 보임</h3><p>선언형 <code>parameters {}</code>는 잡이 한 번 실행돼야 등록됩니다. seed가 바뀐 잡만 "파라미터 갱신 실행"으로 트리거하고, 그 실행은 첫 스테이지에서 NOT_BUILT로 바로 끝나게 해 커밋만으로 반영되게 했습니다.</p></div>
-      <div class="card"><span class="tag">설계</span><h3>동적 드롭다운을 플러그인 없이</h3><p>사용자 목록은 실행 시점마다 달라 정적 파라미터로 표현할 수 없습니다. 수정 · 삭제 잡은 <code>parameters</code>를 선언하지 않고, 잡이 성공할 때마다 라이브러리가 호스트의 사용자 목록으로 파라미터 정의를 직접 교체합니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>기존 계정 보호</h3><p>파이프라인 이전부터 있던 SVN 계정이나 손으로 넣은 VPN peer를 실수로 바꾸지 않도록, 태그된 peer와 관리 목록에 있는 이름만 수정 대상으로 제한했습니다. 기존 사용자는 1회성 <code>register</code> 명령으로 편입합니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>비밀번호를 로그에 남기지 않기</h3><p>비밀번호는 셸 환경 변수 → stdin으로만 전달하고(<code>ps</code> 노출 방지), <code>set +x</code>로 트레이스를 끕니다. Groovy에서는 입력 여부만 확인하고 평문은 <code>@NonCPS</code> 함수 밖으로 꺼내지 않습니다.</p></div>
-      <div class="card"><span class="tag">운영</span><h3>실패해도 다시 돌리면 끝나게</h3><p>생성 · 수정은 완료 표시된 단계만 역순 롤백하고, 삭제는 되돌릴 수 없는 대신 모든 단계를 멱등으로 만들어 재실행으로 마무리합니다. 부가 단계(목록 갱신 · 클라이언트 설정) 실패는 UNSTABLE로만 표시합니다.</p></div>
+      <div class="card"><span class="tag p">롤백</span><h3>생성과 배포의 복구 기준 분리</h3><p>새 서버 생성 실패는 nginx · 컨테이너 · 작업본을 역순으로 정리합니다. 기존 서버 배포 실패는 새 커밋 기동 전까지만 이전 커밋으로 되돌립니다.</p></div>
+      <div class="card"><span class="tag p">파괴 작업</span><h3>데이터 삭제와 DB 초기화 재확인</h3><p>서버 데이터 삭제와 DB reset은 대상 이름을 다시 입력해야 합니다. 기본 remove는 작업본과 컨테이너만 지우고 데이터는 남깁니다.</p></div>
+      <div class="card"><span class="tag">격리</span><h3>동시에 테스트 서버 한 대만</h3><p>고정 역할 포트 충돌을 막기 위해 create와 deploy 직전에 다른 실행 서버를 내립니다. 내린 서버 이름은 Discord 알림에 남깁니다.</p></div>
+      <div class="card"><span class="tag">비밀값</span><h3>토큰을 명령행과 로그에서 제외</h3><p>GitHub 토큰은 Jenkins 자격증명에서 꺼내 stdin으로 전달하고 셸 trace를 끕니다. Discord 웹훅과 부트스트랩 비밀값도 저장소에 기록하지 않습니다.</p></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">Ubuntu 서버 구축 및 서버 운영환경 구축 · 실제 서버 주소 · 계정명 · 비밀값은 이 페이지에서 제외했습니다.</div>
+  <div class="wrap">서버 운영 환경 구축 및 자동화 (CI/CD) · 실제 IP · 계정명 · 저장소 식별자 · 자격증명은 페이지에서 제외했습니다.</div>
 </footer>
 </body>
 </html>

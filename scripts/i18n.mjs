@@ -111,6 +111,9 @@ function pageFn(opts) {
       el.setAttribute(a, v === '../../' ? `../../../${opts.folder}/` : `../${v}`);
     }
   }
+  for (const a of document.querySelectorAll('a[data-project-link]')) {
+    a.setAttribute('href', `${a.getAttribute('href')}${opts.folder}/`);
+  }
   for (const a of document.querySelectorAll('a[hreflang]')) {
     a.removeAttribute('aria-current');
     if (a.getAttribute('hreflang') === opts.folder) a.setAttribute('aria-current', 'page');

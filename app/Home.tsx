@@ -56,18 +56,28 @@ const projects = [
     slug: 'personal-sanitation',
     stack: ['React Native(Expo)', 'Next.js', 'NestJS', 'PostgreSQL', 'Docker'],
     thumb: 'images/dash-overview.png',
+    thumbCode: [],
     accent: '#16a34a',
   },
   {
     slug: 'reserve-system',
     stack: ['Next.js', 'Spring Boot', 'Supabase', 'Cloud Run', 'GitHub Actions'],
     thumb: 'images/w-home.png',
+    thumbCode: [],
     accent: '#e11d48',
   },
   {
-    slug: 'jenkins-local-test',
-    stack: ['Ubuntu Server', 'WireGuard', 'Docker', 'Apache SVN', 'Jenkins'],
+    slug: 'internal-linux-server',
+    stack: ['Ubuntu Server', 'WireGuard', 'OpenSSH', 'Apache SVN'],
     thumb: null,
+    thumbCode: ['Windows Server', '→ Ubuntu Server', '→ WireGuard · SSH · SVN ✓'],
+    accent: '#2563eb',
+  },
+  {
+    slug: 'jenkins-local-test',
+    stack: ['Jenkins', 'Nginx', 'Docker', 'Discord Webhook', 'CI/CD'],
+    thumb: null,
+    thumbCode: ['svn commit', '→ Jenkins CI/CD', '→ Discord ✓'],
     accent: '#ea580c',
   },
 ];
@@ -176,7 +186,7 @@ export default function Home({ lang }: { lang: Lang }) {
                       <img src={`${base}/projects/${p.slug}/${p.thumb}`} alt="" loading="lazy" />
                     ) : (
                       <code className="thumb-code">
-                        svn commit<br />→ seed job<br />→ vpn-user-create ✓
+                        {p.thumbCode.map((line) => <Fragment key={line}>{line}<br /></Fragment>)}
                       </code>
                     )}
                   </div>

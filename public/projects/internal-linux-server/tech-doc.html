@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ubuntu 서버 구축 기술 노트</title>
+<title>초기 Ubuntu Server 24.04 구축 기술 노트</title>
 <style>
   :root {
     --bg: #f7f8fa; --surface: #ffffff; --surface-2: #eef1f5; --text: #16191d; --text-2: #565d66; --border: #dde2e8;
@@ -141,18 +141,18 @@
 </style>
 </head>
 <body>
-<nav class="back"><div class="wrap"><span><a href="../../">← 포트폴리오 목록</a> · <a href="./">Ubuntu 서버 구축 및 서버 운영환경 구축</a></span><span class="lang-switch"><a hreflang="ko" href="tech-doc.html" aria-current="page">KO</a><a hreflang="en" href="en/tech-doc.html">EN</a><a hreflang="ja" href="ja/tech-doc.html">JA</a><a hreflang="zh" href="zh/tech-doc.html">中文</a></span></div></nav>
+<nav class="back"><div class="wrap"><span><a href="../../">← 포트폴리오 목록</a> · <a href="./">내부망 Linux 서버 구축</a></span><span class="lang-switch"><a hreflang="ko" href="tech-doc.html" aria-current="page">KO</a><a hreflang="en" href="en/tech-doc.html">EN</a><a hreflang="ja" href="ja/tech-doc.html">JA</a><a hreflang="zh" href="zh/tech-doc.html">中文</a></span></div></nav>
 
 <header class="hero">
   <div class="wrap">
     <div class="brand">ubuntu-<span>server</span> <span style="color:var(--text-2);font-size:16px;font-weight:700;letter-spacing:0">기술 노트</span></div>
     <h1>Windows 데스크톱을<br><em>Ubuntu Server 홈서버</em>로 바꾸기</h1>
-    <p>"Ubuntu 서버 구축 및 서버 운영환경 구축" 프로젝트의 구축 과정을 처음부터 기록한 문서입니다. Windows 데스크톱을 밀고 <b>Ubuntu Server 24.04 LTS</b>를 설치한 뒤 디스크 구성, SSH, WireGuard VPN, 공유기 포트포워딩, Docker, SVN, Jenkins, WOL 부팅 자동 기동까지 순서대로 정리했습니다. 단계마다 <b>왜 그렇게 했는지 → 실제 명령어 → 막혔던 부분</b>을 함께 적었습니다.</p>
+    <p>현재 26.04 서버로 갱신하기 전, Windows 데스크톱에 <b>Ubuntu Server 24.04 LTS</b>를 처음 설치했던 과정을 보관한 문서입니다. 디스크 구성, SSH, WireGuard VPN, 공유기 포트포워딩, Docker, SVN, Jenkins, WOL 부팅 자동 기동까지 순서대로 정리했습니다. 단계마다 <b>왜 그렇게 했는지 → 실제 명령어 → 막혔던 부분</b>을 함께 적었습니다.</p>
     <div class="chips">
       <span class="chip">Ubuntu Server 24.04 LTS</span><span class="chip">LVM · ext4 · fstab</span><span class="chip">OpenSSH</span><span class="chip">UFW</span>
       <span class="chip">WireGuard</span><span class="chip">공유기 포트포워딩</span><span class="chip">Docker Compose</span><span class="chip">Apache + SVN</span><span class="chip">Jenkins LTS</span><span class="chip">systemd · WOL</span>
     </div>
-    <p class="note">구축 항목 요약과 VPN 사용자 관리 파이프라인은 <a href="./">포트폴리오 문서</a>에 있습니다. 이 문서의 IP는 모두 예시 값(LAN <code>192.168.0.0/24</code>, 서버 <code>192.168.0.10</code>, VPN <code>10.10.0.0/24</code>)이고, 공인 IP · 계정명 · 디스크 UUID · 키는 제외했습니다.</p>
+    <p class="note">현재 서버 구성은 <a href="./">내부망 Linux 서버 구축</a>, Jenkins 파이프라인은 <a data-project-link href="../jenkins-local-test/">서버 운영 환경 구축 및 자동화</a>에 분리했습니다. 이 문서의 IP는 모두 예시 값(LAN <code>192.168.0.0/24</code>, 서버 <code>192.168.0.10</code>, VPN <code>10.10.0.0/24</code>)이고, 공인 IP · 계정명 · 디스크 UUID · 키는 제외했습니다.</p>
   </div>
 </header>
 
@@ -514,7 +514,7 @@ PersistentKeepalive = 25</code></pre>
 ping -c 4 10.10.0.1
 nc -vz -G 3 10.10.0.1 22
 ssh &lt;user&gt;@10.10.0.1</code></pre>
-    <p>peer 추가 · 삭제는 이후 <a href="./#pipeline">Jenkins 파이프라인</a>으로 자동화했습니다. <code>wg set wg0 peer … allowed-ips …</code>로 실행 중인 인터페이스에 즉시 반영하고, 같은 내용을 <code>wg0.conf</code>에도 기록해 재부팅 후에도 유지합니다.</p>
+    <p>peer 추가 · 삭제는 이후 <a data-project-link href="../jenkins-local-test/">Jenkins 파이프라인</a>으로 자동화했습니다. <code>wg set wg0 peer … allowed-ips …</code>로 실행 중인 인터페이스에 즉시 반영하고, 같은 내용을 <code>wg0.conf</code>에도 기록해 재부팅 후에도 유지합니다.</p>
   </div>
 </section>
 
@@ -662,7 +662,7 @@ sudo ufw allow in on wg0 to any port 8082 proto tcp
     <div class="grid">
       <div class="card"><span class="tag">포트</span><h4>8082</h4><p>80은 이미 Apache(SVN)가 쓰고 있어서 겹치지 않는 포트로 게시했습니다.</p></div>
       <div class="card"><span class="tag">바인딩</span><h4>IP 지정 게시</h4><p><code>0.0.0.0</code> 대신 LAN · VPN IP에만 묶어, Docker가 UFW를 우회하더라도 다른 인터페이스로는 열리지 않습니다. <code>wg0</code>가 먼저 올라와 있어야 컨테이너가 시작됩니다.</p></div>
-      <div class="card"><span class="tag">권한</span><h4>docker.sock 미연결</h4><p>컨테이너에 Docker 소켓이나 <code>/etc/wireguard</code>를 마운트하면 사실상 호스트 root가 됩니다. 호스트 작업은 별도 SSH 에이전트 + 검증된 스크립트 1개만 sudo로 허용하는 구조로 분리했습니다(→ <a href="./#pipeline">파이프라인 문서</a>).</p></div>
+      <div class="card"><span class="tag">권한</span><h4>docker.sock 미연결</h4><p>컨테이너에 Docker 소켓이나 <code>/etc/wireguard</code>를 마운트하면 사실상 호스트 root가 됩니다. 호스트 작업은 별도 SSH 에이전트 + 검증된 스크립트 1개만 sudo로 허용하는 구조로 분리했습니다(→ <a data-project-link href="../jenkins-local-test/">파이프라인 문서</a>).</p></div>
     </div>
   </div>
 </section>
