@@ -4,7 +4,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "node scripts/export.mjs"
+    "export": "node scripts/export.mjs",
+    "i18n": "node scripts/i18n.mjs",
+    "prebuild": "node scripts/i18n.mjs build",
+    "preexport": "node scripts/i18n.mjs build",
+    "predev": "node scripts/i18n.mjs build"
   },
   "dependencies": {
     "next": "^16.4.0",

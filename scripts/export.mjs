@@ -1,5 +1,6 @@
-// Usage: node scripts/export.mjs [slug...]
-// public/projects/<slug>/index.html -> exports/<slug>/<slug>.pdf + <slug>-<n>.png (one per PDF page)
+// Usage: node scripts/export.mjs [slug...] [--lang ko|en|ja|zh|all]   (default ko)
+// ko: public/projects/<slug>/index.html -> exports/<slug>/<slug>.pdf + <slug>-<n>.png (one per PDF page)
+// en/ja/zh: public/projects/<slug>/<lang>/index.html -> exports/<slug>/<lang>/<slug>.pdf + PNGs
 import { chromium } from 'playwright-core';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,7 +12,16 @@ const pdfjsDir = path.join(root, 'node_modules', 'pdfjs-dist');
 const SCALE = 2.5; // 72pt * 2.5 = 180 DPI
 const ORIGIN = 'http://export.local'; // fake origin so pdf.js can load as ES module + worker
 
+const LANGS = ['ko', 'en', 'ja', 'zh'];
 let slugs = process.argv.slice(2);
+let lang = 'ko';
+const li = slugs.indexOf('--lang');
+if (li !== -1) [, lang] = slugs.splice(li, 2);
+if (lang !== 'all' && !LANGS.includes(lang)) {
+  console.error(`--lang must be one of ${LANGS.join('|')}|all (got ${lang})`);
+  process.exit(1);
+}
+const langs = lang === 'all' ? LANGS : [lang];
 if (!slugs.length) {
   slugs = fs.existsSync(projectsDir)
     ? fs.readdirSync(projectsDir).filter((d) => fs.existsSync(path.join(projectsDir, d, 'index.html')))
@@ -33,11 +43,13 @@ try {
 let failed = 0;
 try {
   for (const slug of slugs) {
-    try {
-      await exportSlug(slug);
-    } catch (e) {
-      failed++;
-      console.error(`${slug}: FAILED - ${e.message}`);
+    for (const l of langs) {
+      try {
+        await exportSlug(slug, l);
+      } catch (e) {
+        failed++;
+        console.error(`${slug} [${l}]: FAILED - ${e.message}`);
+      }
     }
   }
 } finally {
@@ -45,10 +57,11 @@ try {
 }
 process.exit(failed ? 1 : 0);
 
-async function exportSlug(slug) {
-  const html = path.join(projectsDir, slug, 'index.html');
-  if (!fs.existsSync(html)) throw new Error(`missing ${html}`);
-  const outDir = path.join(root, 'exports', slug);
+async function exportSlug(slug, lang) {
+  const sub = lang === 'ko' ? '' : lang;
+  const html = path.join(projectsDir, slug, sub, 'index.html');
+  if (!fs.existsSync(html)) throw new Error(`missing ${html}${sub ? ' - run `npm run i18n -- build` first' : ''}`);
+  const outDir = path.join(root, 'exports', slug, sub);
   fs.mkdirSync(outDir, { recursive: true });
   const pdfPath = path.join(outDir, `${slug}.pdf`);
 
@@ -117,5 +130,5 @@ async function exportSlug(slug) {
     fs.writeFileSync(p, Buffer.from(d.split(',')[1], 'base64'));
     return path.relative(root, p);
   });
-  console.log(`${slug}: ${pngs.length} page(s) -> ${path.relative(root, pdfPath)}, ${pngs.join(', ')}`);
+  console.log(`${slug} [${lang}]: ${pngs.length} page(s) -> ${path.relative(root, pdfPath)}, ${pngs.join(', ')}`);
 }

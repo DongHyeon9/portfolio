@@ -20,7 +20,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.75 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; }
+  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.75 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   a { color: var(--accent); }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   section { padding: 52px 0; border-top: 1px solid var(--border); scroll-margin-top: 8px; }
@@ -35,7 +35,7 @@
   code { background: var(--code); padding: 1px 6px; border-radius: 5px; font-size: .88em; font-family: "Cascadia Code", Consolas, monospace; }
   pre { background: var(--code); border: 1px solid var(--border); padding: 14px 16px; border-radius: 12px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
   pre code { background: none; padding: 0; font-size: inherit; }
-  .back { padding: 14px 0 0; font-size: 14px; } .back a { text-decoration: none; font-weight: 700; }
+  .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; gap: 12px; } .back a { text-decoration: none; font-weight: 700; }
 
   header.hero { padding: 60px 0 40px; }
   .brand { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
@@ -81,7 +81,7 @@
 
   .arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; overflow-x: auto; margin: 14px 0; }
   .arch svg { display: block; width: 100%; min-width: 760px; height: auto; }
-  .arch text { fill: var(--text); font: 13px "Malgun Gothic", system-ui, sans-serif; }
+  .arch text { fill: var(--text); font: 13px "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   .arch .b { font-weight: 700; }
   .arch .sub { fill: var(--text-2); font-size: 11.5px; }
   .arch .err { fill: var(--primary); font-size: 12px; }
@@ -128,10 +128,20 @@
     .card, .concept, .why, .warn, .arch, .trouble, tr, pre { break-inside: avoid; }
     h2, h3, h4, .eyebrow, .lead { break-after: avoid; }
   }
+
+  .lang-switch { display: flex; gap: 10px; }
+  .lang-switch a { color: var(--text-2); text-decoration: none; font-weight: 400; }
+  .lang-switch a[aria-current] { color: var(--text); font-weight: 700; }
+  :lang(ja), :lang(zh) { word-break: normal; }
+  /* ja/zh: 맑은 고딕보다 해당 언어 글꼴을 먼저 (한자·가나 자형·굵기 섞임 방지) */
+  body:lang(ja), :lang(ja) .arch text { font-family: "Pretendard", "Hiragino Sans", "Yu Gothic", Meiryo, system-ui, sans-serif; }
+  body:lang(zh), :lang(zh) .arch text { font-family: "Pretendard", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+  :lang(ja) code { font-family: "Cascadia Code", Consolas, "Yu Gothic", Meiryo, monospace; }
+  :lang(zh) code { font-family: "Cascadia Code", Consolas, "Microsoft YaHei", monospace; }
 </style>
 </head>
 <body>
-<nav class="back"><div class="wrap"><a href="../../">← 포트폴리오 목록</a> · <a href="./">Ubuntu 서버 구축 및 서버 운영환경 구축</a></div></nav>
+<nav class="back"><div class="wrap"><span><a href="../../">← 포트폴리오 목록</a> · <a href="./">Ubuntu 서버 구축 및 서버 운영환경 구축</a></span><span class="lang-switch"><a hreflang="ko" href="tech-doc.html" aria-current="page">KO</a><a hreflang="en" href="en/tech-doc.html">EN</a><a hreflang="ja" href="ja/tech-doc.html">JA</a><a hreflang="zh" href="zh/tech-doc.html">中文</a></span></div></nav>
 
 <header class="hero">
   <div class="wrap">

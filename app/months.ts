@@ -18,8 +18,18 @@ export function totalMonths(ranges: Range[], now: number) {
   return months.size;
 }
 
-export function formatMonths(n: number) {
+// 클라이언트 컴포넌트(CareerMonths)에서 쓰므로 strings.generated.json 대신 여기서 언어별 단위 처리
+// [년(단수), 년(복수), 개월(단수), 개월(복수), 구분자]
+const units = {
+  ko: ['년', '년', '개월', '개월', ' '],
+  en: [' yr', ' yrs', ' mo', ' mos', ' '],
+  ja: ['年', '年', 'ヶ月', 'ヶ月', ''],
+  zh: ['年', '年', '个月', '个月', ''],
+};
+
+export function formatMonths(n: number, lang: keyof typeof units = 'ko') {
+  const [y1, yN, m1, mN, sep] = units[lang];
   const y = Math.floor(n / 12);
   const m = n % 12;
-  return [y && `${y}년`, m && `${m}개월`].filter(Boolean).join(' ') || '0개월';
+  return [y && `${y}${y === 1 ? y1 : yN}`, (m || !y) && `${m}${m === 1 ? m1 : mN}`].filter(Boolean).join(sep);
 }

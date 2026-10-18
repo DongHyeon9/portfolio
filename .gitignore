@@ -2,3 +2,7 @@ node_modules/
 .next/
 out/
 next-env.d.ts
+public/projects/*/en/
+public/projects/*/ja/
+public/projects/*/zh/
+app/strings.generated.json

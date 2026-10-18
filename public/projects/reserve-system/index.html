@@ -17,7 +17,7 @@
     }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.7 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; }
+  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.7 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   a { color: var(--accent); }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   section { padding: 60px 0; border-top: 1px solid var(--border); }
@@ -86,7 +86,7 @@
 
   .arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; overflow-x: auto; }
   .arch svg { display: block; width: 100%; min-width: 680px; height: auto; }
-  .arch text { fill: var(--text); font: 13px "Malgun Gothic", system-ui, sans-serif; }
+  .arch text { fill: var(--text); font: 13px "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   .arch .sub { fill: var(--text-2); font-size: 11px; }
   .arch .box { fill: var(--surface-2); stroke: var(--border); }
   .arch .core { fill: var(--primary-soft); stroke: var(--primary); }
@@ -95,7 +95,7 @@
   .arch .ln { stroke: var(--text-2); stroke-width: 1.4; fill: none; }
   .arch .dash { stroke-dasharray: 5 4; }
 
-  .back { padding: 14px 0 0; font-size: 14px; } .back a { text-decoration: none; font-weight: 700; }
+  .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; gap: 12px; } .back a { text-decoration: none; font-weight: 700; }
   .arch .b { font-weight: 700; }
   .arch .err { fill: var(--primary); font-size: 12px; }
   .arch .warnbox { fill: var(--primary-soft); stroke: var(--primary); stroke-dasharray: 5 4; }
@@ -149,10 +149,20 @@
     .page-break { break-before: page; }
     section:has(.phones) { break-inside: avoid; }
   }
+
+  .lang-switch { display: flex; gap: 10px; }
+  .lang-switch a { color: var(--text-2); text-decoration: none; font-weight: 400; }
+  .lang-switch a[aria-current] { color: var(--text); font-weight: 700; }
+  :lang(ja), :lang(zh) { word-break: normal; }
+  /* ja/zh: 맑은 고딕보다 해당 언어 글꼴을 먼저 (한자·가나 자형·굵기 섞임 방지) */
+  body:lang(ja), :lang(ja) .arch text { font-family: "Pretendard", "Hiragino Sans", "Yu Gothic", Meiryo, system-ui, sans-serif; }
+  body:lang(zh), :lang(zh) .arch text { font-family: "Pretendard", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+  :lang(ja) code { font-family: "Cascadia Code", Consolas, "Yu Gothic", Meiryo, monospace; }
+  :lang(zh) code { font-family: "Cascadia Code", Consolas, "Microsoft YaHei", monospace; }
 </style>
 </head>
 <body>
-<nav class="back"><div class="wrap"><a href="../../">← 포트폴리오 목록</a></div></nav>
+<nav class="back"><div class="wrap"><a href="../../">← 포트폴리오 목록</a><span class="lang-switch"><a hreflang="ko" href="./" aria-current="page">KO</a><a hreflang="en" href="en/">EN</a><a hreflang="ja" href="ja/">JA</a><a hreflang="zh" href="zh/">中文</a></span></div></nav>
 
 <header class="hero">
   <div class="wrap">
