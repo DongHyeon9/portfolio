@@ -6,7 +6,7 @@ import { homeHref } from './Document';
 import { LANGS, htmlLang, t, type Lang } from './i18n';
 
 const base = process.env.PAGES_BASE_PATH || '';
-const langLabel: Record<Lang, string> = { ko: 'KO', en: 'EN', ja: 'JA', zh: '中文' };
+const langLabel: Record<Lang, string> = { ko: '한국어', en: 'English', ja: '日本語', zh: '中文' };
 const builtAt = monthIndex(new Date());
 
 const skillGroups = [
@@ -19,12 +19,6 @@ const skillGroups = [
 ];
 
 const careers: { id: string; range: Range; works: number; stack: string[] }[] = [
-  {
-    id: 'freelance',
-    range: { start: '2026.10' },
-    works: 2,
-    stack: ['Next.js', 'NestJS', 'Spring Boot', 'React Native'],
-  },
   {
     id: 'nexon',
     range: { start: '2025.12', end: '2026.10' },
@@ -84,7 +78,6 @@ export default function Home({ lang }: { lang: Lang }) {
       <nav className="nav">
         <a href="#top" className="brand">DH<span>.</span></a>
         <div>
-          <a href="#why">{tr('nav.why')}</a>
           <a href="#projects">{tr('nav.projects')}</a>
           <a href="#skills">{tr('nav.skills')}</a>
           <a href="#career">{tr('nav.career')}</a>
@@ -117,23 +110,16 @@ export default function Home({ lang }: { lang: Lang }) {
                 );
               })}
             </h1>
-            <p className="lead">{tr('hero.lead')}</p>
-            <p className="meta">{tr('hero.meta')}</p>
+            <ul className="why-list">
+              {['troubleshooting', 'delivery', 'cross-domain'].map((item) => (
+                <li key={item} className="glass reveal">
+                  <h3>{tr(`why.${item}.title`)}</h3>
+                  <p>{tr(`why.${item}.description`)}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </header>
-
-        <section id="why">
-          <p className="eyebrow">Why me</p>
-          <h2>{tr('why.title')}</h2>
-          <ul className="why-list">
-            {['troubleshooting', 'delivery', 'cross-domain'].map((item) => (
-              <li key={item} className="glass reveal">
-                <h3>{tr(`why.${item}.title`)}</h3>
-                <p>{tr(`why.${item}.description`)}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
 
         <section id="projects">
           <p className="eyebrow">Projects</p>
