@@ -118,7 +118,13 @@ h2 { margin: 0 0 32px; font-size: clamp(1.8rem, 3.5vw, 2.4rem); letter-spacing: 
   font-family: ui-monospace, Consolas, monospace; }
 .card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .card-body h3 { margin: 0; font-size: 1.25rem; }
-.card-body p { margin: 0; color: var(--muted); flex: 1; }
+.card-body p { margin: 0; color: var(--muted); }
+.project-points { display: grid; gap: 4px; color: var(--muted); }
+.project-points li { position: relative; padding-left: 16px; }
+.project-points li::before { content: ''; position: absolute; left: 2px; top: .7em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.project-impact { padding: 10px 12px; border-left: 3px solid var(--accent); border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--fg); }
+.card-body > .chips { margin-top: auto; }
 .arrow { display: inline-block; color: var(--accent); transition: transform .25s; }
 .card:hover .arrow { transform: translateX(6px); }
 

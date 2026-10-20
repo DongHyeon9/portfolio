@@ -48,6 +48,7 @@ const careers: { id: string; range: Range; works: number; stack: string[] }[] = 
 const projects = [
   {
     slug: 'personal-sanitation',
+    points: 4,
     stack: ['React Native(Expo)', 'Next.js', 'NestJS', 'PostgreSQL', 'Docker'],
     thumb: 'images/dash-overview.png',
     thumbCode: [],
@@ -55,6 +56,7 @@ const projects = [
   },
   {
     slug: 'reserve-system',
+    points: 3,
     stack: ['Next.js', 'Spring Boot', 'Supabase', 'Cloud Run', 'GitHub Actions'],
     thumb: 'images/w-home.png',
     thumbCode: [],
@@ -62,6 +64,8 @@ const projects = [
   },
   {
     slug: 'jenkins-local-test',
+    points: 0,
+    impact: true,
     stack: ['Ubuntu Server', 'WireGuard', 'OpenSSH', 'Apache SVN', 'Jenkins', 'Nginx', 'Docker', 'Discord Webhook', 'CI/CD'],
     thumb: null,
     thumbCode: ['Windows PC → Ubuntu Server', 'WireGuard · SSH · SVN', 'svn commit → Jenkins CI/CD', 'Docker · Nginx → Discord ✓'],
@@ -142,6 +146,16 @@ export default function Home({ lang }: { lang: Lang }) {
                       {tr(`projects.${p.slug}.title`)} <span className="arrow">→</span>
                     </h3>
                     <p>{tr(`projects.${p.slug}.summary`)}</p>
+                    {p.points > 0 && (
+                      <ul className="project-points">
+                        {Array.from({ length: p.points }, (_, i) => (
+                          <li key={i}>{tr(`projects.${p.slug}.points.${i + 1}`)}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {p.impact && (
+                      <strong className="project-impact">{tr(`projects.${p.slug}.impact`)}</strong>
+                    )}
                     <ul className="chips small">
                       {p.stack.map((s) => (
                         <li key={s}>{s}</li>
