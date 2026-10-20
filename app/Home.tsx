@@ -49,26 +49,23 @@ const projects = [
   {
     slug: 'personal-sanitation',
     points: 4,
-    stack: ['React Native(Expo)', 'Next.js', 'NestJS', 'PostgreSQL', 'Docker'],
+    stack: ['React', 'React Native', 'Next.js', 'Nest.js', 'PostgreSQL', 'Docker', 'Expo'],
     thumb: 'images/dash-overview.png',
-    thumbCode: [],
     accent: '#16a34a',
   },
   {
     slug: 'reserve-system',
     points: 3,
-    stack: ['Next.js', 'Spring Boot', 'Supabase', 'Cloud Run', 'GitHub Actions'],
+    stack: ['React', 'Next.js', 'Spring Boot', 'Vercel', 'Supabase', 'Docker'],
     thumb: 'images/w-home.png',
-    thumbCode: [],
     accent: '#e11d48',
   },
   {
     slug: 'jenkins-local-test',
     points: 0,
     impact: true,
-    stack: ['Ubuntu Server', 'WireGuard', 'OpenSSH', 'Apache SVN', 'Jenkins', 'Nginx', 'Docker', 'Discord Webhook', 'CI/CD'],
-    thumb: null,
-    thumbCode: ['Windows PC → Ubuntu Server', 'WireGuard · SSH · SVN', 'svn commit → Jenkins CI/CD', 'Docker · Nginx → Discord ✓'],
+    stack: ['Ubuntu Server', 'OpenSSH', 'Jenkins', 'NginX', 'Grafana', 'Prometheus'],
+    thumb: 'images/grafana-dashboard.png',
     accent: '#ea580c',
   },
 ];
@@ -133,13 +130,7 @@ export default function Home({ lang }: { lang: Lang }) {
               <li key={p.slug} className="reveal" style={{ '--accent': p.accent } as CSSProperties}>
                 <a href={projectHref(p.slug)} className="card">
                   <div className="thumb">
-                    {p.thumb ? (
-                      <img src={`${base}/projects/${p.slug}/${p.thumb}`} alt="" loading="lazy" />
-                    ) : (
-                      <code className="thumb-code">
-                        {p.thumbCode.map((line) => <span key={line}>{line}</span>)}
-                      </code>
-                    )}
+                    <img src={`${base}/projects/${p.slug}/${p.thumb}`} alt="" loading="lazy" />
                   </div>
                   <div className="card-body">
                     <h3>

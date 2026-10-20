@@ -113,9 +113,6 @@ h2 { margin: 0 0 32px; font-size: clamp(1.8rem, 3.5vw, 2.4rem); letter-spacing: 
 .thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.35), transparent 50%); }
 .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .5s; }
 .card:hover .thumb img { transform: scale(1.06); }
-.thumb-code { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-  padding: 20px; overflow-wrap: anywhere; color: #fff; font-size: 0.95rem; line-height: 1.9;
-  font-family: ui-monospace, Consolas, monospace; }
 .card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
 .card-body h3 { margin: 0; font-size: 1.25rem; }
 .card-body p { margin: 0; color: var(--muted); }
@@ -152,6 +149,10 @@ h2 { margin: 0 0 32px; font-size: clamp(1.8rem, 3.5vw, 2.4rem); letter-spacing: 
   .timeline > li::before { left: -24px; width: 12px; height: 12px; }
   .timeline::before { left: 5px; }
 }
+
+/* ko: 단어 중간 줄바꿈 방지, 마지막 줄 한 단어만 남지 않게 */
+body:lang(ko) { word-break: keep-all; }
+p { text-wrap: pretty; }
 
 /* zh: 일본어 글꼴(Hiragino/Yu Gothic)이 간체 자형을 가로채지 않게 */
 body:lang(zh) { font-family: 'Pretendard Variable', Pretendard, 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif; }
