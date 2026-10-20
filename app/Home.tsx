@@ -1,13 +1,10 @@
 // 프로젝트 페이지는 public/projects/<slug>/index.html 정적 HTML. 라우트가 아니라서 next/link 대신 <a> + basePath.
 import { Fragment, type CSSProperties } from 'react';
-import { CareerMonths } from './CareerMonths';
-import { monthIndex, type Range } from './months';
 import { homeHref } from './Document';
 import { LANGS, htmlLang, t, type Lang } from './i18n';
 
 const base = process.env.PAGES_BASE_PATH || '';
 const langLabel: Record<Lang, string> = { ko: '한국어', en: 'English', ja: '日本語', zh: '中文' };
-const builtAt = monthIndex(new Date());
 
 const skillGroups = [
   { id: 'lang', items: ['C++ (STL)', 'C#', 'Java', 'TypeScript', 'JavaScript', 'Python'] },
@@ -18,7 +15,7 @@ const skillGroups = [
   { id: 'hw', items: ['OptiTrack', 'Varjo VR', 'Vive Tracker', 'BLE'] },
 ];
 
-const careers: { id: string; range: Range; works: number; stack: string[] }[] = [
+const careers: { id: string; range: { start: string; end?: string }; works: number; stack: string[] }[] = [
   {
     id: 'nexon',
     range: { start: '2025.12', end: '2026.10' },
@@ -29,19 +26,19 @@ const careers: { id: string; range: Range; works: number; stack: string[] }[] = 
     id: 'biggame',
     range: { start: '2025.05', end: '2025.11' },
     works: 3,
-    stack: ['Jenkins'],
+    stack: ['C++', 'Jenkins', 'Python'],
   },
   {
     id: 'lennon-meta',
     range: { start: '2024.02', end: '2025.05' },
     works: 4,
-    stack: ['Unreal Engine (C++)', 'OptiTrack', 'Varjo VR', 'NestJS', 'AWS'],
+    stack: ['C++', 'React', 'Next.js', 'OptiTrack', 'Varjo VR', 'NestJS'],
   },
   {
     id: 'lennon-digital',
     range: { start: '2021.09', end: '2023.03' },
-    works: 4,
-    stack: ['Unreal Engine (C++)', 'VR', 'Vive Tracker', 'Google STT'],
+    works: 3,
+    stack: ['C++', 'React', 'Next.js', 'NestJS', 'ViveTracker', 'Third-party API'],
   },
 ];
 
@@ -186,8 +183,7 @@ export default function Home({ lang }: { lang: Lang }) {
                 <div className="career-head">
                   <h3>{tr(`career.${c.id}.company`)}</h3>
                   <span className="period">
-                    {c.range.start} ~ {c.range.end ?? tr('period.present')} (
-                    <CareerMonths ranges={[c.range]} builtAt={builtAt} lang={lang} />)
+                    {c.range.start} ~ {c.range.end ?? tr('period.present')}
                   </span>
                 </div>
                 <p className="role">{tr(`career.${c.id}.role`)}</p>
