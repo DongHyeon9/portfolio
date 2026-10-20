@@ -25,6 +25,8 @@
   h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.02em; }
   h3 { font-size: 18px; margin: 0 0 6px; }
   .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
+  .grid + .grid { margin-top: 16px; }
+  .arch + .lead { margin-top: 40px; }
   .eyebrow { color: var(--primary); font-weight: 700; font-size: 14px; letter-spacing: .04em; }
 
   /* 히어로 */
@@ -193,15 +195,14 @@
   <div class="wrap">
     <p class="eyebrow">FEATURES</p>
     <h2>구현 기능</h2>
-    <p class="lead">코드로 구현을 마친 기능을 영역별로 정리했습니다.</p>
     <div class="grid two">
-      <div class="card"><span class="tag">서비스 앱</span><h3>가입 · 인증</h3><ul>
+      <div class="card"><span class="tag">서비스 앱</span><h3>회원가입 · 로그인</h3><ul>
         <li>휴대폰 본인인증 후 가입, 본인인증 CI로 1인 1계정 보장 (이미 가입된 경우 안내 화면)</li>
         <li>아이디 중복 확인, 본인인증 기반 아이디 찾기 · 비밀번호 재설정</li>
         <li>로그인 5회 실패 시 10분 잠금, access 15분 / refresh 30일 토큰</li>
         <li>회원 탈퇴 전 점검: 해지 안 된 구독이나 확인 중인 결제가 있으면 탈퇴를 막음</li>
       </ul></div>
-      <div class="card"><span class="tag">서비스 앱 · API</span><h3>구독 · 결제</h3><ul>
+      <div class="card"><span class="tag">서비스 앱 · API</span><h3>결제 · 구독</h3><ul>
         <li>주소로 권역을 판정해 구독 신청, 서비스 지역 밖이면 결제 없이 구독 대기로 저장</li>
         <li>플랜(봉투 용량)과 추가 봉투 선택, 신청 전 결제 금액 미리 계산</li>
         <li>PortOne 빌링키 카드 등록 · 정기결제 흐름 (<code>PaymentGateway</code> 추상화, 웹훅으로 결과 확정)</li>
@@ -209,7 +210,7 @@
         <li>플랜 · 주소 · 결제 카드 변경, 결제 기간당 1회 최대 4주 일시정지 · 재개</li>
         <li>즉시 해지 시 남은 수거 횟수만큼 1/n 환불, 해지 전 환불 예상 금액 확인</li>
       </ul></div>
-      <div class="card"><span class="tag">서비스 앱</span><h3>수거 · 요청 · 알림</h3><ul>
+      <div class="card"><span class="tag">서비스 앱</span><h3>푸시알림</h3><ul>
         <li>권역 수거 요일과 수거일 예외로 다음 수거일을 계산 (일정은 저장하지 않고 계산)</li>
         <li>이번 주 요청 · 매주 고정 요청 작성, 사진은 Presigned URL로 저장소에 직접 업로드</li>
         <li>이번 주 추가 봉투는 요청할 때 바로 결제하고, 결제가 거절되면 요청도 실패 처리</li>
@@ -239,14 +240,24 @@
         <li>광고성 푸시는 수신 동의자에게만 “(광고)” 표기와 수신 거부 안내를 붙이고, 야간(21~8시)이면 아침 8시에 발송</li>
       </ul></div>
     </div>
+    <div class="grid">
+      <div class="card"><span class="tag">보안</span><h3>민감정보 필드 암호화</h3><p>공동현관 비밀번호처럼 DB가 유출돼도 읽히면 안 되는 값은 AES-256-GCM으로 암호화해 저장합니다. 버전 접두사(<code>v1:</code>)로 키 교체에 대비했습니다.</p></div>
+      <div class="card"><span class="tag">보안</span><h3>네이티브 의존성 없는 비밀번호 해시</h3><p>Node 내장 scrypt(N=2<sup>15</sup>)를 쓰고, 해시 문자열에 파라미터를 함께 저장해 비용을 올려도 기존 해시를 검증할 수 있게 했습니다.</p></div>
+      <div class="card"><span class="tag">보안</span><h3>직원 권한 · 감사 로그</h3><p>운영 직원은 TOTP 2단계 인증으로 로그인하고, 메뉴별 권한을 따로 줍니다. 개인정보 전체 보기 같은 민감한 조회는 사유를 입력받아 감사 로그에 남깁니다.</p></div>
+      <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></div>
+      <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></div>
+      <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></div>
+      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
+      <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></div>
+      <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></div>
+    </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
     <p class="eyebrow">TECH STACK</p>
-    <h2>사용 기술</h2>
-    <p class="lead">공용 타입(DTO · enum · API 응답)은 <code>@sanitation/common</code> 패키지 하나에 두고 서버와 모든 프론트엔드가 <code>workspace:*</code>로 참조합니다.</p>
+    <h2>기술 스택</h2>
     <div class="stack">
       <div class="k">백엔드 서버</div>
       <div class="v"><span class="chip">Nest.js 12</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span><span class="chip">@nestjs/swagger</span><span class="chip">@nestjs/jwt</span><span class="chip">@nestjs/throttler</span><span class="chip">class-validator</span>
@@ -343,13 +354,6 @@
         <line x1="560" y1="200" x2="678" y2="276" marker-end="url(#ar)"/>
       </svg>
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="eyebrow">WORKFLOW</p>
-    <h2>서비스 흐름</h2>
     <p class="lead">고객이 구독을 신청하고, 매주 수거가 이루어지고, 결과가 알림으로 돌아오기까지의 흐름입니다. 알림은 이를 만든 작업과 같은 DB 트랜잭션에 저장한 뒤 별도 주기 작업이 발송해, 푸시가 실패해도 알림이 사라지지 않습니다.</p>
     <div class="arch flow">
       <svg viewBox="0 0 900 440" role="img" aria-label="가입·구독, 매주 수거, 백그라운드 작업 세 단계로 나눈 서비스 흐름도">
@@ -405,25 +409,6 @@
       <li><b>중복 청구 방지</b>: 결제 정기 작업은 모든 서버에서 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</li>
       <li><b>6 → 7 점선</b>: 운영 앱(기사 앱)은 현재 더미 API 계층으로 화면·오프라인 대기열까지 구현되어 있고, 기사용 서버 API 연결은 다음 단계입니다.</li>
     </ul>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="eyebrow">HIGHLIGHTS</p>
-    <h2>기술적으로 신경 쓴 부분</h2>
-    <p class="lead">실제 운영을 전제로 보안, 결제 정합성, 확장성을 설계 단계에서부터 고려했습니다.</p>
-    <div class="grid">
-      <div class="card"><span class="tag">보안</span><h3>민감정보 필드 암호화</h3><p>공동현관 비밀번호처럼 DB가 유출돼도 읽히면 안 되는 값은 AES-256-GCM으로 암호화해 저장합니다. 버전 접두사(<code>v1:</code>)로 키 교체에 대비했습니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>네이티브 의존성 없는 비밀번호 해시</h3><p>Node 내장 scrypt(N=2<sup>15</sup>)를 쓰고, 해시 문자열에 파라미터를 함께 저장해 비용을 올려도 기존 해시를 검증할 수 있게 했습니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>직원 권한 · 감사 로그</h3><p>운영 직원은 TOTP 2단계 인증으로 로그인하고, 메뉴별 권한을 따로 줍니다. 개인정보 전체 보기 같은 민감한 조회는 사유를 입력받아 감사 로그에 남깁니다.</p></div>
-      <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></div>
-      <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></div>
-      <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></div>
-      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
-      <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></div>
-      <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></div>
-    </div>
   </div>
 </section>
 
