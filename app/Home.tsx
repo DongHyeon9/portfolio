@@ -67,17 +67,10 @@ const projects = [
     accent: '#e11d48',
   },
   {
-    slug: 'internal-linux-server',
-    stack: ['Ubuntu Server', 'WireGuard', 'OpenSSH', 'Apache SVN'],
-    thumb: null,
-    thumbCode: ['Windows Server', '→ Ubuntu Server', '→ WireGuard · SSH · SVN ✓'],
-    accent: '#2563eb',
-  },
-  {
     slug: 'jenkins-local-test',
-    stack: ['Jenkins', 'Nginx', 'Docker', 'Discord Webhook', 'CI/CD'],
+    stack: ['Ubuntu Server', 'WireGuard', 'OpenSSH', 'Apache SVN', 'Jenkins', 'Nginx', 'Docker', 'Discord Webhook', 'CI/CD'],
     thumb: null,
-    thumbCode: ['svn commit', '→ Jenkins CI/CD', '→ Discord ✓'],
+    thumbCode: ['Windows PC → Ubuntu Server', 'WireGuard · SSH · SVN', 'svn commit → Jenkins CI/CD', 'Docker · Nginx → Discord ✓'],
     accent: '#ea580c',
   },
 ];
@@ -91,24 +84,25 @@ export default function Home({ lang }: { lang: Lang }) {
       <nav className="nav">
         <a href="#top" className="brand">DH<span>.</span></a>
         <div>
+          <a href="#why">{tr('nav.why')}</a>
+          <a href="#projects">{tr('nav.projects')}</a>
           <a href="#skills">{tr('nav.skills')}</a>
           <a href="#career">{tr('nav.career')}</a>
-          <a href="#projects">{tr('nav.projects')}</a>
-          <span className="lang-switch" role="group" aria-label={tr('nav.lang')}>
-            {LANGS.map((l) => (
-              <a key={l} href={homeHref(l)} hrefLang={htmlLang(l)} lang={htmlLang(l)} aria-current={l === lang ? 'page' : undefined}>
-                {langLabel[l]}
-              </a>
-            ))}
-          </span>
+          <details className="lang-switch">
+            <summary><span className="sr-only">{tr('nav.lang')}: </span>{langLabel[lang]}</summary>
+            <div>
+              {LANGS.map((l) => (
+                <a key={l} href={homeHref(l)} hrefLang={htmlLang(l)} lang={htmlLang(l)} aria-current={l === lang ? 'page' : undefined}>
+                  {langLabel[l]}
+                </a>
+              ))}
+            </div>
+          </details>
         </div>
       </nav>
 
       <main id="top">
         <header className="hero">
-          <div className="photo">
-            <img src={`${base}/profile.jpg`} alt={tr('profile.alt')} width={180} height={240} />
-          </div>
           <div className="hero-text">
             <p className="eyebrow">Full-stack Developer</p>
             <h1>
@@ -127,6 +121,52 @@ export default function Home({ lang }: { lang: Lang }) {
             <p className="meta">{tr('hero.meta')}</p>
           </div>
         </header>
+
+        <section id="why">
+          <p className="eyebrow">Why me</p>
+          <h2>{tr('why.title')}</h2>
+          <ul className="why-list">
+            {['troubleshooting', 'delivery', 'cross-domain'].map((item) => (
+              <li key={item} className="glass reveal">
+                <h3>{tr(`why.${item}.title`)}</h3>
+                <p>{tr(`why.${item}.description`)}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="projects">
+          <p className="eyebrow">Projects</p>
+          <h2>{tr('nav.projects')}</h2>
+          <ul className="projects">
+            {projects.map((p) => (
+              <li key={p.slug} className="reveal" style={{ '--accent': p.accent } as CSSProperties}>
+                <a href={projectHref(p.slug)} className="card">
+                  <div className="thumb">
+                    {p.thumb ? (
+                      <img src={`${base}/projects/${p.slug}/${p.thumb}`} alt="" loading="lazy" />
+                    ) : (
+                      <code className="thumb-code">
+                        {p.thumbCode.map((line) => <span key={line}>{line}</span>)}
+                      </code>
+                    )}
+                  </div>
+                  <div className="card-body">
+                    <h3>
+                      {tr(`projects.${p.slug}.title`)} <span className="arrow">→</span>
+                    </h3>
+                    <p>{tr(`projects.${p.slug}.summary`)}</p>
+                    <ul className="chips small">
+                      {p.stack.map((s) => (
+                        <li key={s}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section id="skills">
           <p className="eyebrow">Skills</p>
@@ -172,39 +212,6 @@ export default function Home({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ol>
-        </section>
-
-        <section id="projects">
-          <p className="eyebrow">Projects</p>
-          <h2>{tr('nav.projects')}</h2>
-          <ul className="projects">
-            {projects.map((p) => (
-              <li key={p.slug} className="reveal" style={{ '--accent': p.accent } as CSSProperties}>
-                <a href={projectHref(p.slug)} className="card">
-                  <div className="thumb">
-                    {p.thumb ? (
-                      <img src={`${base}/projects/${p.slug}/${p.thumb}`} alt="" loading="lazy" />
-                    ) : (
-                      <code className="thumb-code">
-                        {p.thumbCode.map((line) => <Fragment key={line}>{line}<br /></Fragment>)}
-                      </code>
-                    )}
-                  </div>
-                  <div className="card-body">
-                    <h3>
-                      {tr(`projects.${p.slug}.title`)} <span className="arrow">→</span>
-                    </h3>
-                    <p>{tr(`projects.${p.slug}.summary`)}</p>
-                    <ul className="chips small">
-                      {p.stack.map((s) => (
-                        <li key={s}>{s}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ul>
         </section>
       </main>
 
