@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>내부망 Linux 서버 구축 및 운영 자동화 (CI/CD)</title>
+<title>서버 구축 및 운영 환경</title>
 <style>
   :root {
     --bg: #f7f8fa; --surface: #ffffff; --surface-2: #eef1f5; --text: #16191d; --text-2: #565d66; --border: #dde2e8;
@@ -70,6 +70,8 @@
   .arch .ahg { fill: var(--ok); }
   .arch .ah { fill: var(--text-2); }
   .arch .ahr { fill: var(--primary); }
+  .shot { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+  .key { margin: 0 0 24px; padding: 14px 18px; border-left: 4px solid var(--primary); background: var(--primary-soft); border-radius: 8px; font-size: 18px; font-weight: 800; max-width: 800px; }
   .cap { font-size: 13px; color: var(--text-2); margin: 8px 0 0; }
   .arch + .cap + h3 { margin-top: 36px; }
 
@@ -104,7 +106,8 @@
     .lead { font-size: 13px; margin-bottom: 14px; }
     .card { padding: 14px; } .card p, .card ul { font-size: 12px; }
     .tech { font-size: 10.5px; } .tech th, .tech td { padding: 4px 10px; }
-    .tech tr, .cap, .card, .stat, .arch, .lead { break-inside: avoid; }
+    .tech tr, .cap, .card, .stat, .arch, .lead, .shot, .key { break-inside: avoid; }
+    .key { font-size: 14px; margin-bottom: 12px; }
     h2, h3, .eyebrow { break-after: avoid; }
     .arch { overflow: visible; padding: 8px; } .arch svg { min-width: 0; }
     .arch + .cap + h3 { margin-top: 14px; }
@@ -128,11 +131,13 @@
 <header class="hero">
   <div class="wrap">
     <div class="brand">jenkins-<span>operations</span></div>
-    <h1>내부망 Linux 서버 구축 및<br><em>운영 자동화 (CI/CD)</em></h1>
-    <p class="intro">내부망 Ubuntu 서버에 <b>Jenkins 기반 운영 자동화</b>를 구축했습니다. GitHub 저장소를 테스트 서버로 생성하고, 배포 · 중지 · 삭제 · DB 마이그레이션과 초기화를 파이프라인으로 실행합니다. Docker Compose 서비스는 nginx를 통해서만 공개하고, 모든 결과는 <b>Discord 웹훅으로 원인과 해결 방법까지</b> 알립니다.</p>
+    <h1>서버 구축 및<br><em>운영 환경</em></h1>
+    <p class="intro">실제 서비스 환경과 유사한 환경을 내부에 구축 및 테스트를 통해</p>
+    <p class="key">서비스 장애를 사전 방지, 고객의 이탈률을 줄입니다.</p>
+    <p class="intro">내부망 Ubuntu Server에 Jenkins 운영 파이프라인과 nginx 프록시, Prometheus · Grafana 모니터링을 구성했습니다. GitHub 저장소를 실 서비스와 같은 웹 · 관리자 · API 구성의 테스트 서버로 띄우고, 배포 결과와 요청 · 오류 · 자원 지표를 출시 전에 확인합니다.</p>
     <dl class="meta">
       <div><dt>역할</dt><dd>1인 (설계 · 구축 · 자동화)</dd></div>
-      <div><dt>범위</dt><dd>Jenkins · Docker · nginx · Discord</dd></div>
+      <div><dt>범위</dt><dd>Jenkins · nginx · Prometheus · Grafana</dd></div>
       <div><dt>운영 대상</dt><dd>내부망 로컬 테스트 서버</dd></div>
     </dl>
   </div>
@@ -142,8 +147,8 @@
 <section>
   <div class="wrap">
     <p class="eyebrow">OVERVIEW</p>
-    <h2>운영 작업을 Jenkins 잡으로 표준화</h2>
-    <p class="lead">관리자가 매번 서버에 접속해 명령을 조합하지 않아도, 같은 검증 · 배포 · 복구 절차를 Jenkins 화면에서 반복할 수 있게 만들었습니다.</p>
+    <h2>실 서비스와 유사한 내부 테스트 환경</h2>
+    <p class="lead">실제 서비스처럼 nginx 뒤에서 웹 · 관리자 · API 역할을 함께 띄우고, 생성 · 배포 · 복구 절차를 Jenkins 잡으로 표준화했습니다. 배포한 서버의 도달 여부 · 응답 시간 · 5xx 오류 · 자원 사용량을 Grafana로 확인해, 문제를 실 서비스 전에 발견합니다.</p>
     <div class="stats">
       <div class="stat"><b>6개</b><span>server-local 운영 잡</span></div>
       <div class="stat"><b>3종</b><span>웹 · 관리자 · API 역할</span></div>
@@ -167,20 +172,24 @@
     <h2>Jenkins · 호스트 에이전트 · nginx 분리</h2>
     <p class="lead">Jenkins 컨트롤러는 권한과 파이프라인을 관리하고, root 작업은 호스트의 검증된 <code>server-ctl</code> 한 곳으로 제한했습니다. 컨테이너 포트는 loopback에만 게시합니다.</p>
     <div class="arch">
-      <svg viewBox="0 0 980 390" role="img" aria-label="Jenkins가 호스트 에이전트의 server-ctl을 통해 저장소를 Docker Compose로 실행하고 nginx와 Discord에 연결하는 구성">
+      <svg viewBox="0 0 980 510" role="img" aria-label="Jenkins가 호스트 에이전트의 server-ctl을 통해 저장소를 Docker Compose로 실행하고 nginx와 Discord에 연결하며, Prometheus가 지표를 수집해 Grafana로 보여 주는 구성">
         <defs><marker id="a0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
         <rect class="core" x="20" y="30" width="190" height="86" rx="10"/><text class="b" x="115" y="60" text-anchor="middle">Jenkins 컨트롤러</text><text x="115" y="83" text-anchor="middle">잡 · 권한 · 파라미터</text><text class="sub" x="115" y="103" text-anchor="middle">Docker Compose로 실행</text>
         <rect class="ext" x="270" y="30" width="190" height="86" rx="10"/><text class="b" x="365" y="60" text-anchor="middle">SSH 호스트 에이전트</text><text x="365" y="83" text-anchor="middle">sudo server-ctl</text><text class="sub" x="365" y="103" text-anchor="middle">입력 검증 · 서버별 잠금</text>
         <rect class="box" x="520" y="30" width="190" height="86" rx="10"/><text class="b" x="615" y="60" text-anchor="middle">GitHub 저장소</text><text x="615" y="83" text-anchor="middle">clone · fetch · reset</text><text class="sub" x="615" y="103" text-anchor="middle">허용 소유자만</text>
         <rect class="ci" x="770" y="30" width="190" height="86" rx="10"/><text class="b" x="865" y="60" text-anchor="middle">Discord</text><text x="865" y="83" text-anchor="middle">성공 · 실패 알림</text><text class="sub" x="865" y="103" text-anchor="middle">원인 · 단계 · 해결 방법</text>
         <path class="ln" d="M210 73H268" marker-end="url(#a0)"/><path class="ln" d="M460 73H518" marker-end="url(#a0)"/><path class="ln dash" d="M115 116V138H740V73H768" marker-end="url(#a0)"/>
-        <rect class="zone" x="20" y="166" width="940" height="196" rx="14"/><text class="b" x="490" y="193" text-anchor="middle">내부망 테스트 실행 영역</text>
+        <rect class="zone" x="20" y="166" width="940" height="320" rx="14"/><text class="b" x="490" y="193" text-anchor="middle">내부망 테스트 실행 영역</text>
         <rect class="box" x="50" y="220" width="190" height="92" rx="10"/><text class="b" x="145" y="250" text-anchor="middle">server-ctl</text><text x="145" y="273" text-anchor="middle">Compose 검사 · override</text><text class="sub" x="145" y="295" text-anchor="middle">host network 거부</text>
         <rect class="ci" x="290" y="220" width="190" height="92" rx="10"/><text class="b" x="385" y="250" text-anchor="middle">Docker Compose</text><text x="385" y="273" text-anchor="middle">build · up · down</text><text class="sub" x="385" y="295" text-anchor="middle">127.0.0.1에만 게시</text>
         <rect class="ext" x="530" y="220" width="190" height="92" rx="10"/><text class="b" x="625" y="250" text-anchor="middle">nginx</text><text x="625" y="273" text-anchor="middle">LAN · VPN 프록시</text><text class="sub" x="625" y="295" text-anchor="middle">WebSocket 전달 · 설정 검사</text>
         <rect class="box" x="770" y="220" width="160" height="92" rx="10"/><text class="b" x="850" y="250" text-anchor="middle">사용자</text><text x="850" y="273" text-anchor="middle">웹 · 관리자 · API</text><text class="sub" x="850" y="295" text-anchor="middle">내부망에서만 접근</text>
         <path class="ln" d="M240 266H288" marker-end="url(#a0)"/><path class="ln" d="M480 266H528" marker-end="url(#a0)"/><path class="ln" d="M720 266H768" marker-end="url(#a0)"/>
         <path class="ln dash" d="M365 116V145H145V218" marker-end="url(#a0)"/>
+        <rect class="core" x="530" y="380" width="190" height="80" rx="10"/><text class="b" x="625" y="408" text-anchor="middle">Prometheus</text><text x="625" y="430" text-anchor="middle">exporter · blackbox</text><text class="sub" x="625" y="448" text-anchor="middle">30초마다 수집</text>
+        <rect class="ci" x="770" y="380" width="160" height="80" rx="10"/><text class="b" x="850" y="408" text-anchor="middle">Grafana</text><text x="850" y="430" text-anchor="middle">대시보드</text><text class="sub" x="850" y="448" text-anchor="middle">내부망에서만 조회</text>
+        <path class="ln dash" d="M625 312V378" marker-end="url(#a0)"/><path class="ln dash" d="M385 312V400H528" marker-end="url(#a0)"/><path class="ln dash" d="M145 312V440H528" marker-end="url(#a0)"/><path class="ln" d="M720 420H768" marker-end="url(#a0)"/>
+        <text class="sub" x="635" y="350">요청 로그 · 응답 검사</text><text class="sub" x="400" y="392">컨테이너 자원</text><text class="sub" x="160" y="432">모니터링 대상 등록 · 해제</text>
       </svg>
     </div>
     <p class="cap">OS 설치, WireGuard · SSH 외부 접속, SVN 구축은 같은 프로젝트의 서버 기반이며, 자세한 구축 과정은 <a data-project-link href="../internal-linux-server/">내부망 Linux 서버 구축</a> 페이지에서 설명합니다.</p>
@@ -209,6 +218,23 @@
         <text class="sub" x="490" y="285" text-anchor="middle">서버별 lock으로 create · deploy · remove 직렬화 / 파괴 작업은 대상 이름 재확인</text>
       </svg>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">MONITORING</p>
+    <h2>Prometheus · Grafana로 장애 징후 확인</h2>
+    <p class="lead">테스트 서버가 뜨면 server-ctl이 역할별 주소를 Prometheus 수집 대상으로 등록하고, 중지 · 삭제 시 해제합니다. Prometheus는 재시작 없이 대상 파일 변경을 감지하고, 30초마다 수집한 지표를 90일(최대 10GB) 보존합니다.</p>
+    <div class="grid">
+      <div class="card"><span class="tag">수집</span><h3>무엇을 수집하는지</h3><ul><li>node-exporter: 호스트 CPU · 메모리 · 디스크 · 네트워크</li><li>cAdvisor: 컨테이너별 CPU · 메모리 (서버 단위로 묶음)</li><li>blackbox: 역할별 HTTP 도달 여부와 응답 시간</li><li>nginx 로그 exporter: 역할 · 상태 코드 · 경로별 요청 수와 처리 시간</li></ul></div>
+      <div class="card"><span class="tag green">대시보드</span><h3>저장소에서 관리하는 Grafana</h3><ul><li>데이터 소스와 대시보드 JSON을 자동 등록</li><li>테스트 서버를 선택해 이력 비교</li><li>UI 수정은 저장하지 않고 저장소 기준으로 유지</li></ul></div>
+      <div class="card"><span class="tag p">사전 방지</span><h3>출시 전에 보이는 문제</h3><ul><li>5xx · 연결 거부 · 5초 시간 초과는 도달 실패로 표시</li><li>느린 요청 상위 10개의 p95 처리 시간</li><li>배포 후 CPU · 메모리 증가 추이</li></ul></div>
+    </div>
+    <h3 style="margin-top:36px">실행 화면</h3>
+    <img class="shot" src="images/grafana-dashboard.png" alt="테스트 서버 모니터링 Grafana 대시보드" loading="lazy">
+    <p class="cap">테스트 서버 대시보드: 도달 여부 · 응답 시간 · 역할별 분당 요청 · 5xx 오류 · 서버 CPU / 메모리 · 요청별 p95 처리 시간 · 요청별 요약(요청 수 · 평균 · p95 · 5xx 비율). 서버 이름은 가렸습니다.</p>
+    <p class="cap">Prometheus와 exporter는 전용 Docker 네트워크 안에서만 접근하고, 외부에는 Grafana 하나만 LAN · VPN 주소로 공개합니다. 설정은 기동 전에 promtool 등으로 검사해 오류가 있으면 기존 컨테이너를 그대로 유지합니다.</p>
   </div>
 </section>
 
@@ -243,18 +269,22 @@
   <div class="wrap">
     <p class="eyebrow">TECH STACK</p>
     <h2>사용 기술과 선택 이유</h2>
-    <p class="lead">Compose, 설치 스크립트, Jenkinsfile, Groovy 라이브러리와 Python CLI에서 확인한 역할만 정리했습니다.</p>
+    <p class="lead">Compose, 설치 스크립트, Jenkinsfile, Groovy 라이브러리, Python CLI와 모니터링 설정에서 확인한 역할만 정리했습니다.</p>
     <table class="tech">
       <tr><th>기술</th><th>왜 사용했는지</th></tr>
+      <tr><td>Ubuntu Server</td><td>Jenkins · 테스트 서버 · 모니터링이 함께 도는 내부망 호스트입니다. 설치 스크립트 하나로 방화벽 · 계정 · sudoers · 모니터링 설정을 다시 적용할 수 있게 했습니다. OS 설치 과정은 <a data-project-link href="../internal-linux-server/">내부망 Linux 서버 구축</a> 페이지에서 설명합니다.</td></tr>
+      <tr><td>OpenSSH</td><td>Jenkins 컨테이너에 Python과 Docker 권한을 넣지 않고, SSH로 호스트를 에이전트로 붙여 작업을 실행합니다. 호스트 키를 미리 등록해 접속 대상을 검증합니다.</td></tr>
       <tr><td>Jenkins LTS · Declarative Pipeline</td><td>생성 · 배포 · 중지 · 삭제 · DB 작업을 권한과 stage가 보이는 반복 가능한 운영 절차로 만들었습니다. 컨트롤러는 Docker Compose로 실행하고 홈 디렉터리를 호스트에 보존합니다.</td></tr>
       <tr><td>Job DSL · seed</td><td>Jenkinsfile 디렉터리 구조를 잡과 탭으로 동기화해 화면 수작업을 없애고, 추가 · 변경 · 삭제를 저장소 커밋으로 관리합니다.</td></tr>
       <tr><td>Jenkins Shared Library</td><td>동적 서버 목록, 파라미터 갱신, 관리자 확인, Discord 알림처럼 여러 잡이 공유하는 Jenkins API 로직을 한 곳에 뒀습니다.</td></tr>
       <tr><td>Docker Compose</td><td>프로젝트의 Compose 정의를 사용하되 서버 전용 override로 loopback 포트, 재시작 정책과 메모리 기본값을 강제합니다.</td></tr>
-      <tr><td>nginx</td><td>컨테이너는 <code>127.0.0.1</code>에만 게시하고 nginx만 LAN · VPN 인터페이스에서 받아 Docker의 방화벽 우회를 막습니다. WebSocket 헤더도 전달합니다.</td></tr>
+      <tr><td>NginX</td><td>컨테이너는 <code>127.0.0.1</code>에만 게시하고 nginx만 LAN · VPN 인터페이스에서 받아 Docker의 방화벽 우회를 막습니다. WebSocket 헤더도 전달합니다.</td></tr>
+      <tr><td>Prometheus · exporter</td><td>호스트 · 컨테이너 자원, HTTP 도달 여부, nginx 로그 기반 요청 · 오류 · 처리 시간을 한 곳에 모읍니다. 테스트 서버는 파일 기반 대상 등록(file_sd)으로 재시작 없이 추가 · 해제됩니다.</td></tr>
+      <tr><td>Grafana</td><td>수집한 지표를 테스트 서버별 대시보드로 보여 줍니다. 데이터 소스와 대시보드를 저장소 파일로 자동 등록해 재설치해도 같은 화면을 재현합니다.</td></tr>
       <tr><td>Python 3 <code>server-ctl</code></td><td>git · Docker · nginx · 파일 작업을 인자 배열로 실행하고, 이름 · 경로 · 저장소 소유자 · Compose 구성을 검사하는 root 전용 경계로 사용했습니다.</td></tr>
       <tr><td>TypeORM CLI</td><td>실행 중인 API 컨테이너 안에서 마이그레이션 적용과 스키마 초기화를 수행하고, 마지막 <code>migration:show</code> 결과를 Discord에 요약합니다.</td></tr>
       <tr><td>Discord Webhook</td><td>별도 알림 플러그인 없이 Jenkins Java API로 최종 결과를 전송합니다. 웹훅은 탭별 Secret text 자격증명으로 분리합니다.</td></tr>
-      <tr><td>UFW · SSH agent · sudoers</td><td>Jenkins 컨테이너에 Docker 소켓을 주지 않고 호스트 에이전트를 사용하며, 에이전트 계정의 sudo는 root 소유 <code>server-ctl</code> 설치본으로 제한합니다.</td></tr>
+      <tr><td>UFW · sudoers</td><td>Jenkins 컨테이너에 Docker 소켓을 주지 않고 호스트 에이전트를 사용하며, 에이전트 계정의 sudo는 root 소유 <code>server-ctl</code> 설치본으로 제한합니다.</td></tr>
     </table>
   </div>
 </section>
@@ -274,7 +304,7 @@
 </main>
 
 <footer>
-  <div class="wrap">내부망 Linux 서버 구축 및 운영 자동화 (CI/CD) · 실제 IP · 계정명 · 저장소 식별자 · 자격증명은 페이지에서 제외했습니다.</div>
+  <div class="wrap">서버 구축 및 운영 환경 · 실제 IP · 계정명 · 저장소 식별자 · 자격증명은 페이지에서 제외했습니다.</div>
 </footer>
 </body>
 </html>

@@ -167,8 +167,8 @@
 <header class="hero">
   <div class="wrap">
     <div class="brand">Pop<span>spot</span></div>
-    <h1>팝업스토어 <em>회차 예약</em> 웹 서비스<br>— 고객 웹 · 관리자 콘솔 · API · 자동 배포</h1>
-    <p class="intro">팝업스토어 방문을 날짜·회차 단위로 예약하는 웹 서비스입니다. 고객 예약 화면, 운영자용 관리자 콘솔, Spring REST API, 데이터베이스 설계, CI/CD 자동 배포까지 혼자 설계하고 구현했습니다. 예약 오픈 순간 사용자가 몰려도 <b>정원을 절대 넘지 않는 예약</b>이 핵심입니다.</p>
+    <h1>팝업스토어 <em>예약</em> 웹 서비스<br>— 서비스 웹 · 운영 대시보드 · 백엔드 서버</h1>
+    <p class="intro">팝업스토어 방문을 예약하는 웹 서비스입니다. 고객이 쓰는 서비스 웹, 운영자가 쓰는 운영 대시보드(관리자 웹), 예약을 처리하는 백엔드 서버 3개 서비스와 데이터베이스 설계, 자동 배포까지 혼자 설계하고 구현했습니다. 예약 오픈 순간 사용자가 몰려도 <b>정원을 절대 넘지 않는 예약</b>이 핵심입니다.</p>
     <dl class="meta">
       <div><dt>역할</dt><dd>1인 풀스택 (기획 · 설계 · 개발 · 배포)</dd></div>
       <div><dt>기간</dt><dd>2026.10</dd></div>
@@ -182,11 +182,27 @@
 <main>
 <section>
   <div class="wrap">
+    <p class="eyebrow">OVERVIEW</p>
+    <h2>서비스 구성</h2>
+    <p class="lead">3개 서비스로 구성됩니다. 서비스 웹과 운영 대시보드는 하나의 Next.js 앱에서 경로와 권한으로 나누고, 예약 판정은 백엔드 서버가 맡습니다.</p>
+    <div class="grid">
+      <div class="card"><span class="tag">Next.js · Vercel</span><h3>서비스 웹</h3>
+        <p>고객이 팝업을 둘러보고 날짜 · 회차를 골라 예약하고, 내 예약을 확인 · 취소하는 화면입니다.</p></div>
+      <div class="card"><span class="tag">Next.js · Vercel</span><h3>운영 대시보드 (관리자 웹)</h3>
+        <p>운영자가 팝업 · 회차를 등록하고, 오늘 예약 현황을 보고, 방문 당일 체크인하는 화면입니다.</p></div>
+      <div class="card"><span class="tag">Spring Boot · Docker · Cloud Run</span><h3>백엔드 서버</h3>
+        <p>인증 · 권한 확인과 예약 트랜잭션을 처리하는 REST API입니다. Supabase(PostgreSQL · Auth)와 연결됩니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <p class="eyebrow">HIGHLIGHTS</p>
     <h2>한눈에 보기</h2>
-    <p class="lead">고객용 9개 화면과 관리자용 8개 화면, 총 17개 화면을 구현했습니다. 모든 기능은 자동 테스트로 검증하고 GitHub Actions로 자동 배포합니다.</p>
+    <p class="lead">서비스 웹 9개 화면과 운영 대시보드 8개 화면, 총 17개 화면을 구현했습니다. 모든 기능은 자동 테스트로 검증하고 GitHub Actions로 자동 배포합니다.</p>
     <div class="stats">
-      <div class="stat"><b>17</b><span>화면 (고객 9 · 관리자 8)</span></div>
+      <div class="stat"><b>17</b><span>화면 (서비스 웹 9 · 운영 대시보드 8)</span></div>
       <div class="stat"><b>0건</b><span>80명 동시 예약 시험의 정원 초과</span></div>
       <div class="stat"><b>216</b><span>자동 테스트 (API 94 · 웹 111 · E2E 11)</span></div>
       <div class="stat"><b>0건</b><span>17개 화면 접근성(WCAG 2.1 AA) 위반</span></div>
@@ -196,8 +212,8 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">SCREENSHOTS · CUSTOMER WEB</p>
-    <h2>고객 기능 실행 화면</h2>
+    <p class="eyebrow">SCREENSHOTS · SERVICE WEB</p>
+    <h2>서비스 웹 실행 화면</h2>
     <p class="lead">로그인 없이 팝업을 둘러보고, 원하는 날짜와 회차를 골라 몇 번의 클릭으로 예약합니다.</p>
 
     <div class="feature">
@@ -254,9 +270,9 @@
 
 <section class="page-break">
   <div class="wrap">
-    <p class="eyebrow">SCREENSHOTS · ADMIN CONSOLE</p>
-    <h2>관리자 기능 실행 화면</h2>
-    <p class="lead">운영자가 팝업과 회차를 등록하고, 방문 당일 예약을 확인·체크인하는 콘솔입니다. 관리자 권한은 화면이 아니라 <b>서버가 매 요청마다 확인</b>합니다.</p>
+    <p class="eyebrow">SCREENSHOTS · ADMIN DASHBOARD</p>
+    <h2>운영 대시보드 실행 화면</h2>
+    <p class="lead">운영자가 팝업과 회차를 등록하고, 방문 당일 예약을 확인·체크인하는 관리자 웹입니다. 관리자 권한은 화면이 아니라 <b>서버가 매 요청마다 확인</b>합니다.</p>
 
     <div class="feature">
       <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin</span></div><img src="images/a-dashboard.png" alt="관리자 대시보드"></div>
@@ -401,11 +417,11 @@
     <p class="eyebrow">ARCHITECTURE &amp; STACK</p>
     <h2>구성과 기술 스택</h2>
     <div class="arch">
-      <svg viewBox="0 0 960 230" role="img" aria-label="브라우저, Vercel의 Next.js, Cloud Run의 Spring Boot, Supabase로 이어지는 구성">
+      <svg viewBox="0 0 960 230" role="img" aria-label="브라우저, Vercel의 서비스 웹 · 운영 대시보드, Cloud Run의 백엔드 서버, Supabase로 이어지는 구성">
         <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
         <rect class="box" x="10" y="40" width="140" height="70" rx="12"/><text x="26" y="70">사용자 브라우저</text><text class="sub" x="26" y="90">고객 · 관리자</text>
-        <rect class="core" x="210" y="30" width="210" height="90" rx="14"/><text x="226" y="58" style="font-weight:700">Next.js 웹 (Vercel)</text><text class="sub" x="226" y="80">화면 렌더링 · 로그인 세션</text><text class="sub" x="226" y="98">고객 웹 + 관리자 콘솔</text>
-        <rect class="core" x="480" y="30" width="210" height="90" rx="14"/><text x="496" y="58" style="font-weight:700">Spring Boot API (Cloud Run)</text><text class="sub" x="496" y="80">인증 · 권한 · 예약 트랜잭션</text><text class="sub" x="496" y="98">관리 · 감사 로그</text>
+        <rect class="core" x="210" y="30" width="210" height="90" rx="14"/><text x="226" y="58" style="font-weight:700">Next.js 웹 (Vercel)</text><text class="sub" x="226" y="80">화면 렌더링 · 로그인 세션</text><text class="sub" x="226" y="98">서비스 웹 + 운영 대시보드</text>
+        <rect class="core" x="480" y="30" width="210" height="90" rx="14"/><text x="496" y="58" style="font-weight:700">백엔드 서버 (Cloud Run)</text><text class="sub" x="496" y="80">Spring Boot · 예약 트랜잭션</text><text class="sub" x="496" y="98">인증 · 권한 · 감사 로그</text>
         <rect class="ext" x="750" y="20" width="200" height="50" rx="12"/><text x="766" y="50">Supabase Auth (로그인)</text>
         <rect class="ext" x="750" y="84" width="200" height="50" rx="12"/><text x="766" y="114">Supabase PostgreSQL</text>
         <path class="ln" d="M150 75 H206" marker-end="url(#ar)"/>
@@ -418,7 +434,7 @@
     <table class="tech">
       <tr><th>기술</th><th>왜 사용했는지</th></tr>
       <tr class="cat"><td colspan="2">FRONTEND</td></tr>
-      <tr><td>Next.js 16 (App Router)</td><td>서버 컴포넌트가 매 요청 최신 잔여석을 서버에서 그려, 브라우저가 API 주소와 토큰을 몰라도 됩니다. 고객 웹과 관리자 콘솔을 한 앱에서 경로 · 권한으로 나눕니다.</td></tr>
+      <tr><td>Next.js 16 (App Router)</td><td>서버 컴포넌트가 매 요청 최신 잔여석을 서버에서 그려, 브라우저가 API 주소와 토큰을 몰라도 됩니다. 서비스 웹과 운영 대시보드(/admin)를 한 앱에서 경로 · 권한으로 나눕니다.</td></tr>
       <tr><td>React 19</td><td>useActionState로 서버 액션의 결과(오류 · 입력값)를 받아, 예약이 실패해도 입력값을 그대로 유지합니다.</td></tr>
       <tr><td>TypeScript</td><td>API 응답 · 오류 코드를 타입으로 고정하고, CI의 typecheck 단계에서 타입 오류를 배포 전에 막습니다.</td></tr>
       <tr><td>Server Actions</td><td>별도 API Route 없이 폼 제출을 서버에서 처리해, 쿠키의 토큰과 멱등성 키를 서버에서만 다룹니다.</td></tr>
@@ -431,10 +447,10 @@
       <tr><td>Supabase PostgreSQL 17</td><td>관리형 표준 PostgreSQL이라 행 잠금 · CHECK · 부분 유니크 인덱스로 정원을 지키고, Spring이 JDBC로 직접 연결합니다.</td></tr>
       <tr><td>Supabase Auth</td><td>회원가입 · 비밀번호 저장 · 소셜 로그인을 직접 만들지 않고, 비대칭키(ES256)로 서명된 JWT를 Spring이 공개키로 검증합니다.</td></tr>
       <tr class="cat"><td colspan="2">INFRA · CI/CD</td></tr>
-      <tr><td>Docker · Compose</td><td>CI에서 테스트한 이미지를 그대로 운영에 배포하고, 로컬에서는 Compose로 DB + API를 한 번에 띄워 환경 차이를 없앱니다.</td></tr>
+      <tr><td>Docker · Compose</td><td>백엔드 서버를 멀티 스테이지 Dockerfile로 JRE와 JAR만 담은 이미지로 만들고, root가 아닌 사용자로 실행합니다. CI에서 테스트한 이미지를 그대로 운영에 배포하고, 로컬에서는 Compose로 DB + API를 한 번에 띄워 환경 차이를 없앱니다.</td></tr>
       <tr><td>GitHub Actions</td><td>테스트 게이트와 배포를 한 곳에 모아 테스트를 통과한 main 커밋만 배포합니다. OIDC로 클라우드 키 파일 없이 인증합니다.</td></tr>
       <tr><td>Google Cloud Run</td><td>Spring 컨테이너를 그대로 실행하고, 요청이 없으면 0대로 줄어 비용이 들지 않으며, 리비전 단위로 바로 롤백할 수 있습니다.</td></tr>
-      <tr><td>Vercel</td><td>Next.js 제작사의 호스팅으로 CDN · HTTPS가 기본입니다. Git 자동 배포를 끄고 Actions가 빌드한 결과물만 올립니다.</td></tr>
+      <tr><td>Vercel</td><td>서비스 웹과 운영 대시보드(Next.js)를 호스팅합니다(백엔드 서버는 Cloud Run). Next.js 제작사의 호스팅으로 CDN · HTTPS가 기본입니다. Git 자동 배포를 끄고 Actions가 빌드한 결과물만 올립니다.</td></tr>
       <tr class="cat"><td colspan="2">TEST</td></tr>
       <tr><td>JUnit 5 · Testcontainers</td><td>실제 PostgreSQL 컨테이너로 테스트해, 가짜 DB로는 확인할 수 없는 잠금 · 부분 인덱스 · ON CONFLICT 동작을 검증합니다.</td></tr>
       <tr><td>Vitest</td><td>시간대(KST) 변환 경계, 오류 코드 → 메시지 같은 웹 로직을 빠른 단위 테스트로 검사합니다.</td></tr>

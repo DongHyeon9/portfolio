@@ -47,6 +47,7 @@
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
   .stat b { display: block; font-size: 30px; color: var(--primary); line-height: 1.2; font-variant-numeric: tabular-nums; }
   .stat span { color: var(--text-2); font-size: 14px; }
+  .services { margin-top: 16px; }
 
   /* 카드 그리드 */
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
@@ -161,16 +162,15 @@
     <div>
       <div class="brand"><img src="images/logo-mark.svg" alt="분리집사 로고"><b>분리집사</b></div>
       <h1>문앞에 내놓으면,<br><em>분리수거까지</em> 대신합니다</h1>
-      <p>구독제 분리수거 대행 서비스. 고객 앱 · 기사 앱 · 운영 대시보드 · API 서버를 pnpm 모노레포 하나에서 설계부터 구현까지 진행한 풀스택 프로젝트입니다.</p>
+      <p>구독제 분리수거 대행 서비스. 서비스 앱 · 운영 앱 · 운영 대시보드 · 백엔드 서버를 pnpm 모노레포 하나에서 설계부터 구현까지 진행한 풀스택 프로젝트입니다.</p>
       <div class="chips">
-        <span class="chip">NestJS</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span>
-        <span class="chip">React Native (Expo)</span><span class="chip">Next.js</span><span class="chip">TypeScript</span>
-        <span class="chip">Docker</span><span class="chip">AWS EC2 · S3 · RDS</span>
+        <span class="chip">React</span><span class="chip">React Native</span><span class="chip">Next.js</span><span class="chip">Nest.js</span>
+        <span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">Expo</span>
       </div>
     </div>
     <div class="hero-shots">
-      <img src="images/app-home.png" alt="고객 앱 홈 화면: 내 구독 목록">
-      <img src="images/app-home-dark.png" alt="고객 앱 홈 화면 다크 모드">
+      <img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록">
+      <img src="images/app-home-dark.png" alt="서비스 앱 홈 화면 다크 모드">
     </div>
   </div>
 </header>
@@ -182,10 +182,16 @@
     <h2>프로젝트 한눈에</h2>
     <p class="lead">계정 하나로 우리 집·부모님 댁 등 여러 주소를 구독하고, 동네(권역)별로 정해진 요일에 주 1회 수거합니다. 서비스 지역 밖이면 결제 없이 “구독 대기”로 저장했다가 지역이 열리면 알림을 보냅니다. 지역·권역은 코드가 아닌 데이터로 관리해 확장에 대비했습니다.</p>
     <div class="stats">
-      <div class="stat"><b>4개</b><span>앱 (고객 · 기사 · 운영 대시보드 · API)</span></div>
+      <div class="stat"><b>4개</b><span>서비스 (서비스 앱 · 운영 앱 · 운영 대시보드 · 백엔드 서버)</span></div>
       <div class="stat"><b>약 3.7만</b><span>줄의 TypeScript 코드</span></div>
       <div class="stat"><b>18개</b><span>REST API 스키마 문서 (리소스별)</span></div>
       <div class="stat"><b>19개</b><span>DB 마이그레이션 · 29개 기능 계획서</span></div>
+    </div>
+    <div class="grid two services">
+      <div class="card"><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>React Native · Expo로 만든 Android·iOS 앱. 둘러보기, 본인인증 가입, 여러 주소 구독 신청, 이번 주 요청사항, 수거 알림, 요금 변경 동의를 제공합니다.</p></div>
+      <div class="card"><span class="tag">기사 앱</span><h3>운영 앱</h3><p>React Native · Expo로 만든 수거 기사용 앱. 오늘 수거 목록, 수거지 출입 정보, 인증 사진 촬영, 통신이 끊겨도 쌓아 두는 오프라인 전송 대기열을 제공합니다.</p></div>
+      <div class="card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>Next.js · React로 만든 운영 직원용 웹. 오늘 현황, 구독·결제 조회, 요청 답변, 가격·플랜, 지역·권역, 푸시 발송, 이벤트·할인, 직원 권한·감사 로그를 관리합니다.</p></div>
+      <div class="card"><span class="tag">API</span><h3>백엔드 서버</h3><p>Nest.js · PostgreSQL로 만든 REST API 서버. 세 클라이언트가 함께 쓰며, Docker 이미지 하나로 API 서버와 DB 마이그레이션을 실행합니다.</p></div>
     </div>
   </div>
 </section>
@@ -196,10 +202,10 @@
     <h2>사용 기술</h2>
     <p class="lead">공용 타입(DTO · enum · API 응답)은 <code>@sanitation/common</code> 패키지 하나에 두고 서버와 모든 프론트엔드가 <code>workspace:*</code>로 참조합니다.</p>
     <div class="stack">
-      <div class="k">백엔드</div>
-      <div class="v"><span class="chip">NestJS 12</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span><span class="chip">@nestjs/swagger</span><span class="chip">@nestjs/jwt</span><span class="chip">@nestjs/throttler</span><span class="chip">class-validator</span>
+      <div class="k">백엔드 서버</div>
+      <div class="v"><span class="chip">Nest.js 12</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span><span class="chip">@nestjs/swagger</span><span class="chip">@nestjs/jwt</span><span class="chip">@nestjs/throttler</span><span class="chip">class-validator</span>
         <ul class="why">
-          <li><b>NestJS</b> — 인증·구독·결제·수거·알림 등 도메인을 모듈로 나누고, DI로 결제(<code>PaymentGateway</code>)·푸시(<code>PushSender</code>) 구현을 mock ↔ 실제로 환경변수만 바꿔 교체하기 위해</li>
+          <li><b>Nest.js</b> —인증·구독·결제·수거·알림 등 도메인을 모듈로 나누고, DI로 결제(<code>PaymentGateway</code>)·푸시(<code>PushSender</code>) 구현을 mock ↔ 실제로 환경변수만 바꿔 교체하기 위해</li>
           <li><b>TypeORM</b> — 엔티티를 TypeScript 클래스로 정의하고 스키마 변경을 마이그레이션 파일로 이력 관리하기 위해 (compose의 <code>migrate</code> 서비스가 API 기동 전에 1회 실행)</li>
           <li><b>PostgreSQL 17</b> — 정기결제 작업이 행 잠금(<code>SKIP LOCKED</code>)과 unique 제약으로 서버가 여러 대여도 중복 청구를 막도록, 트랜잭션·잠금이 확실한 RDB가 필요해서</li>
           <li><b>@nestjs/swagger</b> — DTO 데코레이터를 원본으로 OpenAPI를 자동 생성해, 손으로 쓴 API 문서와 실제 코드가 어긋나지 않게 하기 위해</li>
@@ -207,36 +213,38 @@
           <li><b>@nestjs/throttler</b> — 전역 IP당 분당 120회 제한에 더해, 로그인·본인인증처럼 민감한 API는 분당 10회로 낮춰 무차별 대입을 막기 위해</li>
           <li><b>class-validator</b> — 같은 DTO 클래스에 검증 규칙을 선언해 컨트롤러 진입 전에 잘못된 입력을 걸러내기 위해</li>
         </ul></div>
-      <div class="k">고객 앱</div>
+      <div class="k">서비스 앱 (고객 앱)</div>
       <div class="v"><span class="chip">React Native 0.86</span><span class="chip">Expo 57</span><span class="chip">Expo Router</span><span class="chip">expo-notifications</span><span class="chip">expo-secure-store</span><span class="chip">PortOne SDK</span>
         <ul class="why">
-          <li><b>React Native · Expo</b> — 코드 하나로 Android·iOS를 만들고, 기사 앱과 같은 스택·공용 타입을 쓰기 위해 (dev client로 네이티브 모듈도 사용)</li>
+          <li><b>React Native</b> — 코드 하나로 Android·iOS 네이티브 앱을 만들고, 운영 대시보드와 같은 React 방식으로 화면을 개발하기 위해</li>
+          <li><b>Expo</b> — 푸시·보안 저장소·라우팅 같은 네이티브 기능을 Expo 모듈로 바로 쓰고, 운영 앱과 같은 스택·공용 타입을 쓰기 위해 (dev client로 네이티브 모듈도 사용)</li>
           <li><b>Expo Router</b> — 파일 기반 라우팅으로 “둘러보기 → 로그인 → 고른 플랜 유지한 채 구독 신청 복귀” 같은 흐름을 경로 단위로 관리하기 위해</li>
           <li><b>expo-notifications</b> — 기기의 Expo 푸시 토큰을 서버(<code>/push-devices</code>)에 등록해 수거 예정·완료 알림을 받기 위해</li>
           <li><b>expo-secure-store</b> — refresh 토큰을 일반 저장소가 아닌 OS 보안 저장소(Keychain/Keystore)에 두기 위해</li>
           <li><b>PortOne SDK</b> — PG사·본인인증 기관과 직접 계약·연동하지 않고, 정기결제용 카드(빌링키) 등록과 휴대폰 본인인증 창을 띄우기 위해</li>
         </ul></div>
-      <div class="k">기사 앱</div>
-      <div class="v"><span class="chip">Expo</span><span class="chip">expo-camera</span><span class="chip">expo-image-manipulator</span><span class="chip">expo-file-system</span><span class="chip">NetInfo</span><span class="chip">expo-screen-capture</span>
+      <div class="k">운영 앱 (기사 앱)</div>
+      <div class="v"><span class="chip">React Native 0.86</span><span class="chip">Expo 57</span><span class="chip">expo-camera</span><span class="chip">expo-image-manipulator</span><span class="chip">expo-file-system</span><span class="chip">NetInfo</span><span class="chip">expo-screen-capture</span>
         <ul class="why">
-          <li><b>Expo</b> — 고객 앱과 같은 스택·빌드 방식을 유지해 한 사람이 두 앱을 관리하기 위해</li>
+          <li><b>React Native · Expo</b> — 서비스 앱과 같은 스택·빌드 방식을 유지해 한 사람이 두 앱을 관리하기 위해</li>
           <li><b>expo-camera</b> — 수거 완료를 증명하는 사진을 앱 안에서 바로 촬영하기 위해</li>
           <li><b>expo-image-manipulator</b> — 업로드 전에 JPEG로 압축해 현장 모바일 데이터 사용량과 전송 시간을 줄이기 위해</li>
           <li><b>expo-file-system</b> — 통신이 끊긴 동안 찍은 사진·결과를 기기에 보관하는 오프라인 전송 대기열을 만들기 위해</li>
           <li><b>NetInfo</b> — 연결이 돌아온 순간을 감지해 대기열을 자동 전송하기 위해</li>
           <li><b>expo-screen-capture</b> — 공동현관 비밀번호가 보이는 화면의 스크린샷을 막아 민감정보 유출을 줄이기 위해</li>
         </ul></div>
-      <div class="k">운영 대시보드</div>
+      <div class="k">운영 대시보드 (관리자 웹)</div>
       <div class="v"><span class="chip">Next.js 16</span><span class="chip">React 19</span><span class="chip">qrcode</span>
         <ul class="why">
           <li><b>Next.js</b> — Route Handler를 BFF로 써서 직원 토큰을 브라우저 JS가 아닌 httpOnly 쿠키에만 두기 위해</li>
-          <li><b>React 19</b> — 모바일 앱과 같은 React 버전·컴포넌트 사고방식으로 웹 운영툴까지 개발하기 위해</li>
+          <li><b>React 19</b> — 서비스 앱·운영 앱과 같은 React 버전(19.2)·컴포넌트 사고방식으로 웹 운영툴까지 개발하기 위해</li>
           <li><b>qrcode</b> — 직원 2단계 인증(TOTP) 첫 등록용 QR을 외부 서비스에 비밀키를 보내지 않고 서버에서 SVG로 만들기 위해</li>
         </ul>
         <small>구독·결제 조회, 요청 답변, 가격·플랜, 지역·권역, 수거일 예외, 푸시 발송, 이벤트·할인, 직원·감사 로그</small></div>
       <div class="k">인프라</div>
-      <div class="v"><span class="chip">Docker Compose</span><span class="chip">AWS EC2</span><span class="chip">AWS S3</span><span class="chip">AWS RDS</span><span class="chip">SeaweedFS</span><span class="chip">pnpm workspace</span>
+      <div class="v"><span class="chip">Docker</span><span class="chip">Docker Compose</span><span class="chip">AWS EC2</span><span class="chip">AWS S3</span><span class="chip">AWS RDS</span><span class="chip">SeaweedFS</span><span class="chip">pnpm workspace</span>
         <ul class="why">
+          <li><b>Docker</b> — 멀티 스테이지 빌드로 운영 의존성과 빌드 결과만 담은 백엔드 이미지를 만들고, 같은 이미지로 API 서버와 DB 마이그레이션을 실행하기 위해 (root가 아닌 사용자로 실행)</li>
           <li><b>Docker Compose</b> — <code>docker compose up</code> 한 번으로 DB → 저장소 → 마이그레이션 → API를 healthcheck 순서대로 띄워, 새 PC에서도 바로 실행되게 하기 위해</li>
           <li><b>AWS EC2</b> — 서버에는 Docker만 설치하고 운영용 compose 파일로 로컬과 같은 이미지를 그대로 배포하기 위해</li>
           <li><b>AWS S3</b> — 사진을 비공개 버킷에 두고 Presigned URL로 앱이 직접 업로드·조회하게 해 API 서버가 파일을 중계하지 않게 하기 위해</li>
@@ -263,15 +271,15 @@
   <div class="wrap">
     <p class="eyebrow">ARCHITECTURE</p>
     <h2>시스템 구성</h2>
-    <p class="lead">세 클라이언트가 하나의 NestJS API를 공유합니다. 결제·본인인증·푸시 같은 외부 연동은 인터페이스 뒤에 두어 개발 중엔 mock, 운영에선 실제 구현으로 교체합니다.</p>
+    <p class="lead">세 클라이언트(서비스 앱 · 운영 앱 · 운영 대시보드)가 하나의 백엔드 서버(Nest.js)를 공유합니다. 결제·본인인증·푸시 같은 외부 연동은 인터페이스 뒤에 두어 개발 중엔 mock, 운영에선 실제 구현으로 교체합니다.</p>
     <div class="arch">
-      <svg viewBox="0 0 900 330" role="img" aria-label="고객 앱, 기사 앱, 운영 대시보드가 NestJS API를 거쳐 PostgreSQL, S3, 외부 서비스와 연결되는 구성도">
+      <svg viewBox="0 0 900 330" role="img" aria-label="서비스 앱, 운영 앱, 운영 대시보드가 Nest.js 백엔드 서버를 거쳐 PostgreSQL, S3, 외부 서비스와 연결되는 구성도">
         <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2);stroke:none"/></marker></defs>
-        <rect class="box" x="20" y="30" width="200" height="60" rx="12"/><text x="40" y="56">고객 앱</text><text class="sub" x="40" y="76">React Native · Expo</text>
-        <rect class="box" x="20" y="135" width="200" height="60" rx="12"/><text x="40" y="161">기사 앱</text><text class="sub" x="40" y="181">React Native · Expo</text>
-        <rect class="box" x="20" y="240" width="200" height="60" rx="12"/><text x="40" y="266">운영 대시보드</text><text class="sub" x="40" y="286">Next.js</text>
+        <rect class="box" x="20" y="30" width="200" height="60" rx="12"/><text x="40" y="56">서비스 앱</text><text class="sub" x="40" y="76">고객 앱 · React Native · Expo</text>
+        <rect class="box" x="20" y="135" width="200" height="60" rx="12"/><text x="40" y="161">운영 앱</text><text class="sub" x="40" y="181">기사 앱 · React Native · Expo</text>
+        <rect class="box" x="20" y="240" width="200" height="60" rx="12"/><text x="40" y="266">운영 대시보드</text><text class="sub" x="40" y="286">관리자 웹 · Next.js</text>
         <rect class="box core" x="340" y="100" width="220" height="130" rx="14"/>
-        <text x="360" y="130" style="font-weight:700">API 서버 (NestJS)</text>
+        <text x="360" y="130" style="font-weight:700">백엔드 서버 (Nest.js)</text>
         <text class="sub" x="360" y="152">인증 · 구독 · 결제 · 수거 · 요청</text>
         <text class="sub" x="360" y="170">알림 · 지역/권역 · 가격 · 이벤트</text>
         <text class="sub" x="360" y="188">직원 권한 · 감사 로그</text>
@@ -303,7 +311,7 @@
 
         <text x="20" y="28" style="font-weight:700">가입 · 구독</text>
         <rect class="step" x="20" y="40" width="200" height="80" rx="12"/><circle class="num" cx="38" cy="62" r="11"/><text class="numt" x="38" y="66" text-anchor="middle">1</text>
-        <text x="56" y="67" style="font-weight:700">둘러보기</text><text class="sub" x="34" y="92">고객 앱 · 로그인 없이</text><text class="sub" x="34" y="108">지역 · 수거 요일 · 요금</text>
+        <text x="56" y="67" style="font-weight:700">둘러보기</text><text class="sub" x="34" y="92">서비스 앱 · 로그인 없이</text><text class="sub" x="34" y="108">지역 · 수거 요일 · 요금</text>
         <rect class="step" x="245" y="40" width="200" height="80" rx="12"/><circle class="num" cx="263" cy="62" r="11"/><text class="numt" x="263" y="66" text-anchor="middle">2</text>
         <text x="281" y="67" style="font-weight:700">본인인증 · 가입</text><text class="sub" x="259" y="92">PortOne 휴대폰 인증</text><text class="sub" x="259" y="108">CI로 1인 1계정 보장</text>
         <rect class="box core" x="470" y="40" width="200" height="80" rx="12"/><circle class="num" cx="488" cy="62" r="11"/><text class="numt" x="488" y="66" text-anchor="middle">3</text>
@@ -323,7 +331,7 @@
         <rect class="step" x="245" y="190" width="200" height="80" rx="12"/><circle class="num" cx="263" cy="212" r="11"/><text class="numt" x="263" y="216" text-anchor="middle">5</text>
         <text x="281" y="217" style="font-weight:700">배정 · 답변</text><text class="sub" x="259" y="242">운영 대시보드</text><text class="sub" x="259" y="258">권역별 기사 배정 · 요청 답변</text>
         <rect class="step" x="470" y="190" width="200" height="80" rx="12"/><circle class="num" cx="488" cy="212" r="11"/><text class="numt" x="488" y="216" text-anchor="middle">6</text>
-        <text x="506" y="217" style="font-weight:700">수거 · 인증 사진</text><text class="sub" x="484" y="242">기사 앱 · 촬영 → 압축</text><text class="sub" x="484" y="258">오프라인 대기열 → 자동 전송</text>
+        <text x="506" y="217" style="font-weight:700">수거 · 인증 사진</text><text class="sub" x="484" y="242">운영 앱 · 촬영 → 압축</text><text class="sub" x="484" y="258">오프라인 대기열 → 자동 전송</text>
         <rect class="step" x="695" y="190" width="190" height="80" rx="12"/><circle class="num" cx="713" cy="212" r="11"/><text class="numt" x="713" y="216" text-anchor="middle">7</text>
         <text x="731" y="217" style="font-weight:700">결과 확인</text><text class="sub" x="709" y="242">대시보드 오늘 현황</text><text class="sub" x="709" y="258">진행률 · 미수거 · 사진</text>
         <line x1="220" y1="230" x2="243" y2="230" marker-end="url(#ar2)"/>
@@ -332,7 +340,7 @@
         <line x1="345" y1="270" x2="345" y2="338" marker-end="url(#ar2)"/>
         <text class="sub" x="352" y="300">답변 알림</text>
 
-        <text x="20" y="332" style="font-weight:700">주기 작업 (API 서버)</text>
+        <text x="20" y="332" style="font-weight:700">주기 작업 (백엔드 서버)</text>
         <rect class="step" x="20" y="340" width="200" height="80" rx="12"/>
         <text x="34" y="367" style="font-weight:700">결제 정기 작업</text><text class="sub" x="34" y="392">10분 주기 · 갱신 결제</text><text class="sub" x="34" y="408">PortOne 빌링키 청구</text>
         <rect class="box core" x="245" y="340" width="200" height="80" rx="12"/>
@@ -340,7 +348,7 @@
         <rect class="step" x="470" y="340" width="200" height="80" rx="12"/>
         <text x="484" y="367" style="font-weight:700">푸시 발송 작업</text><text class="sub" x="484" y="392">수신 설정 확인</text><text class="sub" x="484" y="408">실패 시 간격 늘려 재시도</text>
         <rect class="box ext" x="695" y="340" width="190" height="80" rx="12"/>
-        <text x="709" y="367" style="font-weight:700">Expo Push → 고객 앱</text><text class="sub" x="709" y="392">수거 전날 · 결제 결과</text><text class="sub" x="709" y="408">요청 답변 · 지역 오픈</text>
+        <text x="709" y="367" style="font-weight:700">Expo Push → 서비스 앱</text><text class="sub" x="709" y="392">수거 전날 · 결제 결과</text><text class="sub" x="709" y="408">요청 답변 · 지역 오픈</text>
         <line x1="220" y1="380" x2="243" y2="380" marker-end="url(#ar2)"/>
         <line x1="445" y1="380" x2="468" y2="380" marker-end="url(#ar2)"/>
         <line x1="670" y1="380" x2="693" y2="380" marker-end="url(#ar2)"/>
@@ -349,7 +357,7 @@
     <ul class="flow-notes">
       <li><b>구독 대기</b>: 서비스 지역 밖 주소는 결제 없이 저장하고, 운영자가 해당 지역을 열면 알림을 보내 사용자가 구독 시작을 확정할 때 첫 결제합니다.</li>
       <li><b>중복 청구 방지</b>: 결제 정기 작업은 모든 서버에서 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</li>
-      <li><b>6 → 7 점선</b>: 기사 앱은 현재 더미 API 계층으로 화면·오프라인 대기열까지 구현되어 있고, 기사용 서버 API 연결은 다음 단계입니다.</li>
+      <li><b>6 → 7 점선</b>: 운영 앱(기사 앱)은 현재 더미 API 계층으로 화면·오프라인 대기열까지 구현되어 있고, 기사용 서버 API 연결은 다음 단계입니다.</li>
     </ul>
   </div>
 </section>
@@ -366,7 +374,7 @@
       <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></div>
       <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></div>
       <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></div>
-      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 기사 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
+      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
       <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></div>
       <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></div>
     </div>
@@ -379,12 +387,12 @@
     <h2>화면</h2>
     <p class="lead">구현 전에 HTML로 화면을 먼저 디자인하고, 공용 디자인 토큰(<code>tokens.css</code>)을 기준으로 각 앱에 옮겼습니다. <span class="screen-only">이미지를 누르면 크게 볼 수 있습니다.</span></p>
     <div class="tabs">
-      <button aria-pressed="true" data-tab="app">고객 앱</button>
-      <button aria-pressed="false" data-tab="driver">기사 앱</button>
+      <button aria-pressed="true" data-tab="app">서비스 앱</button>
+      <button aria-pressed="false" data-tab="driver">운영 앱</button>
       <button aria-pressed="false" data-tab="dash">운영 대시보드</button>
     </div>
 
-    <div class="gallery phones on" id="app" data-label="고객 앱">
+    <div class="gallery phones on" id="app" data-label="서비스 앱">
       <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b>로그인 없이 동네·요금 확인</figcaption></figure>
       <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b>휴대폰 본인인증</figcaption></figure>
       <figure><img src="images/app-home.png" alt="내 구독 목록"><figcaption><b>홈</b>여러 주소의 구독 목록</figcaption></figure>
@@ -397,7 +405,7 @@
       <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b>기기 설정을 따름</figcaption></figure>
     </div>
 
-    <div class="gallery phones" id="driver" data-label="기사 앱">
+    <div class="gallery phones" id="driver" data-label="운영 앱">
       <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b>진행률 · 오프라인 전송 대기</figcaption></figure>
       <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b>출입 정보(비밀번호 가림)</figcaption></figure>
       <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b>사진 촬영 후 완료 처리</figcaption></figure>
