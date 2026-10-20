@@ -181,6 +181,7 @@
     <p class="eyebrow">OVERVIEW</p>
     <h2>프로젝트 한눈에</h2>
     <p class="lead">계정 하나로 우리 집·부모님 댁 등 여러 주소를 구독하고, 동네(권역)별로 정해진 요일에 주 1회 수거합니다. 서비스 지역 밖이면 결제 없이 “구독 대기”로 저장했다가 지역이 열리면 알림을 보냅니다. 지역·권역은 코드가 아닌 데이터로 관리해 확장에 대비했습니다.</p>
+    <p class="lead"><b>진행 상태</b>: 백엔드 서버는 로컬 Docker 환경(PostgreSQL · SeaweedFS · 마이그레이션 · API)에서 실행되고, 서비스 앱(Expo)과 운영 대시보드(Next.js)가 여기에 연결해 동작합니다. 운영 앱은 더미 API로 화면과 오프라인 대기열까지 구현했고, PortOne 결제 · 본인인증과 실기기 푸시는 계약 · 계정 발급 전이라 mock으로 검증합니다. AWS 배포는 설계 검토 · 준비 중입니다.</p>
     <div class="stats">
       <div class="stat"><b>4개</b><span>서비스 (서비스 앱 · 운영 앱 · 운영 대시보드 · 백엔드 서버)</span></div>
       <div class="stat"><b>약 3.7만</b><span>줄의 TypeScript 코드</span></div>
@@ -205,7 +206,7 @@
       <div class="k">백엔드 서버</div>
       <div class="v"><span class="chip">Nest.js 12</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span><span class="chip">@nestjs/swagger</span><span class="chip">@nestjs/jwt</span><span class="chip">@nestjs/throttler</span><span class="chip">class-validator</span>
         <ul class="why">
-          <li><b>Nest.js</b> —인증·구독·결제·수거·알림 등 도메인을 모듈로 나누고, DI로 결제(<code>PaymentGateway</code>)·푸시(<code>PushSender</code>) 구현을 mock ↔ 실제로 환경변수만 바꿔 교체하기 위해</li>
+          <li><b>Nest.js</b> — 인증·구독·결제·수거·알림 등 도메인을 모듈로 나누고, DI로 결제(<code>PaymentGateway</code>)·푸시(<code>PushSender</code>) 구현을 mock ↔ 실제로 환경변수만 바꿔 교체하기 위해</li>
           <li><b>TypeORM</b> — 엔티티를 TypeScript 클래스로 정의하고 스키마 변경을 마이그레이션 파일로 이력 관리하기 위해 (compose의 <code>migrate</code> 서비스가 API 기동 전에 1회 실행)</li>
           <li><b>PostgreSQL 17</b> — 정기결제 작업이 행 잠금(<code>SKIP LOCKED</code>)과 unique 제약으로 서버가 여러 대여도 중복 청구를 막도록, 트랜잭션·잠금이 확실한 RDB가 필요해서</li>
           <li><b>@nestjs/swagger</b> — DTO 데코레이터를 원본으로 OpenAPI를 자동 생성해, 손으로 쓴 API 문서와 실제 코드가 어긋나지 않게 하기 위해</li>
@@ -246,9 +247,9 @@
         <ul class="why">
           <li><b>Docker</b> — 멀티 스테이지 빌드로 운영 의존성과 빌드 결과만 담은 백엔드 이미지를 만들고, 같은 이미지로 API 서버와 DB 마이그레이션을 실행하기 위해 (root가 아닌 사용자로 실행)</li>
           <li><b>Docker Compose</b> — <code>docker compose up</code> 한 번으로 DB → 저장소 → 마이그레이션 → API를 healthcheck 순서대로 띄워, 새 PC에서도 바로 실행되게 하기 위해</li>
-          <li><b>AWS EC2</b> — 서버에는 Docker만 설치하고 운영용 compose 파일로 로컬과 같은 이미지를 그대로 배포하기 위해</li>
-          <li><b>AWS S3</b> — 사진을 비공개 버킷에 두고 Presigned URL로 앱이 직접 업로드·조회하게 해 API 서버가 파일을 중계하지 않게 하기 위해</li>
-          <li><b>AWS RDS</b> — 운영 DB의 백업·패치를 관리형 서비스에 맡기기 위해 (로컬 PostgreSQL과 메이저 버전 동일 유지)</li>
+          <li><b>AWS EC2</b> (배포 예정) — 서버에는 Docker만 설치하고 운영용 compose 파일로 로컬과 같은 이미지를 그대로 배포하기 위해</li>
+          <li><b>AWS S3</b> (배포 예정) — 사진을 비공개 버킷에 두고 Presigned URL로 앱이 직접 업로드·조회하게 해 API 서버가 파일을 중계하지 않게 하기 위해</li>
+          <li><b>AWS RDS</b> (배포 예정) — 운영 DB의 백업·패치를 관리형 서비스에 맡기기 위해 (로컬 PostgreSQL과 메이저 버전 동일 유지)</li>
           <li><b>SeaweedFS</b> — 로컬 개발에서 S3와 같은 API로 사진 업로드를 재현하기 위해 (S3 호환 저장소, 서명 검증 포함)</li>
           <li><b>pnpm workspace</b> — 공용 타입 패키지 <code>@sanitation/common</code>을 서버·앱·대시보드가 <code>workspace:*</code>로 함께 참조하기 위해</li>
         </ul></div>
@@ -287,8 +288,8 @@
         <line x1="220" y1="60" x2="338" y2="130" marker-end="url(#ar)"/>
         <line x1="220" y1="165" x2="338" y2="165" marker-end="url(#ar)"/>
         <line x1="220" y1="270" x2="338" y2="200" marker-end="url(#ar)"/>
-        <rect class="box" x="680" y="20" width="200" height="56" rx="12"/><text x="700" y="45">PostgreSQL 17</text><text class="sub" x="700" y="63">로컬 Docker · 운영 RDS</text>
-        <rect class="box" x="680" y="96" width="200" height="56" rx="12"/><text x="700" y="121">AWS S3</text><text class="sub" x="700" y="139">수거 사진 (Presigned URL)</text>
+        <rect class="box" x="680" y="20" width="200" height="56" rx="12"/><text x="700" y="45">PostgreSQL 17</text><text class="sub" x="700" y="63">로컬 Docker · RDS 예정</text>
+        <rect class="box" x="680" y="96" width="200" height="56" rx="12"/><text x="700" y="121">S3 (예정)</text><text class="sub" x="700" y="139">로컬 SeaweedFS · 수거 사진</text>
         <rect class="box ext" x="680" y="172" width="200" height="56" rx="12"/><text x="700" y="197">PortOne</text><text class="sub" x="700" y="215">빌링키 정기결제 · 본인인증</text>
         <rect class="box ext" x="680" y="248" width="200" height="56" rx="12"/><text x="700" y="273">Expo Push</text><text class="sub" x="700" y="291">수거 알림 · 캠페인 푸시</text>
         <line x1="560" y1="130" x2="678" y2="48" marker-end="url(#ar)"/>
