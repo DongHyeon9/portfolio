@@ -114,9 +114,14 @@
     .page-break { break-before: page; }
   }
 
-  .lang-switch { display: flex; gap: 10px; }
-  .lang-switch a { color: var(--text-2); text-decoration: none; font-weight: 400; }
-  .lang-switch a[aria-current] { color: var(--text); font-weight: 700; }
+  /* 언어 전환: 홈(app/globals.css)과 같은 드롭다운 */
+  .lang-switch { position: relative; color: var(--text-2); }
+  .lang-switch summary { padding: 0 6px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .lang-switch > div { position: absolute; top: calc(100% + 8px); right: 0; z-index: 10; display: grid; min-width: 96px; padding: 6px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 24px rgb(0 0 0 / .12); }
+  .back .lang-switch a { padding: 4px 8px; color: var(--text-2); text-decoration: none; font-weight: 400; white-space: nowrap; }
+  .back .lang-switch a[aria-current] { color: var(--text); font-weight: 700; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   :lang(ja), :lang(zh) { word-break: normal; }
   /* ja/zh: 맑은 고딕보다 해당 언어 글꼴을 먼저 (한자·가나 자형·굵기 섞임 방지) */
   body:lang(ja), :lang(ja) .arch text { font-family: "Pretendard", "Hiragino Sans", "Yu Gothic", Meiryo, system-ui, sans-serif; }
@@ -126,7 +131,7 @@
 </style>
 </head>
 <body>
-<nav class="back"><div class="wrap"><a href="../../">← 포트폴리오 목록</a><span class="lang-switch"><a hreflang="ko" href="./" aria-current="page">KO</a><a hreflang="en" href="en/">EN</a><a hreflang="ja" href="ja/">JA</a><a hreflang="zh" href="zh/">中文</a></span></div></nav>
+<nav class="back"><div class="wrap"><a href="../../">← 경력기술서</a><details class="lang-switch"><summary><span class="sr-only">언어 선택: </span>한국어</summary><div><a hreflang="ko" lang="ko" href="./" aria-current="page">한국어</a><a hreflang="en" lang="en" href="en/">English</a><a hreflang="ja" lang="ja" href="ja/">日本語</a><a hreflang="zh" lang="zh-CN" href="zh/">中文</a></div></details></div></nav>
 
 <header class="hero">
   <div class="wrap">

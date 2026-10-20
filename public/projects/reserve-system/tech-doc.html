@@ -36,7 +36,7 @@
   pre { background: var(--code); border: 1px solid var(--border); padding: 14px 16px; border-radius: 12px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
   pre code { background: none; padding: 0; font-size: inherit; }
   .muted { color: var(--text-2); }
-  .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; gap: 12px; } .back a { text-decoration: none; font-weight: 700; }
+  .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; } .back .wrap > span a { text-decoration: none; font-weight: 700; }
 
   header.hero { padding: 60px 0 40px; }
   .brand { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 14px; }
@@ -128,9 +128,14 @@
     h2, h3, h4, .eyebrow, .lead { break-after: avoid; }
   }
 
-  .lang-switch { display: flex; gap: 10px; }
-  .lang-switch a { color: var(--text-2); text-decoration: none; font-weight: 400; }
+  /* 언어 전환: 홈(app/globals.css)과 같은 드롭다운 */
+  .lang-switch { position: relative; color: var(--text-2); }
+  .lang-switch summary { padding: 4px 6px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .lang-switch > div { position: absolute; top: calc(100% + 8px); right: 0; z-index: 10; display: grid; min-width: 96px; padding: 6px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 24px rgb(0 0 0 / .12); }
+  .lang-switch a { padding: 4px 8px; color: var(--text-2); text-decoration: none; white-space: nowrap; }
   .lang-switch a[aria-current] { color: var(--text); font-weight: 700; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   :lang(ja), :lang(zh) { word-break: normal; }
   /* ja/zh: 맑은 고딕보다 해당 언어 글꼴을 먼저 (한자·가나 자형·굵기 섞임 방지) */
   body:lang(ja), :lang(ja) .arch text { font-family: "Pretendard", "Hiragino Sans", "Yu Gothic", Meiryo, system-ui, sans-serif; }
@@ -140,7 +145,7 @@
 </style>
 </head>
 <body>
-<nav class="back"><div class="wrap"><span><a href="../../">← 포트폴리오 목록</a> · <a href="./">Popspot 포트폴리오</a></span><span class="lang-switch"><a hreflang="ko" href="tech-doc.html" aria-current="page">KO</a><a hreflang="en" href="en/tech-doc.html">EN</a><a hreflang="ja" href="ja/tech-doc.html">JA</a><a hreflang="zh" href="zh/tech-doc.html">中文</a></span></div></nav>
+<nav class="back"><div class="wrap"><span><a href="../../">← 경력기술서</a> · <a href="./">Popspot 포트폴리오</a></span><details class="lang-switch"><summary><span class="sr-only">언어 선택: </span>한국어</summary><div><a hreflang="ko" lang="ko" href="tech-doc.html" aria-current="page">한국어</a><a hreflang="en" lang="en" href="en/tech-doc.html">English</a><a hreflang="ja" lang="ja" href="ja/tech-doc.html">日本語</a><a hreflang="zh" lang="zh-CN" href="zh/tech-doc.html">中文</a></div></details></div></nav>
 
 <header class="hero">
   <div class="wrap">
@@ -520,7 +525,7 @@ reset role;</code></pre>
     <p class="eyebrow">7 · DOCKER</p>
     <h2>Docker — 같은 환경을 어디서나</h2>
     <div class="concepts">
-      <div class="concept"><h4>이미지 · 컨테이너</h4><p>이미지 = 실행에 필요한 파일·설정의 읽기 전용 묶음, 컨테이너 = 이미지를 실행한 프로세스. CI에서 테스트한 이미지를 그대로 Cloud Run에 배포합니다.</p></div>
+      <div class="concept"><h4>이미지 · 컨테이너</h4><p>이미지 = 실행에 필요한 파일·설정의 읽기 전용 묶음, 컨테이너 = 이미지를 실행한 프로세스. CI에서 이미지 빌드를 검증하고, 배포 워크플로가 같은 커밋을 다시 빌드해 Cloud Run에 배포합니다.</p></div>
       <div class="concept"><h4>멀티 스테이지 빌드</h4><p>1단계(JDK)에서 Gradle로 jar 빌드 → 2단계(JRE)에 jar만 복사. 최종 이미지에 빌드 도구·소스가 없어 작고 안전합니다.</p></div>
       <div class="concept"><h4>Compose · 네트워크 · healthcheck</h4><p>여러 컨테이너를 한 파일로. 같은 네트워크 안에서는 서비스 이름(<code>db</code>)이 호스트명. <code>depends_on: condition: service_healthy</code>로 DB 준비 후 API 시작.</p></div>
       <div class="concept"><h4>컨테이너 메모리와 JVM</h4><p>JVM이 컨테이너 한도를 기준으로 힙을 잡도록 <code>-XX:MaxRAMPercentage=75</code>, 메모리 부족 시 이상한 상태로 버티지 말고 종료되도록 <code>-XX:+ExitOnOutOfMemoryError</code>(재시작은 플랫폼이).</p></div>
