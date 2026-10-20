@@ -33,15 +33,10 @@
   .brand span { color: var(--primary); }
   .hero h1 { font-size: clamp(32px, 5vw, 50px); line-height: 1.2; margin: 18px 0 16px; letter-spacing: -.03em; }
   .hero h1 em { font-style: normal; color: var(--primary); }
-  .meta { display: grid; grid-template-columns: repeat(3, auto); gap: 8px 32px; justify-content: start; margin: 0 0 36px; font-size: 15px; }
-  .meta dt { color: var(--text-2); font-size: 13px; }
-  .meta dd { margin: 0; font-weight: 700; }
-  .links { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
-  .btn { display: inline-block; padding: 10px 18px; border-radius: 10px; font-weight: 800; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
-  .btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
 
   /* browser frame */
   .browser { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); }
+  .hero .browser { max-width: 880px; margin: 0 auto; }
   .browser .bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
   .browser .bar i { width: 10px; height: 10px; border-radius: 50%; background: #e0d6cf; }
   .browser .bar span { margin-left: 10px; font-size: 12px; color: var(--text-2); background: var(--surface); border-radius: 6px; padding: 1px 10px; flex: 1; max-width: 340px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -115,7 +110,6 @@
     .tech td:first-child { white-space: normal; }
     .feature, .grid, .grid.two, .pair { grid-template-columns: 1fr; }
     .feature.flip .shot { order: 0; }
-    .meta { grid-template-columns: repeat(2, auto); }
     .stack { grid-template-columns: 1fr; }
     .stack > div:nth-child(2) { border-top: 1px solid var(--border); }
     .stack > div:first-child { border-top: 0; }
@@ -169,13 +163,7 @@
   <div class="wrap">
     <div class="brand">Pop<span>spot</span></div>
     <h1>팝업스토어 <em>예약</em> 웹 서비스<br>— 서비스 웹 · 운영 대시보드 · 백엔드 서버</h1>
-    <dl class="meta">
-      <div><dt>역할</dt><dd>1인 풀스택 (기획 · 설계 · 개발 · 배포)</dd></div>
-      <div><dt>기간</dt><dd>2026.10</dd></div>
-      <div><dt>형태</dt><dd>반응형 웹 (데스크톱 · 모바일)</dd></div>
-    </dl>
-    <div class="links no-print"><a class="btn primary" href="tech-doc.html">기술 상세 문서 →</a><a class="btn" href="https://github.com/DongHyeon9/reserve-system">GitHub 저장소</a></div>
-    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>popspot-gold.vercel.app</span></div><img src="images/w-home.png" alt="Popspot 홈 화면"></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>주소 비공개</span></div><img src="images/w-home.png" alt="Popspot 홈 화면"></div>
   </div>
 </header>
 
