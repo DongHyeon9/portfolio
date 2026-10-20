@@ -11,7 +11,7 @@ const builtAt = monthIndex(new Date());
 
 const skillGroups = [
   { id: 'lang', items: ['C++ (STL)', 'C#', 'Java', 'TypeScript', 'JavaScript', 'Python'] },
-  { id: 'frontend', items: ['React', 'Next.js', 'React Native (Expo)', 'Unreal Engine'] },
+  { id: 'frontend', items: ['React', 'Next.js', 'React Native', 'Unreal Engine'] },
   { id: 'backend', items: ['NestJS', 'Spring Boot', 'Boost.Asio', 'TypeORM', 'Protobuf', 'spdlog'] },
   { id: 'db', items: ['PostgreSQL', 'MSSQL', 'Supabase'] },
   { id: 'infra', items: ['Git', 'SVN', 'Docker', 'AWS', 'Vercel', 'Jenkins', 'GitHub Actions'] },
@@ -115,6 +115,7 @@ export default function Home({ lang }: { lang: Lang }) {
               {['troubleshooting', 'delivery', 'cross-domain'].map((item) => (
                 <li key={item} className="glass reveal">
                   <h3>{tr(`why.${item}.title`)}</h3>
+                  {item === 'delivery' && <p className="why-flow">{tr('why.delivery.flow')}</p>}
                   <p>{tr(`why.${item}.description`)}</p>
                 </li>
               ))}

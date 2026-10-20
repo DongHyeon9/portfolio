@@ -14,7 +14,8 @@ hero.name,home,한동현,Donghyeon Han,ハン・ドンヒョン,Donghyeon Han,
 why.troubleshooting.title,home,안정적인 팀 단위 개발,Stable team-based development,安定したチーム開発,稳定的团队开发,
 why.troubleshooting.description,home,프로젝트 규모에 따라 4년 이상 협업한 팀 단위로 개발을 수행합니다.,"Depending on the project's scale, I work with a team I have collaborated with for over four years.",プロジェクトの規模に応じて、4年以上協働してきたチームで開発を行います。,根据项目规模，由合作超过四年的团队开展开发工作。,
 why.delivery.title,home,A - Z 프로세스,A - Z Process,A - Zプロセス,A - Z 全流程,
-why.delivery.description,home,요구사항 분석 → 디자인 → 개발 → 배포 → 운영. 처음부터 끝까지 책임집니다.,Requirements analysis → design → development → deployment → operations. I take responsibility from start to finish.,要件分析 → デザイン → 開発 → デプロイ → 運用。最初から最後まで責任を持って対応します。,需求分析 → 设计 → 开发 → 部署 → 运维。全程负责到底。,
+why.delivery.flow,home,요구사항 분석 → 디자인 → 개발 → 배포 → 운영,Requirements → Design → Development → Deployment → Operations,要件分析 → デザイン → 開発 → デプロイ → 運用,需求分析 → 设计 → 开发 → 部署 → 运维,
+why.delivery.description,home,처음부터 끝까지 책임집니다.,I take responsibility from start to finish.,最初から最後まで責任を持って対応します。,全程负责到底。,
 why.cross-domain.title,home,서버 · 클라이언트 · 인프라 경험,Server · client · infrastructure experience,サーバー・クライアント・インフラの経験,服务器 · 客户端 · 基础设施经验,
 why.cross-domain.description,home,"백엔드 서버, 웹과 앱, 하드웨어 연동 등 폭넓은 개발 경험을 보유하고 있습니다.",I have broad development experience spanning backend servers · web and mobile apps · hardware integration.,バックエンドサーバー・Webとアプリ・ハードウェア連携など、幅広い開発経験があります。,拥有后端服务器 · Web 与 App · 硬件集成等广泛的开发经验。,
 skills.group.lang,home,언어,Languages,言語,编程语言,
@@ -61,8 +62,14 @@ projects.reserve-system.points.1,home,서비스 웹,Service website,サービス
 projects.reserve-system.points.2,home,운영 대시보드 (관리자 웹),Operations dashboard (admin web),運営ダッシュボード（管理者Web）,运营仪表盘（管理后台）,
 projects.reserve-system.points.3,home,백엔드 서버,Backend server,バックエンドサーバー,后端服务器,
 projects.jenkins-local-test.title,home,서버 구축 및 운영 환경,Server Setup and Operations Environment,サーバー構築・運用環境,服务器搭建与运维环境,
-projects.jenkins-local-test.summary,home,실 서비스 환경과 유사한 환경을 내부에 구축,Built an internal environment similar to production,社内に実サービス環境に近い環境を構築,在内部搭建与实际服务环境相近的环境,
-projects.jenkins-local-test.impact,home,서비스 장애를 사전 방지해서 고객의 이탈률을 줄입니다.,Prevent service outages in advance and reduce customer churn.,サービス障害を未然に防ぎ、顧客離れを減らします。,提前预防服务故障，降低客户流失率。,
+projects.jenkins-local-test.summary,home,"실제 서비스 환경과 유사한 환경을
+내부에 구축 및 테스트를 통해","By building and testing a production-like environment in-house,","実サービスに近い環境を
+社内に構築・テストすることで","通过在内部搭建并测试
+与实际服务相近的环境，",
+projects.jenkins-local-test.impact,home,"서비스 장애를 사전 방지,
+고객의 이탈률을 줄입니다.",I prevent service outages in advance and reduce customer churn.,"サービス障害を未然に防ぎ、
+顧客離れを減らします。","提前预防服务故障，
+降低客户流失率。",
 footer,home,© 2026 한동현 · Built with Next.js · GitHub Pages,© 2026 Donghyeon Han · Built with Next.js · GitHub Pages,© 2026 ハン・ドンヒョン · Built with Next.js · GitHub Pages,© 2026 Donghyeon Han · Built with Next.js · GitHub Pages,
 1cee125e,internal-linux-server/index; internal-linux-server/tech-doc,내부망 Linux 서버 구축,Internal Network Linux Server,内部ネットワーク Linux サーバー構築,内网 Linux 服务器搭建,
 9423ed50,internal-linux-server/index; internal-linux-server/tech-doc; jenkins-local-test/index; personal-sanitation/index; reserve-system/index; reserve-system/tech-doc,← 포트폴리오 목록,← Portfolio,← ポートフォリオ一覧,← 作品集列表,
