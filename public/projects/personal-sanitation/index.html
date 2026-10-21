@@ -81,9 +81,6 @@
   .flow .num { fill: var(--primary); }
   .flow .numt { fill: #fff; font-weight: 700; font-size: 12px; }
   .flow .dash { stroke-dasharray: 5 4; }
-  .flow-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0 0; padding: 0; list-style: none; color: var(--text-2); font-size: 15px; }
-  .flow-notes li { padding: 16px 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-  .flow-notes b { display: block; margin-bottom: 6px; color: var(--text); }
 
   /* 아키텍처 */
   .arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; overflow-x: auto; }
@@ -116,7 +113,7 @@
 
   @media screen and (max-width: 860px) {
     .hero-grid, .grid, .grid.two, .grid.feature-list, .gallery.desks { grid-template-columns: 1fr; }
-    .tech-list, .flow-notes { grid-template-columns: 1fr; }
+    .tech-list { grid-template-columns: 1fr; }
     .tech-list dd { border-top: 0; padding-top: 0; }
     section { padding: 40px 0; }
   }
@@ -132,7 +129,7 @@
     .gallery::before { content: attr(data-label); grid-column: 1 / -1; font-weight: 700; font-size: 18px; }
     .gallery.phones { grid-template-columns: repeat(5, 1fr); gap: 14px; }
     .gallery.desks { break-before: page; }
-    .card, .arch, figure, .flow-notes li { break-inside: avoid; }
+    .card, .arch, figure { break-inside: avoid; }
     .topbar { display: none; }
     .more summary { display: none; }
     .more::details-content { content-visibility: visible; display: block; }
@@ -294,10 +291,13 @@
       <div class="card"><span class="tag">보안</span><h3>직원 권한 · 감사 로그</h3><p>운영 직원은 TOTP 2단계 인증으로 로그인하고, 메뉴별 권한을 따로 줍니다. 개인정보 전체 보기 같은 민감한 조회는 사유를 입력받아 감사 로그에 남깁니다.</p></div>
       <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></div>
       <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></div>
+      <div class="card"><span class="tag">결제</span><h3>중복 청구 방지</h3><p>결제 정기 작업이 여러 서버에서 동시에 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</p></div>
+      <div class="card"><span class="tag">결제</span><h3>구독 대기</h3><p>서비스 지역 밖 주소는 결제 없이 저장합니다. 운영자가 해당 지역을 열면 알림을 보내고, 사용자가 구독 시작을 확정하면 첫 결제를 진행합니다.</p></div>
       <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></div>
       <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
       <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></div>
       <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></div>
+      <div class="card"><span class="tag">신뢰성</span><h3>유실 없는 알림 발송</h3><p>알림을 작업과 같은 DB 트랜잭션에 저장한 뒤 별도 주기 작업이 발송합니다. 푸시가 실패하면 1·5·30·120분 간격으로 재시도하고, 무효 토큰 기기는 비활성화합니다.</p></div>
     </div>
   </div>
 </section>
@@ -397,8 +397,8 @@
         <text x="281" y="67" style="font-weight:700">본인인증 · 가입</text><text class="sub" x="259" y="92">PortOne 휴대폰 인증</text><text class="sub" x="259" y="108">CI로 1인 1계정 보장</text>
         <rect class="box core" x="470" y="40" width="200" height="80" rx="12"/><circle class="num" cx="488" cy="62" r="11"/><text class="numt" x="488" y="66" text-anchor="middle">3</text>
         <text x="506" y="67" style="font-weight:700">구독 신청</text><text class="sub" x="484" y="92">API · 주소로 권역 판정</text><text class="sub" x="484" y="108">POST /subscriptions</text>
-        <rect class="box core" x="695" y="40" width="190" height="36" rx="10"/><text class="sub" x="709" y="63">지역 안 → 빌링키 첫 결제</text>
-        <rect class="box ext" x="695" y="84" width="190" height="36" rx="10"/><text class="sub" x="709" y="107">지역 밖 → 구독 대기</text>
+        <rect class="box core" x="695" y="84" width="190" height="36" rx="10"/><text class="sub" x="709" y="107">지역 안 → 빌링키 첫 결제</text>
+        <rect class="box ext" x="695" y="40" width="190" height="36" rx="10"/><text class="sub" x="709" y="63">지역 밖 → 구독 대기</text>
         <line x1="220" y1="80" x2="243" y2="80" marker-end="url(#ar2)"/>
         <line x1="445" y1="80" x2="468" y2="80" marker-end="url(#ar2)"/>
         <line x1="670" y1="72" x2="693" y2="58" marker-end="url(#ar2)"/>
@@ -417,7 +417,7 @@
         <text x="731" y="217" style="font-weight:700">결과 확인</text><text class="sub" x="709" y="242">대시보드 오늘 현황</text><text class="sub" x="709" y="258">진행률 · 미수거 · 사진</text>
         <line x1="220" y1="230" x2="243" y2="230" marker-end="url(#ar2)"/>
         <line x1="445" y1="230" x2="468" y2="230" marker-end="url(#ar2)"/>
-        <line class="dash" x1="670" y1="230" x2="693" y2="230" marker-end="url(#ar2)"/>
+        <line x1="670" y1="230" x2="693" y2="230" marker-end="url(#ar2)"/>
         <line x1="345" y1="270" x2="345" y2="338" marker-end="url(#ar2)"/>
         <text class="sub" x="352" y="300">답변 알림</text>
 
@@ -435,11 +435,6 @@
         <line x1="670" y1="380" x2="693" y2="380" marker-end="url(#ar2)"/>
       </svg>
     </div>
-    <ul class="flow-notes">
-      <li><b>구독 대기</b>서비스 지역 밖 주소는 결제 없이 저장합니다. 운영자가 해당 지역을 열면 알림을 보내고, 사용자가 구독 시작을 확정하면 첫 결제를 진행합니다.</li>
-      <li><b>중복 청구 방지</b>결제 정기 작업이 여러 서버에서 동시에 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</li>
-      <li><b>6 → 7 점선</b>운영 앱은 현재 더미 API로 화면과 오프라인 대기열까지 구현했고, 서버 API 연결은 다음 단계입니다.</li>
-    </ul>
   </div>
 </section>
 
