@@ -26,7 +26,7 @@
   h3 { font-size: 18px; margin: 0 0 6px; }
   .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
   .grid + .grid { margin-top: 16px; }
-  .grid.feature-list { grid-template-columns: 1fr; }
+  .grid.feature-list { grid-template-columns: repeat(2, 1fr); align-items: start; }
   .more { margin-top: 6px; }
   .more summary { cursor: pointer; width: fit-content; font-size: 14px; font-weight: 700; color: var(--primary); }
   .more[open] summary { margin-bottom: 8px; }
@@ -115,7 +115,7 @@
   dialog img { max-width: 94vw; max-height: 90vh; display: block; border-radius: 12px; }
 
   @media screen and (max-width: 860px) {
-    .hero-grid, .grid, .grid.two, .gallery.desks { grid-template-columns: 1fr; }
+    .hero-grid, .grid, .grid.two, .grid.feature-list, .gallery.desks { grid-template-columns: 1fr; }
     .stack { grid-template-columns: 1fr; }
     .stack > div:nth-child(2) { border-top: 1px solid var(--border); }
     .stack .k { border-top: 1px solid var(--border); }
