@@ -54,6 +54,7 @@
   .card .tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); margin-bottom: 10px; }
   .card .result { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ok); }
   .service-card .chips { margin-top: 16px; }
+  .hero-chips { margin: 0 0 32px; }
 
   /* 기술 스택 */
   .stack-groups { display: grid; gap: 16px; }
@@ -158,7 +159,8 @@
 <header class="hero">
   <div class="wrap">
     <div class="brand">Pop<span>spot</span></div>
-    <h1>팝업스토어 <em>예약</em> 웹 서비스<br>— 서비스 웹 · 운영 대시보드 · 백엔드 서버</h1>
+    <h1>팝업스토어 <em>예약</em> 웹 서비스</h1>
+    <div class="chips hero-chips"><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Spring Boot</span><span class="chip">Vercel</span><span class="chip">Supabase</span><span class="chip">Docker</span></div>
     <div class="browser"><div class="bar"><i></i><i></i><i></i><span>주소 비공개</span></div><img src="images/w-home.png" alt="Popspot 홈 화면"></div>
   </div>
 </header>
@@ -167,7 +169,7 @@
 <section>
   <div class="wrap">
     <h2>프로젝트 개요</h2>
-    <p class="lead">팝업스토어 방문을 예약하는 웹 서비스입니다.<br>서비스 웹 · 운영 대시보드 · 백엔드 서버와 DB 설계, 자동 배포까지 혼자 설계하고 구현했습니다.<br>예약 오픈 순간 사용자가 몰려도 정원을 넘지 않는 예약이 핵심입니다.</p>
+    <p class="lead">팝업스토어 방문을 예약하는 웹 서비스입니다.<br>서비스 웹 · 운영 대시보드 · 백엔드 서버와 자동 배포를 구현하고, DB를 설계했습니다.<br>예약 오픈 순간 사용자가 몰려도 정원을 넘지 않는 예약이 핵심입니다.</p>
     <div class="grid">
       <div class="card service-card"><span class="tag">고객 웹</span><h3>서비스 웹</h3><p>고객이 팝업을 둘러보고 날짜 · 회차를 골라 예약하는 화면입니다.<br>내 예약을 확인하고 무료 취소 기한 안에 취소할 수 있습니다.</p><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vercel</span></div></div>
       <div class="card service-card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>운영자가 팝업 · 회차를 등록하고 오늘 예약 현황을 보는 화면입니다.<br>방문 당일 체크인을 처리하고, 서비스 웹과 같은 Next.js 앱에서 경로 · 권한으로 나뉩니다.</p><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vercel</span></div></div>
@@ -181,8 +183,8 @@
     <h2>서비스 이미지</h2>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-web" aria-selected="true" tabindex="0" data-tab="web" aria-controls="web">서비스 웹</button>
+      <button role="tab" id="tab-mobile" aria-selected="false" tabindex="-1" data-tab="mobile" aria-controls="mobile">모바일 (웹앱)</button>
       <button role="tab" id="tab-admin" aria-selected="false" tabindex="-1" data-tab="admin" aria-controls="admin">운영 대시보드</button>
-      <button role="tab" id="tab-mobile" aria-selected="false" tabindex="-1" data-tab="mobile" aria-controls="mobile">모바일</button>
     </div>
 
     <div class="gallery desks on" id="web" role="tabpanel" aria-labelledby="tab-web" data-label="서비스 웹">
@@ -196,18 +198,18 @@
       <figure><img src="images/w-login.png" alt="로그인과 회원가입"><figcaption><b>로그인 · 회원가입</b></figcaption></figure>
     </div>
 
+    <div class="gallery phones" id="mobile" role="tabpanel" aria-labelledby="tab-mobile" data-label="모바일 (웹앱)">
+      <figure><img src="images/m-home.png" alt="모바일 홈"><figcaption><b>홈</b></figcaption></figure>
+      <figure><img src="images/m-detail.png" alt="모바일 팝업 상세"><figcaption><b>팝업 상세 · 회차 선택</b></figcaption></figure>
+      <figure><img src="images/m-reserve.png" alt="모바일 예약 입력"><figcaption><b>예약 정보 입력</b></figcaption></figure>
+    </div>
+
     <div class="gallery desks" id="admin" role="tabpanel" aria-labelledby="tab-admin" data-label="운영 대시보드">
       <figure><img src="images/a-dashboard.png" alt="관리자 대시보드"><figcaption><b>오늘 현황</b></figcaption></figure>
       <figure><img src="images/a-popup-edit.png" alt="팝업 등록과 수정"><figcaption><b>팝업 등록 · 수정</b></figcaption></figure>
       <figure><img src="images/a-slots.png" alt="회차와 정원 관리"><figcaption><b>회차 · 정원 관리</b></figcaption></figure>
       <figure><img src="images/a-reservation-detail.png" alt="예약 상세와 체크인"><figcaption><b>예약 관리 · 체크인</b></figcaption></figure>
       <figure><img src="images/a-ops-tests.png" alt="운영 테스트 도구"><figcaption><b>운영 테스트 도구</b></figcaption></figure>
-    </div>
-
-    <div class="gallery phones" id="mobile" role="tabpanel" aria-labelledby="tab-mobile" data-label="모바일">
-      <figure><img src="images/m-home.png" alt="모바일 홈"><figcaption><b>홈</b></figcaption></figure>
-      <figure><img src="images/m-detail.png" alt="모바일 팝업 상세"><figcaption><b>팝업 상세 · 회차 선택</b></figcaption></figure>
-      <figure><img src="images/m-reserve.png" alt="모바일 예약 입력"><figcaption><b>예약 정보 입력</b></figcaption></figure>
     </div>
   </div>
 </section>
@@ -327,7 +329,6 @@
         <dt>axe-core</dt><dd>17개 화면의 WCAG 접근성 위반 자동 검사</dd>
       </dl></details></div>
     </div>
-    <p class="screen-only"><a href="tech-doc.html">기술 상세 문서</a>에서 기술별 핵심 개념, 인증 · 배포 시퀀스, 트러블슈팅을 볼 수 있습니다.</p>
   </div>
 </section>
 
