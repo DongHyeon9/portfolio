@@ -63,14 +63,12 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card .tag.plan { color: var(--accent); } }
 
   /* 기술 스택 표 */
-  .stack { display: grid; grid-template-columns: 180px 1fr; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
-  .stack > div { padding: 16px 20px; border-top: 1px solid var(--border); }
-  .stack > div:nth-child(-n+2) { border-top: 0; }
-  .stack .k { font-weight: 700; background: var(--surface-2); }
-  .stack .v { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .stack .v small { color: var(--text-2); width: 100%; }
-  .stack .why { width: 100%; margin: 4px 0 0; padding-left: 18px; color: var(--text-2); font-size: 14px; }
-  .stack .why b { color: var(--text); font-weight: 600; }
+  .stack-groups { display: grid; gap: 16px; }
+  .stack-group h3 { margin: 0 0 10px; }
+  .tech-list { display: grid; grid-template-columns: 230px 1fr; margin: 0; }
+  .tech-list dt, .tech-list dd { margin: 0; padding: 10px 0; border-top: 1px solid var(--border); }
+  .tech-list dt { font-weight: 700; padding-right: 16px; }
+  .tech-list dd { color: var(--text-2); font-size: 15px; }
 
   /* 목록으로 돌아가기 */
   .back { display: inline-block; margin-top: 20px; font-size: 14px; text-decoration: none; color: var(--text-2); }
@@ -116,10 +114,8 @@
 
   @media screen and (max-width: 860px) {
     .hero-grid, .grid, .grid.two, .grid.feature-list, .gallery.desks { grid-template-columns: 1fr; }
-    .stack { grid-template-columns: 1fr; }
-    .stack > div:nth-child(2) { border-top: 1px solid var(--border); }
-    .stack .k { border-top: 1px solid var(--border); }
-    .stack > div:first-child { border-top: 0; }
+    .tech-list { grid-template-columns: 1fr; }
+    .tech-list dd { border-top: 0; padding-top: 0; }
     section { padding: 40px 0; }
   }
 
@@ -134,7 +130,7 @@
     .gallery::before { content: attr(data-label); grid-column: 1 / -1; font-weight: 700; font-size: 18px; }
     .gallery.phones { grid-template-columns: repeat(5, 1fr); gap: 14px; }
     .gallery.desks { break-before: page; }
-    .card, .arch, figure, .stack > div, .flow-notes li { break-inside: avoid; }
+    .card, .arch, figure, .flow-notes li { break-inside: avoid; }
     .topbar { display: none; }
     .more summary { display: none; }
     .more::details-content { content-visibility: visible; display: block; }
@@ -307,68 +303,54 @@
 <section>
   <div class="wrap">
     <h2>기술 스택</h2>
-    <div class="stack">
-      <div class="k">백엔드 서버</div>
-      <div class="v"><span class="chip">Nest.js 12</span><span class="chip">TypeORM</span><span class="chip">PostgreSQL 17</span><span class="chip">@nestjs/swagger</span><span class="chip">@nestjs/jwt</span><span class="chip">@nestjs/throttler</span><span class="chip">class-validator</span>
-        <ul class="why">
-          <li><b>Nest.js</b> — 인증·구독·결제·수거·알림 등 도메인을 모듈로 나누고, DI로 결제(<code>PaymentGateway</code>)·푸시(<code>PushSender</code>) 구현을 mock ↔ 실제로 환경변수만 바꿔 교체하기 위해</li>
-          <li><b>TypeORM</b> — 엔티티를 TypeScript 클래스로 정의하고 스키마 변경을 마이그레이션 파일로 이력 관리하기 위해 (compose의 <code>migrate</code> 서비스가 API 기동 전에 1회 실행)</li>
-          <li><b>PostgreSQL 17</b> — 정기결제 작업이 행 잠금(<code>SKIP LOCKED</code>)과 unique 제약으로 서버가 여러 대여도 중복 청구를 막도록, 트랜잭션·잠금이 확실한 RDB가 필요해서</li>
-          <li><b>@nestjs/swagger</b> — DTO 데코레이터를 원본으로 OpenAPI를 자동 생성해, 손으로 쓴 API 문서와 실제 코드가 어긋나지 않게 하기 위해</li>
-          <li><b>@nestjs/jwt</b> — 고객 토큰(access 15분 / refresh 30일)과 직원 토큰을 서로 다른 키로 발급하기 위해</li>
-          <li><b>@nestjs/throttler</b> — 전역 IP당 분당 120회 제한에 더해, 로그인·본인인증처럼 민감한 API는 분당 10회로 낮춰 무차별 대입을 막기 위해</li>
-          <li><b>class-validator</b> — 같은 DTO 클래스에 검증 규칙을 선언해 컨트롤러 진입 전에 잘못된 입력을 걸러내기 위해</li>
-        </ul></div>
-      <div class="k">서비스 앱 (고객 앱)</div>
-      <div class="v"><span class="chip">React Native 0.86</span><span class="chip">Expo 57</span><span class="chip">Expo Router</span><span class="chip">expo-notifications</span><span class="chip">expo-secure-store</span><span class="chip">PortOne SDK</span>
-        <ul class="why">
-          <li><b>React Native</b> — 코드 하나로 Android·iOS 네이티브 앱을 만들고, 운영 대시보드와 같은 React 방식으로 화면을 개발하기 위해</li>
-          <li><b>Expo</b> — 푸시·보안 저장소·라우팅 같은 네이티브 기능을 Expo 모듈로 바로 쓰고, 운영 앱과 같은 스택·공용 타입을 쓰기 위해 (dev client로 네이티브 모듈도 사용)</li>
-          <li><b>Expo Router</b> — 파일 기반 라우팅으로 “둘러보기 → 로그인 → 고른 플랜 유지한 채 구독 신청 복귀” 같은 흐름을 경로 단위로 관리하기 위해</li>
-          <li><b>expo-notifications</b> — 기기의 Expo 푸시 토큰을 서버(<code>/push-devices</code>)에 등록해 수거 예정·완료 알림을 받기 위해</li>
-          <li><b>expo-secure-store</b> — refresh 토큰을 일반 저장소가 아닌 OS 보안 저장소(Keychain/Keystore)에 두기 위해</li>
-          <li><b>PortOne SDK</b> — PG사·본인인증 기관과 직접 계약·연동하지 않고, 정기결제용 카드(빌링키) 등록과 휴대폰 본인인증 창을 띄우기 위해</li>
-        </ul></div>
-      <div class="k">운영 앱 (기사 앱)</div>
-      <div class="v"><span class="chip">React Native 0.86</span><span class="chip">Expo 57</span><span class="chip">expo-camera</span><span class="chip">expo-image-manipulator</span><span class="chip">expo-file-system</span><span class="chip">NetInfo</span><span class="chip">expo-screen-capture</span>
-        <ul class="why">
-          <li><b>React Native · Expo</b> — 서비스 앱과 같은 스택·빌드 방식을 유지해 한 사람이 두 앱을 관리하기 위해</li>
-          <li><b>expo-camera</b> — 수거 완료를 증명하는 사진을 앱 안에서 바로 촬영하기 위해</li>
-          <li><b>expo-image-manipulator</b> — 업로드 전에 JPEG로 압축해 현장 모바일 데이터 사용량과 전송 시간을 줄이기 위해</li>
-          <li><b>expo-file-system</b> — 통신이 끊긴 동안 찍은 사진·결과를 기기에 보관하는 오프라인 전송 대기열을 만들기 위해</li>
-          <li><b>NetInfo</b> — 연결이 돌아온 순간을 감지해 대기열을 자동 전송하기 위해</li>
-          <li><b>expo-screen-capture</b> — 공동현관 비밀번호가 보이는 화면의 스크린샷을 막아 민감정보 유출을 줄이기 위해</li>
-        </ul></div>
-      <div class="k">운영 대시보드 (관리자 웹)</div>
-      <div class="v"><span class="chip">Next.js 16</span><span class="chip">React 19</span><span class="chip">qrcode</span>
-        <ul class="why">
-          <li><b>Next.js</b> — Route Handler를 BFF로 써서 직원 토큰을 브라우저 JS가 아닌 httpOnly 쿠키에만 두기 위해</li>
-          <li><b>React 19</b> — 서비스 앱·운영 앱과 같은 React 버전(19.2)·컴포넌트 사고방식으로 웹 운영툴까지 개발하기 위해</li>
-          <li><b>qrcode</b> — 직원 2단계 인증(TOTP) 첫 등록용 QR을 외부 서비스에 비밀키를 보내지 않고 서버에서 SVG로 만들기 위해</li>
-        </ul>
-        <small>구독·결제 조회, 요청 답변, 가격·플랜, 지역·권역, 수거일 예외, 푸시 발송, 이벤트·할인, 직원·감사 로그</small></div>
-      <div class="k">인프라</div>
-      <div class="v"><span class="chip">Docker</span><span class="chip">Docker Compose</span><span class="chip">AWS EC2</span><span class="chip">AWS S3</span><span class="chip">AWS RDS</span><span class="chip">SeaweedFS</span><span class="chip">pnpm workspace</span>
-        <ul class="why">
-          <li><b>Docker</b> — 멀티 스테이지 빌드로 운영 의존성과 빌드 결과만 담은 백엔드 이미지를 만들고, 같은 이미지로 API 서버와 DB 마이그레이션을 실행하기 위해 (root가 아닌 사용자로 실행)</li>
-          <li><b>Docker Compose</b> — <code>docker compose up</code> 한 번으로 DB → 저장소 → 마이그레이션 → API를 healthcheck 순서대로 띄워, 새 PC에서도 바로 실행되게 하기 위해</li>
-          <li><b>AWS EC2</b> (배포 예정) — 서버에는 Docker만 설치하고 운영용 compose 파일로 로컬과 같은 이미지를 그대로 배포하기 위해</li>
-          <li><b>AWS S3</b> (배포 예정) — 사진을 비공개 버킷에 두고 Presigned URL로 앱이 직접 업로드·조회하게 해 API 서버가 파일을 중계하지 않게 하기 위해</li>
-          <li><b>AWS RDS</b> (배포 예정) — 운영 DB의 백업·패치를 관리형 서비스에 맡기기 위해 (로컬 PostgreSQL과 메이저 버전 동일 유지)</li>
-          <li><b>SeaweedFS</b> — 로컬 개발에서 S3와 같은 API로 사진 업로드를 재현하기 위해 (S3 호환 저장소, 서명 검증 포함)</li>
-          <li><b>pnpm workspace</b> — 공용 타입 패키지 <code>@sanitation/common</code>을 서버·앱·대시보드가 <code>workspace:*</code>로 함께 참조하기 위해</li>
-        </ul></div>
-      <div class="k">품질 · 도구</div>
-      <div class="v"><span class="chip">Vitest</span><span class="chip">Supertest</span><span class="chip">oxlint</span><span class="chip">Prettier</span><span class="chip">ESLint</span><span class="chip">TypeScript 6</span>
-        <ul class="why">
-          <li><b>Vitest</b> — ESM(<code>"type": "module"</code>) 백엔드에서 별도 변환 설정 없이 단위·e2e 테스트를 돌리기 위해</li>
-          <li><b>Supertest</b> — e2e 테스트에서 실제 HTTP 요청으로 API 응답·에러 코드를 검증하기 위해</li>
-          <li><b>oxlint</b> — 타입 정보를 쓰는 린트(<code>--type-aware</code>)를 빠르게 돌리기 위해</li>
-          <li><b>Prettier</b> — 백엔드 코드 포맷을 도구로 통일해 리뷰에서 스타일 논쟁을 없애기 위해</li>
-          <li><b>ESLint</b> — Expo 앱에서 <code>eslint-config-expo</code> 규칙(<code>expo lint</code>)을 그대로 쓰기 위해</li>
-          <li><b>TypeScript 6</b> — 서버와 모든 클라이언트가 같은 DTO 타입을 공유해, API 변경 시 컴파일 단계에서 불일치를 잡기 위해</li>
-        </ul>
-        <small>VS Code 디버깅(로컬·컨테이너 attach) 설정 포함</small></div>
+    <div class="stack-groups">
+      <div class="card stack-group"><h3>백엔드 서버</h3><dl class="tech-list">
+        <dt>Nest.js 12</dt><dd>도메인별 모듈 분리, DI로 결제·푸시 구현을 mock ↔ 실제로 교체</dd>
+        <dt>TypeORM</dt><dd>엔티티를 TypeScript 클래스로 정의하고 스키마 변경을 마이그레이션으로 이력 관리</dd>
+        <dt>PostgreSQL 17</dt><dd>행 잠금(<code>SKIP LOCKED</code>)과 unique 제약으로 서버가 여러 대여도 중복 청구 방지</dd>
+        <dt>@nestjs/swagger</dt><dd>DTO에서 OpenAPI 문서를 자동 생성해 문서와 코드 불일치 방지</dd>
+        <dt>@nestjs/jwt</dt><dd>고객 토큰(access 15분 / refresh 30일)과 직원 토큰을 서로 다른 키로 발급</dd>
+        <dt>@nestjs/throttler</dt><dd>전역 IP당 분당 120회, 로그인·본인인증은 분당 10회로 무차별 대입 차단</dd>
+        <dt>class-validator</dt><dd>DTO에 검증 규칙을 선언해 컨트롤러 진입 전에 잘못된 입력 차단</dd>
+      </dl></div>
+      <div class="card stack-group"><h3>서비스 앱 (고객 앱)</h3><dl class="tech-list">
+        <dt>React Native 0.86</dt><dd>코드 하나로 Android·iOS 앱 개발, 운영 대시보드와 같은 React 방식</dd>
+        <dt>Expo 57</dt><dd>푸시·보안 저장소·라우팅 등 네이티브 기능을 모듈로 바로 사용 (dev client)</dd>
+        <dt>Expo Router</dt><dd>파일 기반 라우팅으로 “둘러보기 → 로그인 → 구독 신청 복귀” 흐름을 경로 단위로 관리</dd>
+        <dt>expo-notifications</dt><dd>기기 푸시 토큰을 서버에 등록해 수거 예정·완료 알림 수신</dd>
+        <dt>expo-secure-store</dt><dd>refresh 토큰을 OS 보안 저장소(Keychain/Keystore)에 보관</dd>
+        <dt>PortOne SDK</dt><dd>PG사와 직접 계약하지 않고 정기결제 카드(빌링키) 등록과 휴대폰 본인인증 연동</dd>
+      </dl></div>
+      <div class="card stack-group"><h3>운영 앱 (기사 앱)</h3><dl class="tech-list">
+        <dt>React Native · Expo</dt><dd>서비스 앱과 같은 스택·빌드 방식으로 두 앱을 한 사람이 관리</dd>
+        <dt>expo-camera</dt><dd>수거 완료 인증 사진을 앱 안에서 바로 촬영</dd>
+        <dt>expo-image-manipulator</dt><dd>업로드 전 JPEG 압축으로 데이터 사용량과 전송 시간 절감</dd>
+        <dt>expo-file-system</dt><dd>통신이 끊긴 동안 사진·결과를 기기에 보관하는 오프라인 전송 대기열</dd>
+        <dt>NetInfo</dt><dd>연결 복구를 감지해 대기열을 자동 전송</dd>
+        <dt>expo-screen-capture</dt><dd>공동현관 비밀번호가 보이는 화면의 스크린샷 차단</dd>
+      </dl></div>
+      <div class="card stack-group"><h3>운영 대시보드 (관리자 웹)</h3><dl class="tech-list">
+        <dt>Next.js 16</dt><dd>Route Handler를 BFF로 써서 직원 토큰을 httpOnly 쿠키에만 보관</dd>
+        <dt>React 19</dt><dd>서비스 앱·운영 앱과 같은 React 버전(19.2)으로 개발</dd>
+        <dt>qrcode</dt><dd>2단계 인증(TOTP) 등록용 QR을 외부 서비스 없이 서버에서 SVG로 생성</dd>
+      </dl></div>
+      <div class="card stack-group"><h3>인프라</h3><dl class="tech-list">
+        <dt>Docker</dt><dd>멀티 스테이지 빌드로 운영에 필요한 것만 담은 이미지, 같은 이미지로 API·마이그레이션 실행 (non-root)</dd>
+        <dt>Docker Compose</dt><dd><code>docker compose up</code> 한 번으로 DB → 저장소 → 마이그레이션 → API 순서 기동</dd>
+        <dt>AWS EC2 (배포 예정)</dt><dd>로컬과 같은 이미지를 운영용 compose 파일로 그대로 배포</dd>
+        <dt>AWS S3 (배포 예정)</dt><dd>비공개 버킷 + Presigned URL로 앱이 사진을 직접 업로드·조회</dd>
+        <dt>AWS RDS (배포 예정)</dt><dd>운영 DB 백업·패치를 관리형 서비스에 위임 (로컬과 같은 메이저 버전)</dd>
+        <dt>SeaweedFS</dt><dd>로컬 개발에서 S3와 같은 API로 사진 업로드 재현</dd>
+        <dt>pnpm workspace</dt><dd>공용 타입 패키지 <code>@sanitation/common</code>을 서버·앱·대시보드가 함께 참조</dd>
+      </dl></div>
+      <div class="card stack-group"><h3>품질 · 도구</h3><dl class="tech-list">
+        <dt>Vitest</dt><dd>ESM 백엔드에서 별도 변환 설정 없이 단위·e2e 테스트 실행</dd>
+        <dt>Supertest</dt><dd>실제 HTTP 요청으로 API 응답·에러 코드 검증</dd>
+        <dt>oxlint</dt><dd>타입 정보 기반 린트(<code>--type-aware</code>)를 빠르게 실행</dd>
+        <dt>Prettier</dt><dd>코드 포맷을 도구로 통일해 리뷰에서 스타일 논쟁 제거</dd>
+        <dt>ESLint</dt><dd>Expo 앱에서 <code>eslint-config-expo</code> 규칙 사용</dd>
+        <dt>TypeScript 6</dt><dd>서버와 모든 클라이언트가 같은 DTO 타입을 공유해 API 불일치를 컴파일 단계에서 검출</dd>
+      </dl></div>
     </div>
   </div>
 </section>
@@ -376,24 +358,23 @@
 <section>
   <div class="wrap">
     <h2>시스템 구성</h2>
-    <p class="lead">세 클라이언트(서비스 앱 · 운영 앱 · 운영 대시보드)가 하나의 백엔드 서버(Nest.js)를 공유합니다. 결제·본인인증·푸시 같은 외부 연동은 인터페이스 뒤에 두어 개발 중엔 mock, 운영에선 실제 구현으로 교체합니다.</p>
+    <p class="lead">세 클라이언트(서비스 앱 · 운영 앱 · 운영 대시보드)가 하나의 백엔드 서버를 공유합니다.</p>
     <div class="arch">
       <svg viewBox="0 0 900 330" role="img" aria-label="서비스 앱, 운영 앱, 운영 대시보드가 Nest.js 백엔드 서버를 거쳐 PostgreSQL, S3, 외부 서비스와 연결되는 구성도">
         <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2);stroke:none"/></marker></defs>
-        <rect class="box" x="20" y="30" width="200" height="60" rx="12"/><text x="40" y="56">서비스 앱</text><text class="sub" x="40" y="76">고객 앱 · React Native · Expo</text>
-        <rect class="box" x="20" y="135" width="200" height="60" rx="12"/><text x="40" y="161">운영 앱</text><text class="sub" x="40" y="181">기사 앱 · React Native · Expo</text>
-        <rect class="box" x="20" y="240" width="200" height="60" rx="12"/><text x="40" y="266">운영 대시보드</text><text class="sub" x="40" y="286">관리자 웹 · Next.js</text>
-        <rect class="box core" x="340" y="100" width="220" height="130" rx="14"/>
+        <rect class="box" x="20" y="30" width="250" height="60" rx="12"/><text x="40" y="56">서비스 앱 (고객 앱)</text><text class="sub" x="40" y="76">React Native</text>
+        <rect class="box" x="20" y="135" width="250" height="60" rx="12"/><text x="40" y="161">운영 앱 (기사 앱)</text><text class="sub" x="40" y="181">React Native</text>
+        <rect class="box" x="20" y="240" width="250" height="60" rx="12"/><text x="40" y="266">운영 대시보드 (관리자 웹)</text><text class="sub" x="40" y="286">Next.js</text>
+        <rect class="box core" x="340" y="105" width="220" height="104" rx="14"/>
         <text x="360" y="130" style="font-weight:700">백엔드 서버 (Nest.js)</text>
         <text class="sub" x="360" y="152">인증 · 구독 · 결제 · 수거 · 요청</text>
         <text class="sub" x="360" y="170">알림 · 지역/권역 · 가격 · 이벤트</text>
         <text class="sub" x="360" y="188">직원 권한 · 감사 로그</text>
-        <text class="sub" x="360" y="212">@sanitation/common 공용 타입</text>
-        <line x1="220" y1="60" x2="338" y2="130" marker-end="url(#ar)"/>
-        <line x1="220" y1="165" x2="338" y2="165" marker-end="url(#ar)"/>
-        <line x1="220" y1="270" x2="338" y2="200" marker-end="url(#ar)"/>
-        <rect class="box" x="680" y="20" width="200" height="56" rx="12"/><text x="700" y="45">PostgreSQL 17</text><text class="sub" x="700" y="63">로컬 Docker · RDS 예정</text>
-        <rect class="box" x="680" y="96" width="200" height="56" rx="12"/><text x="700" y="121">S3 (예정)</text><text class="sub" x="700" y="139">로컬 SeaweedFS · 수거 사진</text>
+        <line x1="270" y1="60" x2="338" y2="130" marker-end="url(#ar)"/>
+        <line x1="270" y1="165" x2="338" y2="165" marker-end="url(#ar)"/>
+        <line x1="270" y1="270" x2="338" y2="200" marker-end="url(#ar)"/>
+        <rect class="box" x="680" y="20" width="200" height="56" rx="12"/><text x="700" y="45">PostgreSQL 17</text><text class="sub" x="700" y="63">로컬 Docker · AWS RDS</text>
+        <rect class="box" x="680" y="96" width="200" height="56" rx="12"/><text x="700" y="121">AWS S3</text><text class="sub" x="700" y="139">로컬 SeaweedFS · 수거 사진</text>
         <rect class="box ext" x="680" y="172" width="200" height="56" rx="12"/><text x="700" y="197">PortOne</text><text class="sub" x="700" y="215">빌링키 정기결제 · 본인인증</text>
         <rect class="box ext" x="680" y="248" width="200" height="56" rx="12"/><text x="700" y="273">Expo Push</text><text class="sub" x="700" y="291">수거 알림 · 캠페인 푸시</text>
         <line x1="560" y1="130" x2="678" y2="48" marker-end="url(#ar)"/>
@@ -402,7 +383,7 @@
         <line x1="560" y1="200" x2="678" y2="276" marker-end="url(#ar)"/>
       </svg>
     </div>
-    <p class="lead">고객이 구독을 신청하고, 매주 수거가 이루어지고, 결과가 알림으로 돌아오기까지의 흐름입니다. 알림은 이를 만든 작업과 같은 DB 트랜잭션에 저장한 뒤 별도 주기 작업이 발송해, 푸시가 실패해도 알림이 사라지지 않습니다.</p>
+    <p class="lead">고객이 구독을 신청하고 매주 수거가 진행된 뒤, 결과가 알림으로 돌아오기까지의 흐름입니다.<br>알림은 해당 작업과 같은 DB 트랜잭션에 저장하고 별도 주기 작업이 발송하므로, 푸시가 실패해도 알림이 사라지지 않습니다.</p>
     <div class="arch flow">
       <svg viewBox="0 0 900 440" role="img" aria-label="가입·구독, 매주 수거, 백그라운드 작업 세 단계로 나눈 서비스 흐름도">
         <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2);stroke:none"/></marker></defs>
@@ -425,7 +406,7 @@
 
         <text x="560" y="182" style="font-weight:700">매주 수거</text>
         <rect class="step" x="20" y="190" width="200" height="80" rx="12"/><circle class="num" cx="38" cy="212" r="11"/><text class="numt" x="38" y="216" text-anchor="middle">4</text>
-        <text x="56" y="217" style="font-weight:700">요청사항 작성</text><text class="sub" x="34" y="242">이번 주 · 고정 요청</text><text class="sub" x="34" y="258">사진은 Presigned URL → S3</text>
+        <text x="56" y="217" style="font-weight:700">요청 사항 작성</text><text class="sub" x="34" y="242">이번 주 · 고정 요청</text><text class="sub" x="34" y="258">사진은 Presigned URL → S3</text>
         <rect class="step" x="245" y="190" width="200" height="80" rx="12"/><circle class="num" cx="263" cy="212" r="11"/><text class="numt" x="263" y="216" text-anchor="middle">5</text>
         <text x="281" y="217" style="font-weight:700">배정 · 답변</text><text class="sub" x="259" y="242">운영 대시보드</text><text class="sub" x="259" y="258">권역별 기사 배정 · 요청 답변</text>
         <rect class="step" x="470" y="190" width="200" height="80" rx="12"/><circle class="num" cx="488" cy="212" r="11"/><text class="numt" x="488" y="216" text-anchor="middle">6</text>
@@ -453,9 +434,9 @@
       </svg>
     </div>
     <ul class="flow-notes">
-      <li><b>구독 대기</b>: 서비스 지역 밖 주소는 결제 없이 저장하고, 운영자가 해당 지역을 열면 알림을 보내 사용자가 구독 시작을 확정할 때 첫 결제합니다.</li>
-      <li><b>중복 청구 방지</b>: 결제 정기 작업은 모든 서버에서 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</li>
-      <li><b>6 → 7 점선</b>: 운영 앱(기사 앱)은 현재 더미 API 계층으로 화면·오프라인 대기열까지 구현되어 있고, 기사용 서버 API 연결은 다음 단계입니다.</li>
+      <li><b>구독 대기</b>: 서비스 지역 밖 주소는 결제 없이 저장합니다. 운영자가 해당 지역을 열면 알림을 보내고, 사용자가 구독 시작을 확정하면 첫 결제를 진행합니다.</li>
+      <li><b>중복 청구 방지</b>: 결제 정기 작업이 여러 서버에서 동시에 돌아도 행 잠금(<code>SKIP LOCKED</code>)과 결제 unique 제약으로 한 번만 청구됩니다.</li>
+      <li><b>6 → 7 점선</b>: 운영 앱은 현재 더미 API로 화면과 오프라인 대기열까지 구현했고, 서버 API 연결은 다음 단계입니다.</li>
     </ul>
   </div>
 </section>
