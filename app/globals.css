@@ -123,8 +123,9 @@ h2 { margin: 0 0 32px; font-size: clamp(1.8rem, 3.5vw, 2.4rem); letter-spacing: 
 .project-points { display: grid; gap: 4px; color: var(--muted); }
 .project-points li { position: relative; padding-left: 16px; }
 .project-points li::before { content: ''; position: absolute; left: 2px; top: .7em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-.project-impact { white-space: pre-line; padding: 10px 12px; border-left: 3px solid var(--accent); border-radius: 6px;
-  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--fg); }
+/* 라이트 모드는 명암비(4.5:1) 확보를 위해 강조색을 어둡게 */
+.project-impact { white-space: pre-line; color: color-mix(in srgb, var(--accent) 75%, #000); }
+@media (prefers-color-scheme: dark) { .project-impact { color: var(--accent); } }
 .card-body > .chips { margin-top: auto; }
 .arrow { display: inline-block; color: var(--accent); transition: transform .25s; }
 .card:hover .arrow { transform: translateX(6px); }
