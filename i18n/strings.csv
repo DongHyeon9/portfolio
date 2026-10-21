@@ -1255,6 +1255,7 @@ c9ca7acf,personal-sanitation/index,푸시 발송,Push sending,プッシュ送信
 63695ca6,personal-sanitation/index,이벤트 · 할인,Events · discounts,イベント・割引,活动 · 折扣,
 21d89679,personal-sanitation/index; reserve-system/index,구현 기능,Implemented Features,実装機能,已实现功能,
 5b1a0959,personal-sanitation/index,회원가입 · 로그인,Sign-up · Login,会員登録・ログイン,注册 · 登录,
+d74a6719,personal-sanitation/index,구현 기능 상세,Implementation details,実装機能の詳細,功能实现详情,
 f01ec01e,personal-sanitation/index,"휴대폰 본인인증 후 가입, 본인인증 CI로 1인 1계정 보장 (이미 가입된 경우 안내 화면)",Sign-up after mobile identity verification; the verification CI guarantees one account per person (notice screen if already registered),携帯電話の本人認証後に登録、本人認証CIで1人1アカウントを保証（登録済みの場合は案内画面）,手机实名认证后注册，凭实名认证 CI 保证一人一号（已注册时显示提示界面）,
 0fe59942,personal-sanitation/index,"아이디 중복 확인, 본인인증 기반 아이디 찾기 · 비밀번호 재설정","Username duplicate check, verification-based username recovery · password reset",ID重複チェック、本人認証によるID検索・パスワード再設定,用户名查重，基于实名认证的找回用户名 · 重置密码,
 f80d4d34,personal-sanitation/index,"로그인 5회 실패 시 10분 잠금, access 15분 / refresh 30일 토큰","10-minute lock after 5 failed logins, access 15 min / refresh 30 days tokens",ログイン5回失敗で10分ロック、access 15分 / refresh 30日トークン,登录失败 5 次锁定 10 分钟，access 15 分钟 / refresh 30 天令牌,

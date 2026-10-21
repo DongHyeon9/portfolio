@@ -26,6 +26,11 @@
   h3 { font-size: 18px; margin: 0 0 6px; }
   .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
   .grid + .grid { margin-top: 16px; }
+  .grid.feature-list { grid-template-columns: 1fr; }
+  .more { margin-top: 6px; }
+  .more summary { cursor: pointer; width: fit-content; font-size: 14px; font-weight: 700; color: var(--primary); }
+  .more[open] summary { margin-bottom: 8px; }
+  .more > p, .more > ul { margin-top: 0; }
   .arch + .lead { margin-top: 40px; }
 
   /* 히어로 */
@@ -131,6 +136,8 @@
     .gallery.desks { break-before: page; }
     .card, .arch, figure, .stack > div, .flow-notes li { break-inside: avoid; }
     .topbar { display: none; }
+    .more summary { display: none; }
+    .more::details-content { content-visibility: visible; display: block; }
     h2, .lead { break-after: avoid; }
     :root { --bg: #ffffff; }
     .hero h1 { font-size: 36px; }
@@ -232,61 +239,61 @@
 <section>
   <div class="wrap">
     <h2>구현 기능</h2>
-    <div class="grid two">
-      <div class="card"><span class="tag">서비스 앱</span><h3>회원가입 · 로그인</h3><ul>
+    <div class="grid feature-list">
+      <div class="card"><span class="tag">서비스 앱</span><h3>회원가입 · 로그인</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>휴대폰 본인인증 후 가입, 본인인증 CI로 1인 1계정 보장 (이미 가입된 경우 안내 화면)</li>
         <li>아이디 중복 확인, 본인인증 기반 아이디 찾기 · 비밀번호 재설정</li>
         <li>로그인 5회 실패 시 10분 잠금, access 15분 / refresh 30일 토큰</li>
         <li>회원 탈퇴 전 점검: 해지 안 된 구독이나 확인 중인 결제가 있으면 탈퇴를 막음</li>
-      </ul></div>
-      <div class="card"><span class="tag">서비스 앱 · API</span><h3>결제 · 구독</h3><ul>
+      </ul></details></div>
+      <div class="card"><span class="tag">서비스 앱 · API</span><h3>결제 · 구독</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>주소로 권역을 판정해 구독 신청, 서비스 지역 밖이면 결제 없이 구독 대기로 저장</li>
         <li>플랜(봉투 용량)과 추가 봉투 선택, 신청 전 결제 금액 미리 계산</li>
         <li>PortOne 빌링키 카드 등록 · 정기결제 흐름 (<code>PaymentGateway</code> 추상화, 웹훅으로 결과 확정)</li>
         <li>갱신 결제 실패 시 미납 상태로 전환, 3회 연속 실패하면 자동 해지</li>
         <li>플랜 · 주소 · 결제 카드 변경, 결제 기간당 1회 최대 4주 일시정지 · 재개</li>
         <li>즉시 해지 시 남은 수거 횟수만큼 1/n 환불, 해지 전 환불 예상 금액 확인</li>
-      </ul></div>
-      <div class="card"><span class="tag">서비스 앱</span><h3>푸시알림</h3><ul>
+      </ul></details></div>
+      <div class="card"><span class="tag">서비스 앱</span><h3>푸시알림</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>권역 수거 요일과 수거일 예외로 다음 수거일을 계산 (일정은 저장하지 않고 계산)</li>
         <li>이번 주 요청 · 매주 고정 요청 작성, 사진은 Presigned URL로 저장소에 직접 업로드</li>
         <li>이번 주 추가 봉투는 요청할 때 바로 결제하고, 결제가 거절되면 요청도 실패 처리</li>
         <li>인앱 알림 목록 · 읽음 처리, 알림 종류별 수신 설정, 수거 전날 알림 시각 선택</li>
         <li>푸시 발송 작업: 실패한 기기만 1 · 5 · 30 · 120분 간격으로 재시도, 무효 토큰 기기는 비활성화</li>
-      </ul></div>
-      <div class="card"><span class="tag">운영 앱</span><h3>현장 수거 (기사 앱)</h3><ul>
+      </ul></details></div>
+      <div class="card"><span class="tag">운영 앱</span><h3>현장 수거 (기사 앱)</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>오늘 수거 목록과 진행률, 수거지 상세의 출입 정보 (공동현관 비밀번호는 가려 두고 볼 때 기록)</li>
         <li>인증 사진 촬영 → JPEG 압축 후 완료 처리, 미수거는 사유(봉투 없음 · 출입 불가 · 기타 메모) 선택</li>
         <li>오프라인 전송 대기열: 기록을 기기 파일에 먼저 저장하고 재연결 · 앱 시작 시 자동 전송</li>
         <li>등록 기기 로그인 화면, 민감 화면 스크린샷 차단</li>
         <li>현재 더미 API 계층으로 동작하며, 기사용 서버 API 연결은 다음 단계</li>
-      </ul></div>
-      <div class="card"><span class="tag">운영 대시보드</span><h3>운영 관리</h3><ul>
+      </ul></details></div>
+      <div class="card"><span class="tag">운영 대시보드</span><h3>운영 관리</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>오늘 현황, 구독별 결제 · 수거 · 요청 이력 조회, 고객 요청 답변(앱 알림 발송)</li>
         <li>권역별 기사 배정, 수거 기록 정정, 권역 수거 요일 · 시간대 변경(영향 미리보기)</li>
         <li>수거일 예외(휴무 · 날짜 이동): 그날 요청을 함께 옮기거나 취소하고 결제된 추가 봉투는 환불</li>
         <li>시도 · 시군구 · 읍면동 단위로 서비스 지역 열기 · 닫기 (닫기 전 영향 미리보기, 닫으면 이용 중 구독 해지 · 환불)</li>
         <li>가격 · 플랜 변경과 기존 구독 가격 변경 예약 · 동의 현황, 이벤트 · 할인(조건 × 혜택 × 한도)</li>
         <li>대상 지정 푸시: 구독 상태 · 지역 · 플랜 조건, 공지/광고 구분, 시험 발송</li>
-      </ul></div>
-      <div class="card"><span class="tag">보안 · 권한</span><h3>직원 계정 · 감사</h3><ul>
+      </ul></details></div>
+      <div class="card"><span class="tag">보안 · 권한</span><h3>직원 계정 · 감사</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>대시보드 로그인은 비밀번호 + TOTP 2단계 인증, 첫 로그인 시 임시 비밀번호 변경 강제</li>
         <li>운영관리자가 직원별로 메뉴마다 읽기 · 쓰기 권한 부여</li>
         <li>개인정보 전체 보기는 사유를 입력받아 감사 로그에 기록, 대시보드에서 감사 로그 조회</li>
         <li>기사는 1회용 코드로 기기를 등록해 1명 1대로 로그인 (등록하면 이전 기기의 refresh 토큰 폐기)</li>
         <li>광고성 푸시는 수신 동의자에게만 “(광고)” 표기와 수신 거부 안내를 붙이고, 야간(21~8시)이면 아침 8시에 발송</li>
-      </ul></div>
+      </ul></details></div>
     </div>
-    <div class="grid">
-      <div class="card"><span class="tag">보안</span><h3>민감정보 필드 암호화</h3><p>공동현관 비밀번호처럼 DB가 유출돼도 읽히면 안 되는 값은 AES-256-GCM으로 암호화해 저장합니다. 버전 접두사(<code>v1:</code>)로 키 교체에 대비했습니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>네이티브 의존성 없는 비밀번호 해시</h3><p>Node 내장 scrypt(N=2<sup>15</sup>)를 쓰고, 해시 문자열에 파라미터를 함께 저장해 비용을 올려도 기존 해시를 검증할 수 있게 했습니다.</p></div>
-      <div class="card"><span class="tag">보안</span><h3>직원 권한 · 감사 로그</h3><p>운영 직원은 TOTP 2단계 인증으로 로그인하고, 메뉴별 권한을 따로 줍니다. 개인정보 전체 보기 같은 민감한 조회는 사유를 입력받아 감사 로그에 남깁니다.</p></div>
-      <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></div>
-      <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></div>
-      <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></div>
-      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></div>
-      <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></div>
-      <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></div>
+    <div class="grid feature-list">
+      <div class="card"><span class="tag">보안</span><h3>민감정보 필드 암호화</h3><details class="more"><summary>구현 기능 상세</summary><p>공동현관 비밀번호처럼 DB가 유출돼도 읽히면 안 되는 값은 AES-256-GCM으로 암호화해 저장합니다. 버전 접두사(<code>v1:</code>)로 키 교체에 대비했습니다.</p></details></div>
+      <div class="card"><span class="tag">보안</span><h3>네이티브 의존성 없는 비밀번호 해시</h3><details class="more"><summary>구현 기능 상세</summary><p>Node 내장 scrypt(N=2<sup>15</sup>)를 쓰고, 해시 문자열에 파라미터를 함께 저장해 비용을 올려도 기존 해시를 검증할 수 있게 했습니다.</p></details></div>
+      <div class="card"><span class="tag">보안</span><h3>직원 권한 · 감사 로그</h3><details class="more"><summary>구현 기능 상세</summary><p>운영 직원은 TOTP 2단계 인증으로 로그인하고, 메뉴별 권한을 따로 줍니다. 개인정보 전체 보기 같은 민감한 조회는 사유를 입력받아 감사 로그에 남깁니다.</p></details></div>
+      <div class="card"><span class="tag">결제</span><h3>교체 가능한 결제 게이트웨이</h3><details class="more"><summary>구현 기능 상세</summary><p><code>PaymentGateway</code> 추상화 뒤에 PortOne 구현과 mock 구현을 두어, 계약 전에도 정기결제·환불·실패 재시도 흐름 전체를 테스트할 수 있습니다.</p></details></div>
+      <div class="card"><span class="tag">결제</span><h3>가격 변경 · 동의 흐름</h3><details class="more"><summary>구현 기능 상세</summary><p>기존 구독자의 요금 인상은 앱에서 동의를 받은 뒤 적용하고, 인하는 안내만 합니다. 이벤트·할인 규칙은 운영툴에서 조합해 만듭니다.</p></details></div>
+      <div class="card"><span class="tag">확장성</span><h3>데이터로 관리하는 지역 · 권역</h3><details class="more"><summary>구현 기능 상세</summary><p>시군구 → 읍면동(법정동) → 권역 구조를 DB에 두고 운영툴에서 열고 닫습니다. 서비스 불가 지역 신청은 “구독 대기”로 받아 오픈 시 알림을 보냅니다.</p></details></div>
+      <div class="card"><span class="tag">현장</span><h3>오프라인에 강한 운영 앱</h3><details class="more"><summary>구현 기능 상세</summary><p>지하 주차장 등 통신이 끊기는 상황을 가정해, 수거 사진·결과를 기기에 쌓아 두었다가 연결되면 자동 전송합니다. 사진은 보관 기간이 지나면 자동 정리됩니다.</p></details></div>
+      <div class="card"><span class="tag">설계</span><h3>코드가 원본인 API 문서</h3><details class="more"><summary>구현 기능 상세</summary><p>DTO 데코레이터로 OpenAPI를 생성하고, 리소스별 HTML 스키마 문서(18개)를 DTO와 함께 갱신합니다. 둘이 다르면 버그로 간주합니다.</p></details></div>
+      <div class="card"><span class="tag">UX</span><h3>로그인 없이 둘러보기</h3><details class="more"><summary>구현 기능 상세</summary><p>서비스 소개·우리 동네 수거 요일·요금은 로그인 없이 보고, 결제 시점에만 로그인을 요구합니다. 고른 플랜은 로그인 후에도 그대로 유지됩니다.</p></details></div>
     </div>
   </div>
 </section>
@@ -456,6 +463,8 @@
     document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
     document.querySelectorAll('.gallery').forEach(g => g.classList.toggle('on', g.id === b.dataset.tab));
   }));
+  // 인쇄할 때는 접힌 구현 기능 상세를 모두 펼친다
+  addEventListener('beforeprint', () => document.querySelectorAll('details.more').forEach(d => d.open = true));
   // 이미지 확대 (바깥 클릭으로 닫기)
   const dlg = document.getElementById('zoom');
   const open = img => { dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal(); };
