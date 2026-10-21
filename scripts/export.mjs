@@ -73,6 +73,8 @@ async function exportSlug(slug, lang) {
       await document.fonts.ready;
       // src 없는 img(확대용 <dialog> 안의 빈 img)는 제외
       const imgs = [...document.images].filter((img) => img.getAttribute('src'));
+      // loading="lazy" 이미지를 decode()하면 헤드리스 Chrome 렌더러가 죽으므로 먼저 즉시 로드로 바꾼다
+      imgs.forEach((img) => { img.loading = 'eager'; });
       const results = await Promise.all(imgs.map((img) => img.decode().then(() => null, () => img.getAttribute('src'))));
       return results.filter(Boolean);
     });
