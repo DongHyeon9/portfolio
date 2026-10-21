@@ -8,12 +8,12 @@
   :root {
     --bg: #f7f8fa; --surface: #ffffff; --surface-2: #eef1f5; --text: #16191d; --text-2: #565d66; --border: #dde2e8;
     --primary: #c2410c; --primary-soft: #fdeee6; --accent: #2f5bd3; --accent-soft: #e7eefc; --ok: #18794e; --ok-soft: #e6f4ec;
-    --radius: 16px; --shadow: 0 1px 2px rgb(0 0 0 / .05), 0 10px 30px rgb(0 0 0 / .08);
+    --radius: 16px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121417; --surface: #1a1d21; --surface-2: #23272d; --text: #e8eaed; --text-2: #a3aab3; --border: #323840;
-      --primary: #ff8a5c; --primary-soft: #3a2218; --accent: #8fb0ff; --accent-soft: #1c2742; --ok: #5fd39a; --ok-soft: #173426; --shadow: none;
+      --primary: #ff8a5c; --primary-soft: #3a2218; --accent: #8fb0ff; --accent-soft: #1c2742; --ok: #5fd39a; --ok-soft: #173426;
     }
   }
   * { box-sizing: border-box; }
@@ -23,8 +23,7 @@
   section { padding: 60px 0; border-top: 1px solid var(--border); }
   h2 { font-size: 30px; margin: 0 0 8px; letter-spacing: -.02em; }
   h3 { font-size: 20px; margin: 0 0 10px; letter-spacing: -.01em; }
-  .eyebrow { color: var(--primary); font-weight: 800; font-size: 13px; letter-spacing: .08em; margin: 0 0 4px; }
-  .lead { color: var(--text-2); margin: 0 0 32px; max-width: 780px; font-size: 17px; }
+  .lead { color: var(--text-2); margin: 0 0 32px; max-width: 900px; font-size: 17px; }
   code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: .88em; }
 
   header.hero { padding: 64px 0 40px; }
@@ -93,7 +92,7 @@
 
   @page { size: A4; margin: 11mm; }
   @media print {
-    :root { --bg: #fff; --shadow: none; }
+    :root { --bg: #fff; }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 12px; }
     header.hero { padding: 0 0 12px; }
     footer, .back { display: none; }
@@ -106,7 +105,7 @@
     .tech { font-size: 10.5px; } .tech th, .tech td { padding: 4px 10px; }
     .tech tr, .cap, .card, .stat, .arch, .lead, .shot, .key { break-inside: avoid; }
     .key { font-size: 14px; margin-top: -8px; }
-    h2, h3, .eyebrow { break-after: avoid; }
+    h2, h3 { break-after: avoid; }
     .arch { overflow: visible; padding: 8px; } .arch svg { min-width: 0; }
     .arch + .cap + h3 { margin-top: 14px; }
     .page-break { break-before: page; }
@@ -143,7 +142,6 @@
 <main>
 <section>
   <div class="wrap">
-    <p class="eyebrow">WHY OPERATIONS</p>
     <h2>운영의 중요성</h2>
     <p class="lead">운영 및 서비스 장애는 곧바로 고객 이탈로 이어집니다.<br>디지털 오류를 겪으면 고객의 <em>최대 75%</em>가 거래를 중단할 수 있다는 조사가 있어,<br>출시 전에 실 서비스와 같은 환경에서 장애 징후를 확인하는 것이 중요합니다.</p>
     <div class="stats">
@@ -157,9 +155,8 @@
 </section>
 <section>
   <div class="wrap">
-    <p class="eyebrow">OVERVIEW</p>
-    <h2>실 서비스와 유사한 내부 테스트 환경</h2>
-    <p class="lead">실제 서비스처럼 nginx 뒤에서 웹 · 관리자 · API 역할을 함께 띄우고, 생성 · 배포 · 복구 절차를 Jenkins 잡으로 표준화했습니다. 배포한 서버의 도달 여부 · 응답 시간 · 5xx 오류 · 자원 사용량을 Grafana로 확인해, 문제를 실 서비스 전에 발견합니다.</p>
+    <h2>실제 서비스와 유사한 내부 테스트 환경 구축</h2>
+    <p class="lead">실제 서비스처럼 Ubuntu Server 환경에 리버스 프록시를 적용해 웹 · 관리자 · API 서버를 운용하고 테스트합니다.<br>CI/CD를 Jenkins로 표준화했습니다.<br>배포한 서버의 도달 여부 · 응답 시간 · 5xx 오류 · 자원 사용량을 Grafana로 확인해, <em>실제 서비스 전에 문제를 발견</em>합니다.</p>
     <div class="stats">
       <div class="stat"><b>6개</b><span>server-local 운영 잡</span></div>
       <div class="stat"><b>3종</b><span>웹 · 관리자 · API 역할</span></div>
@@ -179,7 +176,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">ARCHITECTURE</p>
     <h2>Jenkins · 호스트 에이전트 · nginx 분리</h2>
     <p class="lead">Jenkins 컨트롤러는 권한과 파이프라인을 관리하고, root 작업은 호스트의 검증된 <code>server-ctl</code> 한 곳으로 제한했습니다. 컨테이너 포트는 loopback에만 게시합니다.</p>
     <div class="arch">
@@ -209,7 +205,6 @@
 
 <section class="page-break">
   <div class="wrap">
-    <p class="eyebrow">WORKFLOW</p>
     <h2>생성부터 배포 · 복구까지</h2>
     <p class="lead">입력을 먼저 검증하고, 다른 테스트 서버를 내린 뒤 대상만 올립니다. 성공 후에는 접속 정보와 용량을 남기고, 실패하면 작업 종류에 맞춰 정리하거나 롤백합니다.</p>
     <div class="arch">
@@ -234,7 +229,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">MONITORING</p>
     <h2>Prometheus · Grafana로 장애 징후 확인</h2>
     <p class="lead">테스트 서버가 뜨면 server-ctl이 역할별 주소를 Prometheus 수집 대상으로 등록하고, 중지 · 삭제 시 해제합니다. Prometheus는 재시작 없이 대상 파일 변경을 감지하고, 30초마다 수집한 지표를 90일(최대 10GB) 보존합니다.</p>
     <div class="grid">
@@ -251,7 +245,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">PIPELINE AS CODE</p>
     <h2>커밋으로 Jenkins 잡 동기화</h2>
     <p class="lead"><code>pipelines/&lt;group&gt;/&lt;job&gt;/Jenkinsfile</code> 구조를 seed 잡이 읽어 파이프라인과 상단 탭을 자동 생성합니다. Jenkins 화면에서 잡을 손으로 복제하지 않아도 저장소 상태와 운영 화면이 맞춰집니다.</p>
     <div class="grid two">
@@ -265,7 +258,6 @@
 
 <section class="page-break">
   <div class="wrap">
-    <p class="eyebrow">NOTIFICATION</p>
     <h2>Discord 웹훅 운영 알림</h2>
     <p class="lead">성공 여부만 보내지 않고, 실패했을 때 다음 행동까지 한 메시지에 담았습니다. 모든 server-local 잡은 롤백과 정리가 끝난 뒤 같은 채널로 최종 결과를 전송합니다.</p>
     <div class="grid">
@@ -278,7 +270,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">TECH STACK</p>
     <h2>사용 기술과 선택 이유</h2>
     <p class="lead">Compose, 설치 스크립트, Jenkinsfile, Groovy 라이브러리, Python CLI와 모니터링 설정에서 확인한 역할만 정리했습니다.</p>
     <table class="tech">
@@ -302,7 +293,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">OPERATING RULES</p>
     <h2>실패와 위험을 다루는 방법</h2>
     <div class="grid two">
       <div class="card"><span class="tag p">롤백</span><h3>생성과 배포의 복구 기준 분리</h3><p>새 서버 생성 실패는 nginx · 컨테이너 · 작업본을 역순으로 정리합니다. 기존 서버 배포 실패는 새 커밋 기동 전까지만 이전 커밋으로 되돌립니다.</p></div>
