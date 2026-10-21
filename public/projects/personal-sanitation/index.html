@@ -55,6 +55,12 @@
   .card ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-2); font-size: 15px; }
   .card .tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--primary-soft); color: var(--primary); margin-bottom: 10px; }
   .card .tag.plan { background: var(--accent-soft); color: #a8650a; }
+  .service-card { display: grid; gap: 18px; align-content: start; }
+  .service-card figure { margin-top: 4px; }
+  .service-card figure img { width: 100%; max-height: 430px; object-fit: contain; object-position: top; border-radius: 14px; }
+  .service-card.web figure img { max-height: none; border: 1px solid var(--border); }
+  .service-card figcaption { margin-top: 8px; }
+  .service-card .stack-line { color: var(--text); font-size: 14px; font-weight: 700; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card .tag.plan { color: var(--accent); } }
 
   /* 기술 스택 표 */
@@ -97,6 +103,7 @@
   .gallery { display: none; gap: 20px; }
   .gallery.on { display: grid; }
   .gallery.phones { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .gallery.phones figure { max-width: 260px; }
   .gallery.desks { grid-template-columns: repeat(2, 1fr); }
   figure { margin: 0; }
   figure img { width: 100%; display: block; cursor: zoom-in; }
@@ -165,13 +172,13 @@
       <div class="brand"><img src="images/logo-mark.svg" alt="분리집사 로고"><b>분리집사</b></div>
       <h1>문앞에 내놓으면,<br><em>분리수거까지</em> 대신합니다</h1>
       <div class="chips">
-        <span class="chip">React</span><span class="chip">React Native</span><span class="chip">Next.js</span><span class="chip">Nest.js</span>
-        <span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">Expo</span>
+        <span class="chip">React</span><span class="chip">React Native</span><span class="chip">Next.js</span><span class="chip">NestJS</span>
+        <span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">TypeORM</span><span class="chip">Expo</span>
       </div>
     </div>
     <div class="hero-shots">
-      <img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록">
-      <img src="images/app-home-dark.png" alt="서비스 앱 홈 화면 다크 모드">
+      <img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지">
+      <img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지">
     </div>
   </div>
 </header>
@@ -181,12 +188,12 @@
   <div class="wrap">
     <p class="eyebrow">OVERVIEW</p>
     <h2>프로젝트 개요</h2>
-    <p class="lead">계정 하나로 우리 집·부모님 댁 등 여러 주소를 구독하고, 동네(권역)별로 정해진 요일에 주 1회 수거합니다. 서비스 지역 밖이면 결제 없이 “구독 대기”로 저장했다가 지역이 열리면 알림을 보냅니다. 지역·권역은 코드가 아닌 데이터로 관리해 확장에 대비했습니다.</p>
+    <p class="lead">구독제 분리수거 대행 서비스입니다. 고객 앱은 Android·iOS 크로스 플랫폼을 지원하며, 고객·기사·운영 담당자가 하나의 서비스 흐름으로 연결됩니다.</p>
     <div class="grid two services">
-      <div class="card"><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>React Native · Expo로 만든 Android·iOS 앱. 둘러보기, 본인인증 가입, 여러 주소 구독 신청, 이번 주 요청사항, 수거 알림, 요금 변경 동의를 제공합니다.</p></div>
-      <div class="card"><span class="tag">기사 앱</span><h3>운영 앱</h3><p>React Native · Expo로 만든 수거 기사용 앱. 오늘 수거 목록, 수거지 출입 정보, 인증 사진 촬영, 통신이 끊겨도 쌓아 두는 오프라인 전송 대기열을 제공합니다.</p></div>
-      <div class="card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>Next.js · React로 만든 운영 직원용 웹. 오늘 현황, 구독·결제 조회, 요청 답변, 가격·플랜, 지역·권역, 푸시 발송, 이벤트·할인, 직원 권한·감사 로그를 관리합니다.</p></div>
-      <div class="card"><span class="tag">API</span><h3>백엔드 서버</h3><p>Nest.js · PostgreSQL로 만든 REST API 서버. 세 클라이언트가 함께 쓰며, Docker 이미지 하나로 API 서버와 DB 마이그레이션을 실행합니다.</p></div>
+      <div class="card service-card"><div><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>구독을 신청하고, 정해진 수거 일정과 요청 사항을 관리하는 고객용 앱입니다.</p></div><figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"><figcaption>구독 페이지</figcaption></figure><p class="stack-line">React · React Native · Expo</p></div>
+      <div class="card service-card"><div><span class="tag">기사 앱</span><h3>운영 앱</h3><p>수거 방문기사에게 오늘의 수거 권역과 방문 목록을 보여줍니다. 완료·미수거 기록을 오프라인에서도 저장하고, 관리자 웹의 작업 현황과 연계되도록 설계했습니다.</p></div><figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"><figcaption>오늘 수거 페이지</figcaption></figure><p class="stack-line">React · React Native · Expo</p></div>
+      <div class="card service-card web"><div><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>오늘의 권역별 작업 현황과 구독·결제, 고객 요청, 푸시 알림, 이벤트·할인, 가격·플랜을 관리하는 운영 대시보드입니다.</p></div><figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"><figcaption>오늘 현황 페이지</figcaption></figure><p class="stack-line">React · Next.js</p></div>
+      <div class="card service-card"><div><span class="tag">API</span><h3>백엔드 서버</h3><p>고객 앱과 운영 대시보드가 공유하고 기사 앱 연동을 전제로 설계한 백엔드 API입니다. 고객·구독·수거·결제 데이터를 통합 관리해 서비스 간 데이터 정합성을 높였습니다.</p></div><p class="stack-line">NestJS · PostgreSQL · Docker · TypeORM</p></div>
     </div>
   </div>
 </section>
@@ -416,7 +423,7 @@
   <div class="wrap">
     <p class="eyebrow">SCREENS</p>
     <h2>화면</h2>
-    <p class="lead">구현 전에 HTML로 화면을 먼저 디자인하고, 공용 디자인 토큰(<code>tokens.css</code>)을 기준으로 각 앱에 옮겼습니다. <span class="screen-only">이미지를 누르면 크게 볼 수 있습니다.</span></p>
+    <p class="lead">각 서비스의 대표 화면입니다. <span class="screen-only">이미지를 누르면 크게 볼 수 있습니다.</span></p>
     <div class="tabs">
       <button aria-pressed="true" data-tab="app">서비스 앱</button>
       <button aria-pressed="false" data-tab="driver">운영 앱</button>
@@ -424,31 +431,15 @@
     </div>
 
     <div class="gallery phones on" id="app" data-label="서비스 앱">
-      <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b>로그인 없이 동네·요금 확인</figcaption></figure>
-      <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b>휴대폰 본인인증</figcaption></figure>
-      <figure><img src="images/app-home.png" alt="내 구독 목록"><figcaption><b>홈</b>여러 주소의 구독 목록</figcaption></figure>
-      <figure><img src="images/app-detail.png" alt="구독 상세"><figcaption><b>구독 상세</b>다음 수거 · 요청 현황</figcaption></figure>
-      <figure><img src="images/app-subscribe.png" alt="플랜 선택"><figcaption><b>구독 신청</b>봉투 용량 · 추가 봉투</figcaption></figure>
-      <figure><img src="images/app-waitlist.png" alt="서비스 불가 지역"><figcaption><b>구독 대기</b>서비스 지역 밖 주소</figcaption></figure>
-      <figure><img src="images/app-request.png" alt="이번 주 요청 작성"><figcaption><b>요청사항</b>이번 주 요청 · 고정 요청</figcaption></figure>
-      <figure><img src="images/app-notifications.png" alt="알림 목록"><figcaption><b>알림</b>수거 예정 · 완료 알림</figcaption></figure>
-      <figure><img src="images/app-price-change.png" alt="요금 인상 동의"><figcaption><b>요금 변경 동의</b>기존 구독자 가격 변경</figcaption></figure>
-      <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b>기기 설정을 따름</figcaption></figure>
+      <figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"><figcaption><b>구독 페이지</b>봉투 용량 · 추가 봉투 선택</figcaption></figure>
     </div>
 
     <div class="gallery phones" id="driver" data-label="운영 앱">
-      <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b>진행률 · 오프라인 전송 대기</figcaption></figure>
-      <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b>출입 정보(비밀번호 가림)</figcaption></figure>
-      <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b>사진 촬영 후 완료 처리</figcaption></figure>
+      <figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"><figcaption><b>오늘 수거 페이지</b>권역 · 방문 목록 · 작업 현황</figcaption></figure>
     </div>
 
     <div class="gallery desks" id="dash" data-label="운영 대시보드">
-      <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b>권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
-      <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b>목록 + 상세 드로어</figcaption></figure>
-      <figure><img src="images/dash-pricing.png" alt="가격 플랜"><figcaption><b>가격 · 플랜</b>예약 가격 변경 · 동의 현황</figcaption></figure>
-      <figure><img src="images/dash-areas.png" alt="지역 권역"><figcaption><b>지역 · 권역</b>법정동 트리 · 권역 상세</figcaption></figure>
-      <figure><img src="images/dash-push.png" alt="푸시 작성"><figcaption><b>푸시 발송</b>대상 조건 · 미리보기</figcaption></figure>
-      <figure><img src="images/dash-promotions.png" alt="이벤트 만들기"><figcaption><b>이벤트 · 할인</b>조건 조합으로 이벤트 생성</figcaption></figure>
+      <figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"><figcaption><b>오늘 현황 페이지</b>권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
     </div>
   </div>
 </section>
