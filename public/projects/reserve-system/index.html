@@ -17,64 +17,60 @@
     }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.7 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
+  body { margin: 0; word-break: keep-all; overflow-wrap: anywhere; background: var(--bg); color: var(--text); font: 16px/1.65 "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
   a { color: var(--accent); }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
-  section { padding: 60px 0; border-top: 1px solid var(--border); }
-  h2 { font-size: 30px; margin: 0 0 8px; letter-spacing: -.02em; }
-  h3 { font-size: 22px; margin: 0 0 10px; letter-spacing: -.01em; }
-  .eyebrow { color: var(--primary); font-weight: 800; font-size: 13px; letter-spacing: .08em; margin: 0 0 4px; }
-  .lead { color: var(--text-2); margin: 0 0 32px; max-width: 760px; font-size: 17px; }
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.02em; }
+  h3 { font-size: 18px; margin: 0 0 6px; }
+  .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
   code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: .88em; }
+  .grid + .grid { margin-top: 16px; }
+  .grid.feature-list { grid-template-columns: repeat(2, 1fr); align-items: start; }
+  .more { margin-top: 6px; }
+  .more summary { cursor: pointer; width: fit-content; font-size: 14px; font-weight: 700; color: var(--primary); }
+  .more[open] summary { margin-bottom: 8px; }
+  .more > p, .more > ul { margin-top: 0; }
+  .arch + .lead { margin-top: 40px; }
 
-  /* hero */
+  /* 히어로 */
   header.hero { padding: 64px 0 56px; }
   .brand { font-size: 26px; font-weight: 900; letter-spacing: -1px; }
   .brand span { color: var(--primary); }
   .hero h1 { font-size: clamp(32px, 5vw, 50px); line-height: 1.2; margin: 18px 0 16px; letter-spacing: -.03em; }
   .hero h1 em { font-style: normal; color: var(--primary); }
-
-  /* browser frame */
-  .browser { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); }
-  .hero .browser { max-width: 880px; margin: 0 auto; }
+  .browser { max-width: 880px; margin: 0 auto; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); }
   .browser .bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
   .browser .bar i { width: 10px; height: 10px; border-radius: 50%; background: #e0d6cf; }
   .browser .bar span { margin-left: 10px; font-size: 12px; color: var(--text-2); background: var(--surface); border-radius: 6px; padding: 1px 10px; flex: 1; max-width: 340px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .browser img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
 
-  /* feature rows */
-  .feature { display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; align-items: center; margin: 0 0 56px; }
-  .feature:last-child { margin-bottom: 0; }
-  .feature.flip .shot { order: 2; }
-  .feature ul { margin: 0; padding-left: 20px; color: var(--text-2); }
-  .feature li { margin: 6px 0; }
-  .feature li b { color: var(--text); }
-  .num { display: inline-block; font-size: 12px; font-weight: 800; color: var(--primary); background: var(--primary-soft); border-radius: 6px; padding: 2px 8px; margin-bottom: 8px; }
-
-  .pair { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .pair figure { margin: 0; }
-  figcaption { font-size: 13px; color: var(--text-2); margin-top: 6px; text-align: center; }
-
-  .grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
-  .grid.two { grid-template-columns: repeat(2, 1fr); }
+  /* 카드 그리드 */
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
-  .card h3 { font-size: 18px; margin: 8px 0 6px; }
-  .card p { color: var(--text-2); margin: 0; font-size: 15px; }
+  .card p { margin: 0; color: var(--text-2); font-size: 15px; }
   .card ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-2); font-size: 15px; }
-  .grid + .grid { margin-top: 14px; }
+  .card .tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); margin-bottom: 10px; }
   .card .result { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--ok); }
-  .tag { display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+  .service-card .chips { margin-top: 16px; }
 
-  .phones { display: flex; gap: 22px; justify-content: center; align-items: flex-start; }
-  .phones figure { margin: 0; width: 220px; }
-  .phones img { width: 100%; border-radius: 22px; border: 1px solid var(--border); box-shadow: var(--shadow); cursor: zoom-in; display: block; max-height: 470px; object-fit: cover; object-position: top; }
+  /* 기술 스택 */
+  .stack-groups { display: grid; gap: 16px; }
+  .stack-groups + p { margin: 16px 0 0; }
+  .stack-group h3 { margin: 0; }
+  .tech-list { display: grid; grid-template-columns: 230px 1fr; margin: 0; }
+  .tech-list dt, .tech-list dd { margin: 0; padding: 10px 0; border-top: 1px solid var(--border); }
+  .tech-list dt { font-weight: 700; padding-right: 16px; }
+  .tech-list dd { color: var(--text-2); font-size: 15px; }
 
-  .stack { display: grid; grid-template-columns: 150px 1fr; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
-  .stack > div { padding: 13px 18px; border-top: 1px solid var(--border); }
-  .stack > div:nth-child(-n+2) { border-top: 0; }
-  .stack .k { font-weight: 800; background: var(--surface-2); }
-  .chip { display: inline-block; background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 2px 11px; font-size: 13px; margin: 2px 4px 2px 0; white-space: nowrap; }
+  /* 목록으로 돌아가기 */
+  .back { display: inline-block; margin-top: 14px; font-size: 14px; text-decoration: none; font-weight: 700; }
+  .topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .topbar .lang-switch { font-size: 14px; }
 
+  /* 시스템 구성 */
   .arch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; overflow-x: auto; }
   .arch svg { display: block; width: 100%; min-width: 680px; height: auto; }
   .arch text { fill: var(--text); font: 13px "Malgun Gothic", "Hiragino Sans", "Yu Gothic", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; }
@@ -85,59 +81,59 @@
   .arch .ci { fill: var(--ok-soft); stroke: var(--ok); }
   .arch .ln { stroke: var(--text-2); stroke-width: 1.4; fill: none; }
   .arch .dash { stroke-dasharray: 5 4; }
-
-  .topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .topbar .lang-switch { font-size: 14px; }
-  .back { display: inline-block; margin-top: 14px; font-size: 14px; text-decoration: none; font-weight: 700; }
   .arch .b { font-weight: 700; }
   .arch .err { fill: var(--primary); font-size: 12px; }
   .arch .warnbox { fill: var(--primary-soft); stroke: var(--primary); stroke-dasharray: 5 4; }
   .arch .red { stroke: var(--primary); }
-  .arch + .lead, .flow-notes + .lead { margin-top: 40px; }
-  .flow-notes { margin: 16px 0 0; padding-left: 18px; color: var(--text-2); font-size: 15px; }
-  .tech { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); font-size: 14px; }
-  .tech th, .tech td { text-align: left; vertical-align: top; padding: 9px 14px; border-top: 1px solid var(--border); }
-  .tech th { background: var(--surface-2); font-size: 13px; white-space: nowrap; }
-  .tech td:first-child { white-space: nowrap; font-weight: 800; }
-  .tech td:last-child { color: var(--text-2); }
-  .tech tr.cat td { background: var(--surface-2); color: var(--primary); font-size: 12px; letter-spacing: .06em; padding: 5px 14px; }
-  footer { padding: 40px 0 60px; border-top: 1px solid var(--border); color: var(--text-2); font-size: 14px; }
+
+  /* 화면 갤러리 (탭) */
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tabs button { font: inherit; font-size: 15px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .gallery { display: none; gap: 20px; }
+  .gallery.on { display: grid; }
+  .gallery.phones { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .gallery.desks { grid-template-columns: repeat(2, 1fr); }
+  figure { margin: 0; }
+  figure img { width: 100%; display: block; cursor: zoom-in; }
+  .phones figure img { border-radius: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); aspect-ratio: 390 / 844; object-fit: cover; object-position: top; }
+  .desks figure img { border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; }
+  figcaption { font-size: 14px; color: var(--text-2); margin-top: 10px; }
+  figcaption b { color: var(--text); display: block; }
+
   dialog { border: 0; padding: 0; background: transparent; max-width: 94vw; max-height: 94vh; }
   dialog::backdrop { background: rgb(0 0 0 / .75); }
-  dialog img { max-width: 94vw; max-height: 92vh; display: block; border-radius: 12px; }
+  dialog img { max-width: 94vw; max-height: 90vh; display: block; border-radius: 12px; }
 
   @media screen and (max-width: 860px) {
-    .tech td:first-child { white-space: normal; }
-    .feature, .grid, .grid.two, .pair { grid-template-columns: 1fr; }
-    .feature.flip .shot { order: 0; }
-    .stack { grid-template-columns: 1fr; }
-    .stack > div:nth-child(2) { border-top: 1px solid var(--border); }
-    .stack > div:first-child { border-top: 0; }
-    .phones { flex-direction: column; align-items: center; }
+    .grid, .grid.feature-list, .gallery.desks { grid-template-columns: 1fr; }
+    .tech-list { grid-template-columns: 1fr; }
+    .tech-list dd { border-top: 0; padding-top: 0; }
     section { padding: 40px 0; }
   }
 
-  @page { size: A4; margin: 11mm; }
+  /* PDF 인쇄: 카드·이미지가 페이지 사이에서 잘리지 않게 */
+  @page { size: A4; margin: 12mm; }
   @media print {
     :root { --bg: #fff; --shadow: none; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 12px; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 14px; }
     header.hero { padding: 0 0 12px; }
-    .hero .browser img { max-height: 75mm; object-fit: cover; object-position: top; }
-    footer, .no-print, .topbar { display: none; }
-    .tech { font-size: 10.5px; } .tech th, .tech td { padding: 4px 10px; }
-    .tech tr, .flow-notes li { break-inside: avoid; }
     .hero h1 { font-size: 30px; margin: 10px 0; }
-    section { padding: 10px 0; }
-    h2 { font-size: 22px; } h3 { font-size: 16px; }
-    .lead { font-size: 13px; margin-bottom: 16px; }
-    .feature { gap: 18px; margin-bottom: 14px; grid-template-columns: 1fr 1.1fr; }
-    .feature, .card, .browser, .phones figure, .arch, .pair figure, .lead, .stack { break-inside: avoid; }
-    h2, .eyebrow { break-after: avoid; }
-    .phones figure { width: 120px; }
-    .phones img { max-height: 140px; }
-    .arch { overflow: visible; } .arch svg { min-width: 0; }
-    .page-break { break-before: page; }
-    section:has(.phones) { break-inside: avoid; }
+    .hero .browser img { max-height: 75mm; object-fit: cover; object-position: top; }
+    section { padding: 28px 0; }
+    .tabs { display: none; }
+    .gallery { display: grid !important; margin-bottom: 28px; }
+    .gallery::before { content: attr(data-label); grid-column: 1 / -1; font-weight: 700; font-size: 18px; }
+    .gallery.phones { grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .gallery.desks { break-before: page; }
+    .card, .arch, .browser, figure { break-inside: avoid; }
+    .topbar, .screen-only { display: none; }
+    .more summary { display: none; }
+    .more::details-content { content-visibility: visible; display: block; }
+    h2, .lead { break-after: avoid; }
+    h3 { font-size: 16px; }
+    .arch { overflow: visible; }
+    .arch svg { min-width: 0; }
   }
 
   /* 언어 전환: 홈(app/globals.css)과 같은 드롭다운 */
@@ -170,82 +166,128 @@
 <main>
 <section>
   <div class="wrap">
-    <p class="eyebrow">OVERVIEW</p>
     <h2>프로젝트 개요</h2>
-    <p class="lead">팝업스토어 방문을 예약하는 웹 서비스입니다. 서비스 웹 · 운영 대시보드 · 백엔드 서버 3개 서비스와 데이터베이스 설계, 자동 배포까지 혼자 설계하고 구현했습니다. 서비스 웹과 운영 대시보드는 하나의 Next.js 앱에서 경로와 권한으로 나누고, 예약 판정은 백엔드 서버가 맡습니다. 예약 오픈 순간 사용자가 몰려도 정원을 넘지 않는 예약이 핵심입니다.</p>
+    <p class="lead">팝업스토어 방문을 예약하는 웹 서비스입니다.<br>서비스 웹 · 운영 대시보드 · 백엔드 서버와 DB 설계, 자동 배포까지 혼자 설계하고 구현했습니다.<br>예약 오픈 순간 사용자가 몰려도 정원을 넘지 않는 예약이 핵심입니다.</p>
     <div class="grid">
-      <div class="card"><span class="tag">Next.js · Vercel</span><h3>서비스 웹</h3>
-        <p>고객이 팝업을 둘러보고 날짜 · 회차를 골라 예약하고, 내 예약을 확인 · 취소하는 화면입니다.</p></div>
-      <div class="card"><span class="tag">Next.js · Vercel</span><h3>운영 대시보드 (관리자 웹)</h3>
-        <p>운영자가 팝업 · 회차를 등록하고, 오늘 예약 현황을 보고, 방문 당일 체크인하는 화면입니다.</p></div>
-      <div class="card"><span class="tag">Spring Boot · Docker · Cloud Run</span><h3>백엔드 서버</h3>
-        <p>인증 · 권한 확인과 예약 트랜잭션을 처리하는 REST API입니다. Supabase(PostgreSQL · Auth)와 연결됩니다.</p></div>
+      <div class="card service-card"><span class="tag">고객 웹</span><h3>서비스 웹</h3><p>고객이 팝업을 둘러보고 날짜 · 회차를 골라 예약하는 화면입니다.<br>내 예약을 확인하고 무료 취소 기한 안에 취소할 수 있습니다.</p><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vercel</span></div></div>
+      <div class="card service-card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>운영자가 팝업 · 회차를 등록하고 오늘 예약 현황을 보는 화면입니다.<br>방문 당일 체크인을 처리하고, 서비스 웹과 같은 Next.js 앱에서 경로 · 권한으로 나뉩니다.</p><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vercel</span></div></div>
+      <div class="card service-card"><span class="tag">API</span><h3>백엔드 서버</h3><p>인증 · 권한 확인과 예약 트랜잭션을 처리하는 REST API입니다.<br>Supabase(PostgreSQL · Auth)와 연결됩니다.</p><div class="chips"><span class="chip">Spring Boot</span><span class="chip">Java</span><span class="chip">Supabase</span><span class="chip">Docker</span><span class="chip">Cloud Run</span></div></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">FEATURES</p>
+    <h2>서비스 이미지</h2>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="web" aria-controls="web">서비스 웹</button>
+      <button role="tab" aria-selected="false" data-tab="admin" aria-controls="admin">운영 대시보드</button>
+      <button role="tab" aria-selected="false" data-tab="mobile" aria-controls="mobile">모바일</button>
+    </div>
+
+    <div class="gallery desks on" id="web" role="tabpanel" data-label="서비스 웹">
+      <figure><img src="images/w-popups.png" alt="팝업 탐색 화면"><figcaption><b>팝업 탐색 · 검색</b></figcaption></figure>
+      <figure><img src="images/w-detail.png" alt="팝업 상세와 회차 선택"><figcaption><b>날짜 · 회차 선택</b></figcaption></figure>
+      <figure><img src="images/w-waiting.png" alt="예약 오픈 대기 화면"><figcaption><b>예약 오픈 대기</b></figcaption></figure>
+      <figure><img src="images/w-reserve.png" alt="예약 정보 입력 화면"><figcaption><b>예약 정보 입력</b></figcaption></figure>
+      <figure><img src="images/w-complete.png" alt="예약 완료 화면"><figcaption><b>예약 완료</b></figcaption></figure>
+      <figure><img src="images/w-my.png" alt="내 예약 목록"><figcaption><b>내 예약</b></figcaption></figure>
+      <figure><img src="images/w-my-detail.png" alt="예약 상세와 취소"><figcaption><b>예약 상세 · 취소</b></figcaption></figure>
+      <figure><img src="images/w-login.png" alt="로그인과 회원가입"><figcaption><b>로그인 · 회원가입</b></figcaption></figure>
+    </div>
+
+    <div class="gallery desks" id="admin" role="tabpanel" data-label="운영 대시보드">
+      <figure><img src="images/a-dashboard.png" alt="관리자 대시보드"><figcaption><b>오늘 현황</b></figcaption></figure>
+      <figure><img src="images/a-popup-edit.png" alt="팝업 등록과 수정"><figcaption><b>팝업 등록 · 수정</b></figcaption></figure>
+      <figure><img src="images/a-slots.png" alt="회차와 정원 관리"><figcaption><b>회차 · 정원 관리</b></figcaption></figure>
+      <figure><img src="images/a-reservation-detail.png" alt="예약 상세와 체크인"><figcaption><b>예약 관리 · 체크인</b></figcaption></figure>
+      <figure><img src="images/a-ops-tests.png" alt="운영 테스트 도구"><figcaption><b>운영 테스트 도구</b></figcaption></figure>
+    </div>
+
+    <div class="gallery phones" id="mobile" role="tabpanel" data-label="모바일">
+      <figure><img src="images/m-home.png" alt="모바일 홈"><figcaption><b>홈</b></figcaption></figure>
+      <figure><img src="images/m-detail.png" alt="모바일 팝업 상세"><figcaption><b>팝업 상세 · 회차 선택</b></figcaption></figure>
+      <figure><img src="images/m-reserve.png" alt="모바일 예약 입력"><figcaption><b>예약 정보 입력</b></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <h2>구현 기능</h2>
-    <div class="grid two">
-      <div class="card"><span class="tag">서비스 웹</span><h3>팝업 탐색 · 회차 선택</h3><ul>
-        <li>이름 검색, 지역 · 카테고리 필터로 팝업 찾기 (로그인 없이 둘러보기)</li>
+    <div class="grid feature-list">
+      <div class="card"><span class="tag">서비스 웹</span><h3>팝업 탐색 · 회차 선택</h3><details class="more"><summary>구현 기능 상세</summary><ul>
+        <li>이름 검색, 지역 · 카테고리 필터 (로그인 없이 둘러보기)</li>
         <li>카드마다 예약 상태 배지 (예약 가능 · 오픈 대기 · 매진 · 마감)</li>
-        <li>운영 기간의 날짜 → 회차(시간) 순서로 선택, 회차별 잔여석 표시, 매진 회차는 선택 불가</li>
-        <li>오픈 전에는 오픈 일시와 D-day를 안내하고, 서버 시각 기준 정각에 예약 가능으로 전환</li>
-        <li>모든 시간은 한국 시간(KST)으로 표시하고 서버에는 UTC로 저장</li>
-      </ul></div>
-      <div class="card"><span class="tag">서비스 웹 · API</span><h3>예약 · 취소</h3><ul>
+        <li>운영 기간의 날짜 → 회차(시간) 순서로 선택</li>
+        <li>회차별 잔여석 표시, 매진 회차는 선택 불가</li>
+        <li>오픈 전에는 오픈 일시와 D-day 안내, 예약 버튼 잠금</li>
+        <li>서버 시각 기준 정각에 예약 가능으로 전환 (PC 시계를 바꿔도 오픈 전 요청은 서버가 차단)</li>
+        <li>모든 시간은 한국 시간(KST)으로 표시, 서버에는 UTC로 저장</li>
+      </ul></details></div>
+      <div class="card"><span class="tag">서비스 웹 · API</span><h3>예약 · 취소</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>인원(팝업별 최대 인원 제한), 예약자 정보, 약관 동의 입력</li>
-        <li>멱등성 키로 버튼을 여러 번 눌러도 예약은 한 번만 생성, 같은 회차 중복 예약 차단</li>
+        <li>멱등성 키로 버튼을 여러 번 눌러도 예약은 한 번만 생성</li>
+        <li>같은 회차 중복 예약 차단</li>
         <li>매진 · 중복 예약 · 오픈 전 등 실패 원인을 한국어로 안내하고 입력값 유지</li>
-        <li>회차 날짜 기반 예약번호 <code>PS-YYMMDD-NNNN</code> 발급, 방문 정보를 티켓 형태로 요약</li>
-        <li>내 예약(예정 · 지난 예약 · 취소 탭), 무료 취소 기한 안내, 기한이 지나면 취소 차단</li>
-      </ul></div>
-      <div class="card"><span class="tag">서비스 웹</span><h3>로그인 · 회원가입</h3><ul>
+        <li>회차 날짜 기반 예약번호 <code>PS-YYMMDD-NNNN</code> 발급, 방문 일시 · 인원 · 장소를 티켓 형태로 요약</li>
+        <li>내 예약 (예정 · 지난 예약 · 취소 탭)</li>
+        <li>무료 취소 기한 안내, 기한이 지나면 취소 차단</li>
+      </ul></details></div>
+      <div class="card"><span class="tag">서비스 웹</span><h3>로그인 · 회원가입</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>Supabase Auth 이메일 가입 · 로그인</li>
-        <li>예약할 때만 로그인을 요청하고, 로그인 후 원래 보던 화면으로 복귀</li>
-        <li>토큰은 httpOnly 쿠키에만 두고 Next.js 서버가 API를 호출</li>
-      </ul></div>
-      <div class="card"><span class="tag">운영 대시보드</span><h3>팝업 · 회차 관리</h3><ul>
+        <li>예약할 때만 로그인 요청, 로그인 후 원래 보던 화면으로 복귀</li>
+        <li>토큰은 httpOnly 쿠키에만 보관하고 Next.js 서버가 API 호출</li>
+        <li>모바일 폭(390px)에서도 가로 스크롤 없이 동작 (17개 화면 자동 검사)</li>
+      </ul></details></div>
+      <div class="card"><span class="tag">운영 대시보드</span><h3>팝업 · 회차 관리</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>초안 → 게시 → 종료의 게시 상태와 예약 상태를 분리 관리</li>
         <li>즉시 오픈 / 예약 오픈(일시 지정), 수동 마감</li>
         <li>두 관리자가 동시에 수정하면 나중 저장을 막고 새로고침 안내</li>
-        <li>기간 · 시간 간격으로 회차 일괄 생성, 정원은 이미 예약된 인원보다 작게 줄일 수 없음</li>
-        <li>예약이 있는 팝업 · 회차는 삭제 불가</li>
-      </ul></div>
-      <div class="card"><span class="tag">운영 대시보드</span><h3>예약 현황 · 체크인</h3><ul>
-        <li>한국 시간 기준 오늘 예약 · 방문(체크인율) · 운영 회차(매진) · 취소율 KPI와 회차별 좌석 점유 현황</li>
+        <li>기간 · 시간 간격으로 회차 일괄 생성</li>
+        <li>정원은 이미 예약된 인원보다 작게 줄일 수 없음</li>
+        <li>예약이 있는 팝업은 초안 전환 · 삭제 불가, 예약 이력이 있는 회차는 삭제 불가</li>
+      </ul></details></div>
+      <div class="card"><span class="tag">운영 대시보드</span><h3>예약 현황 · 체크인</h3><details class="more"><summary>구현 기능 상세</summary><ul>
+        <li>한국 시간 기준 오늘 예약 · 방문(체크인율) · 운영 회차(매진) · 취소율 KPI</li>
+        <li>오늘 회차별 좌석 점유 현황과 운영 알림</li>
         <li>예약번호 · 이름 · 휴대폰 끝자리 검색, 팝업 · 날짜 · 상태 필터</li>
         <li>고객 연락처는 기본 마스킹, 체크인은 방문 당일에만 가능</li>
-        <li>연락처 원문 조회 · 체크인 · 관리자 취소는 감사 로그로 기록, 예약별 상태 이력 표시</li>
-      </ul></div>
-      <div class="card"><span class="tag">운영 대시보드 · API</span><h3>운영 테스트 도구 (SANDBOX)</h3><ul>
+        <li>연락처 원문 조회 · 체크인 · 관리자 취소는 감사 로그로 기록</li>
+        <li>예약 확정 · 취소 · 체크인의 상태 이력 표시</li>
+        <li>관리자 권한은 화면이 아니라 서버가 매 요청마다 확인</li>
+      </ul></details></div>
+      <div class="card"><span class="tag">운영 대시보드 · API</span><h3>운영 테스트 도구 (SANDBOX)</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>관리자 화면에서 부하 · 동시 예약 · 지연 주입 · 장애 주입 시나리오 실행</li>
         <li>실제 데이터와 분리된 가상 팝업 · 가상 사용자로 실행 후 자동 정리</li>
         <li>정원 초과 건수, 응답 시간, 오류율을 실시간 표시</li>
         <li>운영 환경에서는 서버가 기능 자체를 차단</li>
-      </ul></div>
+      </ul></details></div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>기술 포인트</h2>
     <div class="grid">
       <div class="card"><span class="tag">동시성</span><h3>마지막 한 자리에 80명이 몰려도 초과 예약 0건</h3>
-        <p>애플리케이션 메모리 락 대신 <b>데이터베이스의 조건부 UPDATE · 행 잠금 · 유니크 제약</b>으로 좌석을 차감해, 서버가 몇 대로 늘어나도 정원을 넘지 않습니다.</p>
+        <p>애플리케이션 메모리 락 대신 데이터베이스의 조건부 UPDATE · 행 잠금 · 유니크 제약으로 좌석을 차감해, 서버가 몇 대로 늘어나도 정원을 넘지 않습니다.</p>
         <p class="result">✓ 정원 10석 · 동시 80명 → 성공 정확히 10건, 나머지 매진 안내</p></div>
       <div class="card"><span class="tag">신뢰성</span><h3>중복 클릭 · 네트워크 재시도에도 예약은 한 번</h3>
-        <p>예약 요청마다 <b>멱등성 키</b>를 붙여, 같은 요청이 여러 번 와도 첫 결과를 그대로 돌려줍니다. 같은 회차 중복 예약은 DB 제약으로 막습니다.</p>
+        <p>예약 요청마다 멱등성 키를 붙여, 같은 요청이 여러 번 와도 첫 결과를 그대로 돌려줍니다. 같은 회차 중복 예약은 DB 제약으로 막습니다.</p>
         <p class="result">✓ 같은 요청 20회 재전송 → 예약 1건, 좌석 1회 차감</p></div>
       <div class="card"><span class="tag">시간</span><h3>서버 시각 기준 정각 오픈</h3>
-        <p>예약 상태(오픈 대기 · 예약 가능 · 매진 · 마감)를 배치 작업 없이 <b>요청마다 서버 시계로 계산</b>합니다. 저장은 UTC, 화면은 KST로 명시해 시간대 오류를 없앴습니다.</p>
+        <p>예약 상태(오픈 대기 · 예약 가능 · 매진 · 마감)를 배치 작업 없이 요청마다 서버 시계로 계산합니다. 저장은 UTC, 화면은 KST로 명시해 시간대 오류를 없앴습니다.</p>
         <p class="result">✓ 오픈 1초 전 · 정각 · 1초 후 경계 테스트 통과</p></div>
       <div class="card"><span class="tag">보안</span><h3>토큰이 브라우저에 노출되지 않는 인증</h3>
-        <p>로그인은 Supabase Auth, 토큰은 <b>httpOnly 쿠키</b>에 보관하고 Next.js 서버만 API를 호출합니다. Spring이 공개키로 서명을 검증하고, 관리자 권한은 서버 DB로 판정합니다.</p>
+        <p>로그인은 Supabase Auth, 토큰은 httpOnly 쿠키에 보관하고 Next.js 서버만 API를 호출합니다. Spring이 공개키로 서명을 검증하고, 관리자 권한은 서버 DB로 판정합니다.</p>
         <p class="result">✓ 위조 · 만료 · 권한 없는 토큰 거부 테스트 통과</p></div>
-      <div class="card"><span class="tag">배포</span><h3>테스트 통과한 코드만 자동 배포</h3>
-        <p>GitHub Actions가 테스트 4단계(정책 · 웹 · API · E2E)를 통과한 main 커밋만 <b>Google Cloud Run(API)과 Vercel(웹)</b>에 배포합니다. 클라우드 키 파일 없이 인증하고, 롤백 · 암호화 백업도 자동화했습니다.</p>
+      <div class="card"><span class="tag">배포</span><h3>테스트를 통과한 코드만 자동 배포</h3>
+        <p>GitHub Actions가 테스트 4단계(정책 · 웹 · API · E2E)를 통과한 main 커밋만 Google Cloud Run(API)과 Vercel(웹)에 배포합니다. 클라우드 키 파일 없이 인증하고, 롤백 · 암호화 백업도 자동화했습니다.</p>
         <p class="result">✓ push → 테스트 → 배포 → 상태 확인까지 자동</p></div>
       <div class="card"><span class="tag">품질</span><h3>개인정보를 남기지 않는 운영</h3>
-        <p>관리자 화면 연락처 마스킹, 로그에는 개인정보 대신 요청 ID만, 관리자 행동은 감사 로그로 기록합니다.</p>
+        <p>관리자 화면의 연락처는 마스킹하고, 로그에는 개인정보 대신 요청 ID만 남기며, 관리자 행동은 감사 로그로 기록합니다.</p>
         <p class="result">✓ 로그 개인정보 미기록 자동 검사</p></div>
     </div>
   </div>
@@ -253,43 +295,46 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">TECH STACK</p>
     <h2>기술 스택</h2>
-    <table class="tech">
-      <tr><th>기술</th><th>왜 사용했는지</th></tr>
-      <tr class="cat"><td colspan="2">FRONTEND</td></tr>
-      <tr><td>Next.js 16 (App Router)</td><td>서버 컴포넌트가 매 요청 최신 잔여석을 서버에서 그려, 브라우저가 API 주소와 토큰을 몰라도 됩니다. 서비스 웹과 운영 대시보드(/admin)를 한 앱에서 경로 · 권한으로 나눕니다.</td></tr>
-      <tr><td>React 19</td><td>useActionState로 서버 액션의 결과(오류 · 입력값)를 받아, 예약이 실패해도 입력값을 그대로 유지합니다.</td></tr>
-      <tr><td>TypeScript</td><td>API 응답 · 오류 코드를 타입으로 고정하고, CI의 typecheck 단계에서 타입 오류를 배포 전에 막습니다.</td></tr>
-      <tr><td>Server Actions</td><td>별도 API Route 없이 폼 제출을 서버에서 처리해, 쿠키의 토큰과 멱등성 키를 서버에서만 다룹니다.</td></tr>
-      <tr class="cat"><td colspan="2">BACKEND</td></tr>
-      <tr><td>Spring Boot 4.1 · Java 21</td><td>트랜잭션 · 보안 · 검증 · 헬스체크가 표준으로 갖춰져, "예약해도 되는가"를 최종 판정하는 신뢰 경계로 둡니다. Java는 LTS 버전인 21을 사용합니다.</td></tr>
-      <tr><td>Spring Security (JWT)</td><td>OAuth2 Resource Server로 토큰을 발급하지 않고 검증만 합니다. Supabase 공개키(JWKS)로 서명을 확인해 서명용 비밀을 공유하지 않습니다.</td></tr>
-      <tr><td>JdbcClient</td><td>조건부 UPDATE, FOR SHARE/UPDATE, ON CONFLICT를 SQL 그대로 표현합니다. 동시성 제어에서 JPA의 간접 단계를 피하고 실행 쿼리를 숨기지 않습니다.</td></tr>
-      <tr><td>Flyway</td><td>스키마를 버전별 SQL 파일로 관리하고 기동 시 자동 적용해, 로컬 · CI · 운영 DB가 항상 같은 스키마를 갖습니다.</td></tr>
-      <tr class="cat"><td colspan="2">DATABASE · AUTH</td></tr>
-      <tr><td>Supabase PostgreSQL 17</td><td>관리형 표준 PostgreSQL이라 행 잠금 · CHECK · 부분 유니크 인덱스로 정원을 지키고, Spring이 JDBC로 직접 연결합니다.</td></tr>
-      <tr><td>Supabase Auth</td><td>회원가입 · 비밀번호 저장 · 소셜 로그인을 직접 만들지 않고, 비대칭키(ES256)로 서명된 JWT를 Spring이 공개키로 검증합니다.</td></tr>
-      <tr class="cat"><td colspan="2">INFRA · CI/CD</td></tr>
-      <tr><td>Docker · Compose</td><td>백엔드 서버를 멀티 스테이지 Dockerfile로 JRE와 JAR만 담은 이미지로 만들고, root가 아닌 사용자로 실행합니다. CI에서 이미지 빌드를 검증하고 배포 시 같은 커밋을 다시 빌드해 운영에 올리며, 로컬에서는 Compose로 DB + API를 한 번에 띄워 환경 차이를 없앱니다.</td></tr>
-      <tr><td>GitHub Actions</td><td>테스트 게이트와 배포를 한 곳에 모아 테스트를 통과한 main 커밋만 배포합니다. OIDC로 클라우드 키 파일 없이 인증합니다.</td></tr>
-      <tr><td>Google Cloud Run</td><td>Spring 컨테이너를 그대로 실행하고, 요청이 없으면 0대로 줄어 비용이 들지 않으며, 리비전 단위로 바로 롤백할 수 있습니다.</td></tr>
-      <tr><td>Vercel</td><td>서비스 웹과 운영 대시보드(Next.js)를 호스팅합니다(백엔드 서버는 Cloud Run). Next.js 제작사의 호스팅으로 CDN · HTTPS가 기본입니다. Git 자동 배포를 끄고 Actions가 빌드한 결과물만 올립니다.</td></tr>
-      <tr class="cat"><td colspan="2">TEST</td></tr>
-      <tr><td>JUnit 5 · Testcontainers</td><td>실제 PostgreSQL 컨테이너로 테스트해, 가짜 DB로는 확인할 수 없는 잠금 · 부분 인덱스 · ON CONFLICT 동작을 검증합니다.</td></tr>
-      <tr><td>Vitest</td><td>시간대(KST) 변환 경계, 오류 코드 → 메시지 같은 웹 로직을 빠른 단위 테스트로 검사합니다.</td></tr>
-      <tr><td>Playwright</td><td>실제 브라우저로 로그인 → 예약 → 매진 경쟁 → 취소, 관리자 흐름까지 끝에서 끝으로 확인합니다.</td></tr>
-      <tr><td>axe-core</td><td>17개 화면의 WCAG 접근성 위반을 자동으로 검사합니다.</td></tr>
-    </table>
-    <p class="no-print" style="margin-top:12px"><a href="tech-doc.html">기술 상세 문서</a>에서 기술별 핵심 개념, 인증 · 배포 시퀀스, 트러블슈팅을 볼 수 있습니다.</p>
+    <div class="stack-groups">
+      <div class="card stack-group"><h3>서비스 웹 · 운영 대시보드</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
+        <dt>Next.js (App Router)</dt><dd>서버 컴포넌트가 매 요청 최신 잔여석을 렌더링, 브라우저에 API 주소 · 토큰 비노출, 서비스 웹과 운영 대시보드(/admin)를 한 앱에서 경로 · 권한으로 분리</dd>
+        <dt>React</dt><dd>useActionState로 서버 액션 결과(오류 · 입력값) 수신, 예약 실패 시 입력값 유지</dd>
+        <dt>Server Actions</dt><dd>별도 API Route 없이 폼 제출을 서버에서 처리, 쿠키 토큰과 멱등성 키를 서버에서만 취급</dd>
+        <dt>TypeScript</dt><dd>API 응답 · 오류 코드를 타입으로 고정, CI typecheck 단계에서 배포 전 타입 오류 차단</dd>
+      </dl></details></div>
+      <div class="card stack-group"><h3>백엔드 서버</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
+        <dt>Spring Boot</dt><dd>트랜잭션 · 보안 · 검증 · 헬스체크 표준 제공, “예약해도 되는가”를 최종 판정하는 신뢰 경계</dd>
+        <dt>Java</dt><dd>LTS 버전 사용</dd>
+        <dt>Spring Security (JWT)</dt><dd>OAuth2 Resource Server로 토큰 검증만 수행, Supabase 공개키(JWKS)로 서명 확인해 서명용 비밀 미공유</dd>
+        <dt>JdbcClient</dt><dd>조건부 UPDATE · FOR SHARE/UPDATE · ON CONFLICT를 SQL 그대로 표현, 동시성 제어에서 JPA의 간접 단계 회피</dd>
+        <dt>Flyway</dt><dd>버전별 SQL 파일로 스키마 관리, 기동 시 자동 적용해 로컬 · CI · 운영 DB 스키마 일치</dd>
+      </dl></details></div>
+      <div class="card stack-group"><h3>데이터 · 인증</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
+        <dt>Supabase PostgreSQL</dt><dd>관리형 표준 PostgreSQL, 행 잠금 · CHECK · 부분 유니크 인덱스로 정원 보장, Spring이 JDBC로 직접 연결</dd>
+        <dt>Supabase Auth</dt><dd>회원가입 · 비밀번호 저장 · 소셜 로그인 직접 구현 생략, 비대칭키(ES256) 서명 JWT를 Spring이 공개키로 검증</dd>
+      </dl></details></div>
+      <div class="card stack-group"><h3>인프라 · 배포</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
+        <dt>Docker · Compose</dt><dd>멀티 스테이지 빌드로 JRE와 JAR만 담은 이미지, non-root 실행, 로컬에서는 Compose로 DB + API 동시 기동</dd>
+        <dt>GitHub Actions</dt><dd>테스트 게이트와 배포를 한 곳에서 관리, 테스트를 통과한 main 커밋만 배포, OIDC로 키 파일 없이 인증</dd>
+        <dt>Google Cloud Run</dt><dd>Spring 컨테이너 그대로 실행, 요청이 없으면 0대로 축소, 리비전 단위 즉시 롤백</dd>
+        <dt>Vercel</dt><dd>Next.js 웹 호스팅(CDN · HTTPS 기본), Git 자동 배포를 끄고 Actions가 빌드한 결과물만 배포</dd>
+      </dl></details></div>
+      <div class="card stack-group"><h3>테스트 · 품질</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
+        <dt>JUnit 5 · Testcontainers</dt><dd>실제 PostgreSQL 컨테이너로 잠금 · 부분 인덱스 · ON CONFLICT 동작 검증</dd>
+        <dt>Vitest</dt><dd>시간대(KST) 변환 경계, 오류 코드 → 메시지 등 웹 로직 단위 테스트</dd>
+        <dt>Playwright</dt><dd>실제 브라우저로 로그인 → 예약 → 매진 경쟁 → 취소, 관리자 흐름까지 E2E 확인</dd>
+        <dt>axe-core</dt><dd>17개 화면의 WCAG 접근성 위반 자동 검사</dd>
+      </dl></details></div>
+    </div>
+    <p class="screen-only"><a href="tech-doc.html">기술 상세 문서</a>에서 기술별 핵심 개념, 인증 · 배포 시퀀스, 트러블슈팅을 볼 수 있습니다.</p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">ARCHITECTURE</p>
     <h2>시스템 구성</h2>
-    <p class="lead">브라우저는 Vercel의 Next.js 웹(서비스 웹 + 운영 대시보드)에만 접속하고, 예약 판정은 Cloud Run의 백엔드 서버(Spring Boot)가 Supabase PostgreSQL에서 처리합니다. 로그인은 Supabase Auth가 맡고, 배포는 GitHub Actions가 자동화합니다.</p>
+    <p class="lead">브라우저는 Vercel의 Next.js 웹에만 접속합니다.<br>예약 판정은 Cloud Run의 백엔드 서버가 Supabase PostgreSQL에서 처리합니다.</p>
     <div class="arch">
       <svg viewBox="0 0 960 230" role="img" aria-label="브라우저, Vercel의 서비스 웹 · 운영 대시보드, Cloud Run의 백엔드 서버, Supabase로 이어지는 구성">
         <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
@@ -304,7 +349,7 @@
         <rect class="ci" x="210" y="160" width="620" height="50" rx="12"/><text x="226" y="190">GitHub Actions — 테스트 통과 시 Cloud Run · Vercel 자동 배포 / 롤백 / 주간 암호화 백업</text>
       </svg>
     </div>
-    <p class="lead">예약 한 건이 처리되는 과정입니다. 하나의 DB 트랜잭션 안에서 좌석을 차감하고, 어느 단계든 실패하면 전체를 되돌립니다.</p>
+    <p class="lead">예약 한 건의 처리 과정입니다.<br>하나의 DB 트랜잭션에서 좌석을 차감하고, 실패하면 전체를 되돌립니다.</p>
     <div class="arch">
       <svg viewBox="0 0 960 250" role="img" aria-label="예약 요청이 Next.js 서버 액션, Spring 인증, 예약 트랜잭션을 거쳐 완료되거나 롤백되는 흐름">
         <defs><marker id="wf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker>
@@ -320,10 +365,7 @@
         <path class="ln red dash" d="M380 205 H265 V139" marker-end="url(#wfr)"/>
       </svg>
     </div>
-    <ul class="flow-notes">
-      <li>좌석 차감 UPDATE는 같은 회차 행을 한 번에 하나씩만 갱신하므로, 동시에 몰려도 남은 좌석보다 많이 예약되지 않습니다.</li>
-    </ul>
-    <p class="lead">코드를 push한 뒤 배포까지 이어지는 과정입니다. CI 4개 잡을 모두 통과한 main 커밋만 배포합니다.</p>
+    <p class="lead">push부터 배포까지의 과정입니다.<br>CI 4개 잡을 모두 통과한 main 커밋만 배포합니다.</p>
     <div class="arch">
       <svg viewBox="0 0 960 300" role="img" aria-label="push 후 CI 4개 잡을 통과한 main 커밋만 Cloud Run과 Vercel에 순서대로 배포되는 흐름">
         <defs><marker id="wf2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--text-2)"/></marker></defs>
@@ -353,141 +395,21 @@
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">SCREENSHOTS · SERVICE WEB</p>
-    <h2>서비스 웹 실행 화면</h2>
-    <p class="lead">로그인 없이 팝업을 둘러보고, 원하는 날짜와 회차를 골라 몇 번의 클릭으로 예약합니다.</p>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/popups</span></div><img src="images/w-popups.png" alt="팝업 탐색 화면"></div>
-      <div><span class="num">01</span><h3>팝업 탐색 · 검색</h3><ul>
-        <li><b>이름 검색 · 지역 · 카테고리 필터</b>로 팝업 찾기</li>
-        <li>카드마다 <b>예약 상태 배지</b>(예약 가능 · 오픈 대기 · 매진 · 마감)</li>
-        <li>로그인하지 않아도 탐색 가능, 예약할 때만 로그인 요청</li>
-      </ul></div>
-    </div>
-
-    <div class="feature flip">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/popups/1</span></div><img src="images/w-detail.png" alt="팝업 상세와 회차 선택"></div>
-      <div><span class="num">02</span><h3>날짜 · 회차 선택</h3><ul>
-        <li>운영 기간의 <b>날짜 → 회차(시간)</b> 순서로 선택</li>
-        <li>회차별 <b>실시간 잔여석</b> 표시, 매진 회차는 선택 불가</li>
-        <li>모든 시간은 <b>한국 시간(KST)으로 명시</b>하고 서버에는 UTC로 저장</li>
-      </ul></div>
-    </div>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/popups/4</span></div><img src="images/w-waiting.png" alt="예약 오픈 대기 화면"></div>
-      <div><span class="num">03</span><h3>예약 오픈 대기 · 자동 오픈</h3><ul>
-        <li>오픈 전에는 <b>오픈 일시와 D-day</b>를 안내하고 예약 버튼을 잠금</li>
-        <li><b>서버 시각 기준</b>으로 정각에 자동으로 예약 가능 상태로 전환</li>
-        <li>사용자가 PC 시계를 바꿔도 오픈 전 예약 요청은 서버가 차단</li>
-      </ul></div>
-    </div>
-
-    <div class="feature flip">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/popups/1/reserve</span></div><img src="images/w-reserve.png" alt="예약 정보 입력 화면"></div>
-      <div><span class="num">04</span><h3>예약 정보 입력 · 확정</h3><ul>
-        <li>인원(최대 인원 제한), 예약자 정보, 약관 동의 입력</li>
-        <li><b>버튼을 여러 번 눌러도 예약은 한 번만</b> 생성 (중복 요청 방지)</li>
-        <li>매진 · 중복 예약 등 실패 시 <b>원인을 한국어로 안내</b>하고 입력값 유지</li>
-      </ul></div>
-    </div>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/reservations/…/complete</span></div><img src="images/w-complete.png" alt="예약 완료 화면"></div>
-      <div><span class="num">05</span><h3>예약 완료 · 예약번호 발급</h3><ul>
-        <li>회차 날짜 기반 예약번호 <code>PS-YYMMDD-NNNN</code> 발급</li>
-        <li>방문 일시 · 인원 · 장소를 티켓 형태로 요약</li>
-      </ul></div>
-    </div>
-
-    <div class="pair">
-      <figure><div class="browser"><div class="bar"><i></i><i></i><i></i><span>/reservations</span></div><img src="images/w-my.png" alt="내 예약 목록"></div><figcaption><b>06 · 내 예약</b> — 예정 · 지난 예약 · 취소 탭</figcaption></figure>
-      <figure><div class="browser"><div class="bar"><i></i><i></i><i></i><span>/reservations/…</span></div><img src="images/w-my-detail.png" alt="예약 상세와 취소"></div><figcaption><b>07 · 예약 상세 · 취소</b> — 무료 취소 기한 안내, 기한 지나면 취소 차단</figcaption></figure>
-      <figure><div class="browser"><div class="bar"><i></i><i></i><i></i><span>/login</span></div><img src="images/w-login.png" alt="로그인과 회원가입"></div><figcaption><b>08 · 로그인 · 회원가입</b> — 이메일 가입, 로그인 후 원래 화면으로 복귀</figcaption></figure>
-    </div>
-  </div>
-</section>
-
-<section class="page-break">
-  <div class="wrap">
-    <p class="eyebrow">SCREENSHOTS · ADMIN DASHBOARD</p>
-    <h2>운영 대시보드 실행 화면</h2>
-    <p class="lead">운영자가 팝업과 회차를 등록하고, 방문 당일 예약을 확인·체크인하는 관리자 웹입니다. 관리자 권한은 화면이 아니라 <b>서버가 매 요청마다 확인</b>합니다.</p>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin</span></div><img src="images/a-dashboard.png" alt="관리자 대시보드"></div>
-      <div><span class="num">01</span><h3>운영 대시보드</h3><ul>
-        <li>한국 시간 기준 <b>오늘 예약 · 방문(체크인율) · 운영 회차(매진) · 취소율</b> KPI</li>
-        <li>오늘 회차별 좌석 점유 현황과 운영 알림</li>
-      </ul></div>
-    </div>
-
-    <div class="feature flip">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin/popups/1/edit</span></div><img src="images/a-popup-edit.png" alt="팝업 등록과 수정"></div>
-      <div><span class="num">02</span><h3>팝업 등록 · 수정 · 게시</h3><ul>
-        <li>초안 → 게시 → 종료의 <b>게시 상태</b>와 예약 상태를 분리 관리</li>
-        <li><b>즉시 오픈 / 예약 오픈</b>(일시 지정), 수동 마감</li>
-        <li>두 관리자가 동시에 수정하면 <b>나중 저장을 막고 새로고침 안내</b></li>
-        <li>예약이 있는 팝업은 초안 전환 · 삭제 불가</li>
-      </ul></div>
-    </div>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin/popups/1/slots</span></div><img src="images/a-slots.png" alt="회차와 정원 관리"></div>
-      <div><span class="num">03</span><h3>회차 · 정원 관리</h3><ul>
-        <li>기간 · 시간 간격으로 <b>회차 일괄 생성</b></li>
-        <li>정원 변경 시 <b>이미 예약된 인원보다 작게 줄일 수 없음</b></li>
-        <li>예약 이력이 있는 회차는 삭제 불가</li>
-      </ul></div>
-    </div>
-
-    <div class="feature flip">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin/reservations/…</span></div><img src="images/a-reservation-detail.png" alt="예약 상세와 체크인"></div>
-      <div><span class="num">04</span><h3>예약 관리 · 체크인</h3><ul>
-        <li>예약번호 · 이름 · 휴대폰 끝자리 검색, 팝업 · 날짜 · 상태 필터</li><li>고객 연락처는 <b>기본 마스킹</b>, 체크인은 방문 당일에만 가능</li>
-        <li>연락처 원문 조회 · 체크인 · 관리자 취소는 <b>감사 로그</b>로 기록</li>
-        <li>예약 확정 · 취소 · 체크인의 <b>상태 이력</b> 표시</li>
-      </ul></div>
-    </div>
-
-    <div class="feature">
-      <div class="shot browser"><div class="bar"><i></i><i></i><i></i><span>/admin/operations/tests</span></div><img src="images/a-ops-tests.png" alt="운영 테스트 도구"></div>
-      <div><span class="num">05</span><h3>운영 테스트 도구 (SANDBOX)</h3><ul>
-        <li>관리자 화면에서 <b>부하 · 동시 예약 · 지연 주입 · 장애 주입</b> 시나리오 실행</li>
-        <li>실제 데이터와 분리된 가상 팝업 · 가상 사용자로 실행 후 자동 정리</li>
-        <li>결과로 <b>정원 초과 0건</b>, 응답 시간, 오류율을 실시간 표시</li>
-        <li>운영 환경에서는 서버가 기능 자체를 차단</li>
-      </ul></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <p class="eyebrow">RESPONSIVE</p>
-    <h2>모바일 대응</h2>
-    <p class="lead">같은 화면이 모바일 폭(390px)에서도 가로 스크롤 없이 동작하도록 만들고, 17개 화면 전체를 자동 테스트로 검사합니다.</p>
-    <div class="phones">
-      <figure><img src="images/m-home.png" alt="모바일 홈"><figcaption>홈</figcaption></figure>
-      <figure><img src="images/m-detail.png" alt="모바일 팝업 상세"><figcaption>팝업 상세 · 회차 선택</figcaption></figure>
-      <figure><img src="images/m-reserve.png" alt="모바일 예약 입력"><figcaption>예약 정보 입력</figcaption></figure>
-    </div>
-  </div>
-</section>
 </main>
-
-<footer>
-  <div class="wrap">Popspot</div>
-</footer>
 
 <dialog id="zoom"><img alt=""></dialog>
 <script>
+  // 탭 전환
+  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+    document.querySelectorAll('.gallery').forEach(g => g.classList.toggle('on', g.id === b.dataset.tab));
+  }));
+  // 인쇄할 때는 접힌 상세를 모두 펼친다
+  addEventListener('beforeprint', () => document.querySelectorAll('details.more').forEach(d => d.open = true));
+  // 이미지 확대 (바깥 클릭으로 닫기)
   const dlg = document.getElementById('zoom');
   const open = img => { dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal(); };
-  document.querySelectorAll('main img, header img').forEach(img => {
+  document.querySelectorAll('.gallery img, header img').forEach(img => {
     img.tabIndex = 0; img.setAttribute('role', 'button');
     img.addEventListener('click', () => open(img));
     img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); } });
