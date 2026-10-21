@@ -74,17 +74,11 @@
   .cap { font-size: 13px; color: var(--text-2); margin: 8px 0 0; }
   .arch + .cap + h3 { margin-top: 36px; }
 
-  .tech { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); font-size: 14px; }
-  .tech th, .tech td { text-align: left; vertical-align: top; padding: 9px 14px; border-top: 1px solid var(--border); }
-  .tech th { background: var(--surface-2); font-size: 13px; white-space: nowrap; }
-  .tech td:first-child { white-space: nowrap; font-weight: 800; }
-  .tech td:last-child { color: var(--text-2); }
 
   .back { padding: 14px 0 0; font-size: 14px; } .back .wrap { display: flex; justify-content: space-between; gap: 12px; } .back a { text-decoration: none; font-weight: 700; }
   footer { padding: 40px 0 60px; border-top: 1px solid var(--border); color: var(--text-2); font-size: 14px; }
 
   @media screen and (max-width: 860px) {
-    .tech td:first-child { white-space: normal; }
     .grid, .grid.two { grid-template-columns: 1fr; }
     .stats { grid-template-columns: repeat(2, 1fr); }
     section { padding: 40px 0; }
@@ -99,11 +93,10 @@
     .hero h1 { font-size: 28px; margin: 10px 0; }
     .hero .intro { font-size: 14px; }
     section { padding: 10px 0; }
+    .cap, .card, .stat, .arch, .lead, .shot, .key { break-inside: avoid; }
     h2 { font-size: 22px; } h3 { font-size: 15px; }
     .lead { font-size: 13px; margin-bottom: 14px; }
     .card { padding: 14px; } .card p, .card ul { font-size: 12px; }
-    .tech { font-size: 10.5px; } .tech th, .tech td { padding: 4px 10px; }
-    .tech tr, .cap, .card, .stat, .arch, .lead, .shot, .key { break-inside: avoid; }
     .key { font-size: 14px; margin-top: -8px; }
     h2, h3 { break-after: avoid; }
     .arch { overflow: visible; padding: 8px; } .arch svg { min-width: 0; }
@@ -153,24 +146,35 @@
     <p class="sources">출처: <a href="https://www.prnewswire.com/news-releases/fullstory-second-annual-us-digital-experience-survey-reveals-consumer-behavior-shifts-due-to-inflation-301570881.html">FullStory 미국 디지털 경험 설문 (2022)</a> · <a href="https://www.amplitude.com/blog/uk-tech-frustration-survey">Amplitude 영국 소비자 설문 (2025)</a> · <a href="https://business.google.com/ca-en/think/marketing-strategies/mobile-page-speed-new-industry-benchmarks/">Think with Google (2018)</a> · <a href="https://www.luciq.ai/blog/mobile-app-churn">Luciq (2026)</a>. 75% · 58%는 설문 응답자의 의향입니다.</p>
   </div>
 </section>
+
 <section>
   <div class="wrap">
     <h2>실제 서비스와 유사한 내부 테스트 환경 구축</h2>
-    <p class="lead">실제 서비스처럼 Ubuntu Server 환경에 리버스 프록시를 적용해 웹 · 관리자 · API 서버를 운용하고 테스트합니다.<br>CI/CD를 Jenkins로 표준화했습니다.<br>배포한 서버의 도달 여부 · 응답 시간 · 5xx 오류 · 자원 사용량을 Grafana로 확인해, <em>실제 서비스 전에 문제를 발견</em>합니다.</p>
-    <div class="stats">
-      <div class="stat"><b>6개</b><span>server-local 운영 잡</span></div>
-      <div class="stat"><b>3종</b><span>웹 · 관리자 · API 역할</span></div>
-      <div class="stat"><b>1대</b><span>동시에 실행하는 테스트 서버</span></div>
-      <div class="stat"><b>자동</b><span>Discord 결과 · 장애 안내</span></div>
-    </div>
+    <p class="lead">실제 서비스처럼 Ubuntu Server 환경에 리버스 프록시를 적용해 웹 · 관리자 · API 서버를 운용하고 테스트합니다.<br>CI/CD를 Jenkins로 표준화했습니다.<br>배포한 서버의 도달 여부 · 응답 시간 · 5xx 오류 · 자원 사용량을 Grafana로 확인해,<br><em>실제 서비스 전에 문제를 발견</em>합니다.</p>
     <div class="grid" style="margin-top:14px">
-      <div class="card"><span class="tag p">create</span><h3>테스트 서버 생성</h3><p>허용된 GitHub 계정의 저장소만 clone하고 Compose 구성을 검사합니다. 환경 파일과 서버용 override를 만든 뒤 기동하고 nginx에 등록합니다.</p></div>
+      <div class="card"><span class="tag p">create</span><h3>테스트 서버 생성</h3><p>GitHub 저장소 코드를 기반으로 서버를 생성하고,<br>Jenkins 입력값으로 호스트에 <code>.env</code>를 생성한 뒤,<br>리버스 프록시에 등록합니다.</p></div>
       <div class="card"><span class="tag">deploy</span><h3>업데이트 · 재배포</h3><p>원격 브랜치의 최신 커밋으로 갱신해 다시 빌드합니다. 기동 실패 시 이전 커밋으로 되돌려 재기동합니다.</p></div>
-      <div class="card"><span class="tag">stop</span><h3>실행 서버 중지</h3><p>nginx 프록시를 해제하고 Compose 프로젝트를 내립니다. 이미지 · 작업본 · 데이터는 남겨 다시 배포할 수 있습니다.</p></div>
+      <div class="card"><span class="tag">stop</span><h3>실행 서버 중지</h3><p>리버스 프록시를 해제하고 Compose 프로젝트를 내립니다.<br>이미지 · 작업본 · 데이터는 남겨 다시 배포할 수 있습니다.</p></div>
       <div class="card"><span class="tag p">remove</span><h3>서버 삭제</h3><p>nginx → 컨테이너 → 작업본 순서로 제거합니다. 데이터와 named volume 삭제는 대상 이름 재입력을 요구하는 선택지로 분리했습니다.</p></div>
       <div class="card"><span class="tag green">db-migrate</span><h3>DB 마이그레이션</h3><p>실행 중인 API 컨테이너에서 TypeORM <code>migration:run</code> 후 <code>migration:show</code>로 적용 상태를 확인합니다.</p></div>
       <div class="card"><span class="tag p">db-reset</span><h3>DB 초기화</h3><p>대상 이름을 다시 확인한 뒤 <code>schema:drop</code> → <code>migration:run</code> → <code>migration:show</code>를 실행합니다.</p></div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Prometheus · Grafana로 장애 징후 확인</h2>
+    <p class="lead">테스트 서버가 뜨면 server-ctl이 역할별 주소를 Prometheus 수집 대상으로 등록하고, 중지 · 삭제 시 해제합니다. Prometheus는 재시작 없이 대상 파일 변경을 감지하고, 30초마다 수집한 지표를 90일(최대 10GB) 보존합니다.</p>
+    <div class="grid">
+      <div class="card"><span class="tag">수집</span><h3>무엇을 수집하는지</h3><ul><li>node-exporter: 호스트 CPU · 메모리 · 디스크 · 네트워크</li><li>cAdvisor: 컨테이너별 CPU · 메모리 (서버 단위로 묶음)</li><li>blackbox: 역할별 HTTP 도달 여부와 응답 시간</li><li>nginx 로그 exporter: 역할 · 상태 코드 · 경로별 요청 수와 처리 시간</li></ul></div>
+      <div class="card"><span class="tag green">대시보드</span><h3>저장소에서 관리하는 Grafana</h3><ul><li>데이터 소스와 대시보드 JSON을 자동 등록</li><li>테스트 서버를 선택해 이력 비교</li><li>UI 수정은 저장하지 않고 저장소 기준으로 유지</li></ul></div>
+      <div class="card"><span class="tag p">사전 방지</span><h3>출시 전에 보이는 문제</h3><ul><li>5xx · 연결 거부 · 5초 시간 초과는 도달 실패로 표시</li><li>느린 요청 상위 10개의 p95 처리 시간</li><li>배포 후 CPU · 메모리 증가 추이</li></ul></div>
+    </div>
+    <h3 style="margin-top:36px">실행 화면</h3>
+    <img class="shot" src="images/grafana-dashboard.png" alt="테스트 서버 모니터링 Grafana 대시보드" loading="lazy">
+    <p class="cap">테스트 서버 대시보드: 도달 여부 · 응답 시간 · 역할별 분당 요청 · 5xx 오류 · 서버 CPU / 메모리 · 요청별 p95 처리 시간 · 요청별 요약(요청 수 · 평균 · p95 · 5xx 비율). 서버 이름은 가렸습니다.</p>
+    <p class="cap">Prometheus와 exporter는 전용 Docker 네트워크 안에서만 접근하고, 외부에는 Grafana 하나만 LAN · VPN 주소로 공개합니다. 설정은 기동 전에 promtool 등으로 검사해 오류가 있으면 기존 컨테이너를 그대로 유지합니다.</p>
   </div>
 </section>
 
@@ -229,22 +233,6 @@
 
 <section>
   <div class="wrap">
-    <h2>Prometheus · Grafana로 장애 징후 확인</h2>
-    <p class="lead">테스트 서버가 뜨면 server-ctl이 역할별 주소를 Prometheus 수집 대상으로 등록하고, 중지 · 삭제 시 해제합니다. Prometheus는 재시작 없이 대상 파일 변경을 감지하고, 30초마다 수집한 지표를 90일(최대 10GB) 보존합니다.</p>
-    <div class="grid">
-      <div class="card"><span class="tag">수집</span><h3>무엇을 수집하는지</h3><ul><li>node-exporter: 호스트 CPU · 메모리 · 디스크 · 네트워크</li><li>cAdvisor: 컨테이너별 CPU · 메모리 (서버 단위로 묶음)</li><li>blackbox: 역할별 HTTP 도달 여부와 응답 시간</li><li>nginx 로그 exporter: 역할 · 상태 코드 · 경로별 요청 수와 처리 시간</li></ul></div>
-      <div class="card"><span class="tag green">대시보드</span><h3>저장소에서 관리하는 Grafana</h3><ul><li>데이터 소스와 대시보드 JSON을 자동 등록</li><li>테스트 서버를 선택해 이력 비교</li><li>UI 수정은 저장하지 않고 저장소 기준으로 유지</li></ul></div>
-      <div class="card"><span class="tag p">사전 방지</span><h3>출시 전에 보이는 문제</h3><ul><li>5xx · 연결 거부 · 5초 시간 초과는 도달 실패로 표시</li><li>느린 요청 상위 10개의 p95 처리 시간</li><li>배포 후 CPU · 메모리 증가 추이</li></ul></div>
-    </div>
-    <h3 style="margin-top:36px">실행 화면</h3>
-    <img class="shot" src="images/grafana-dashboard.png" alt="테스트 서버 모니터링 Grafana 대시보드" loading="lazy">
-    <p class="cap">테스트 서버 대시보드: 도달 여부 · 응답 시간 · 역할별 분당 요청 · 5xx 오류 · 서버 CPU / 메모리 · 요청별 p95 처리 시간 · 요청별 요약(요청 수 · 평균 · p95 · 5xx 비율). 서버 이름은 가렸습니다.</p>
-    <p class="cap">Prometheus와 exporter는 전용 Docker 네트워크 안에서만 접근하고, 외부에는 Grafana 하나만 LAN · VPN 주소로 공개합니다. 설정은 기동 전에 promtool 등으로 검사해 오류가 있으면 기존 컨테이너를 그대로 유지합니다.</p>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
     <h2>커밋으로 Jenkins 잡 동기화</h2>
     <p class="lead"><code>pipelines/&lt;group&gt;/&lt;job&gt;/Jenkinsfile</code> 구조를 seed 잡이 읽어 파이프라인과 상단 탭을 자동 생성합니다. Jenkins 화면에서 잡을 손으로 복제하지 않아도 저장소 상태와 운영 화면이 맞춰집니다.</p>
     <div class="grid two">
@@ -256,52 +244,6 @@
   </div>
 </section>
 
-<section class="page-break">
-  <div class="wrap">
-    <h2>Discord 웹훅 운영 알림</h2>
-    <p class="lead">성공 여부만 보내지 않고, 실패했을 때 다음 행동까지 한 메시지에 담았습니다. 모든 server-local 잡은 롤백과 정리가 끝난 뒤 같은 채널로 최종 결과를 전송합니다.</p>
-    <div class="grid">
-      <div class="card"><span class="tag green">성공</span><h3>운영 결과 요약</h3><ul><li>잡 이름 · 빌드 번호 · 대상 · 실행자</li><li>접속 역할, 커밋 변화, 내린 서버</li><li>서버 사용량과 HDD 남은 용량</li></ul></div>
-      <div class="card"><span class="tag p">실패</span><h3>원인과 복구 안내</h3><ul><li>실패한 stage와 실제 오류 한 줄 자동 추출</li><li>오류 패턴별 해결 방법 매칭</li><li>추가 로그와 빌드 링크 제공</li></ul></div>
-      <div class="card"><span class="tag">안전</span><h3>알림이 빌드를 깨지 않게</h3><ul><li>웹훅 URL은 Jenkins Secret text로 보관</li><li>Java HTTP API로 전송, 추가 플러그인 불필요</li><li>전송 실패는 경고만 남기고 빌드 결과 유지</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>사용 기술과 선택 이유</h2>
-    <p class="lead">Compose, 설치 스크립트, Jenkinsfile, Groovy 라이브러리, Python CLI와 모니터링 설정에서 확인한 역할만 정리했습니다.</p>
-    <table class="tech">
-      <tr><th>기술</th><th>왜 사용했는지</th></tr>
-      <tr><td>Ubuntu Server</td><td>Jenkins · 테스트 서버 · 모니터링이 함께 도는 내부망 호스트입니다. 설치 스크립트 하나로 방화벽 · 계정 · sudoers · 모니터링 설정을 다시 적용할 수 있게 했습니다. OS 설치 과정은 <a data-project-link href="../internal-linux-server/">내부망 Linux 서버 구축</a> 페이지에서 설명합니다.</td></tr>
-      <tr><td>OpenSSH</td><td>Jenkins 컨테이너에 Python과 Docker 권한을 넣지 않고, SSH로 호스트를 에이전트로 붙여 작업을 실행합니다. 호스트 키를 미리 등록해 접속 대상을 검증합니다.</td></tr>
-      <tr><td>Jenkins LTS · Declarative Pipeline</td><td>생성 · 배포 · 중지 · 삭제 · DB 작업을 권한과 stage가 보이는 반복 가능한 운영 절차로 만들었습니다. 컨트롤러는 Docker Compose로 실행하고 홈 디렉터리를 호스트에 보존합니다.</td></tr>
-      <tr><td>Job DSL · seed</td><td>Jenkinsfile 디렉터리 구조를 잡과 탭으로 동기화해 화면 수작업을 없애고, 추가 · 변경 · 삭제를 저장소 커밋으로 관리합니다.</td></tr>
-      <tr><td>Jenkins Shared Library</td><td>동적 서버 목록, 파라미터 갱신, 관리자 확인, Discord 알림처럼 여러 잡이 공유하는 Jenkins API 로직을 한 곳에 뒀습니다.</td></tr>
-      <tr><td>Docker Compose</td><td>프로젝트의 Compose 정의를 사용하되 서버 전용 override로 loopback 포트, 재시작 정책과 메모리 기본값을 강제합니다.</td></tr>
-      <tr><td>NginX</td><td>컨테이너는 <code>127.0.0.1</code>에만 게시하고 nginx만 LAN · VPN 인터페이스에서 받아 Docker의 방화벽 우회를 막습니다. WebSocket 헤더도 전달합니다.</td></tr>
-      <tr><td>Prometheus · exporter</td><td>호스트 · 컨테이너 자원, HTTP 도달 여부, nginx 로그 기반 요청 · 오류 · 처리 시간을 한 곳에 모읍니다. 테스트 서버는 파일 기반 대상 등록(file_sd)으로 재시작 없이 추가 · 해제됩니다.</td></tr>
-      <tr><td>Grafana</td><td>수집한 지표를 테스트 서버별 대시보드로 보여 줍니다. 데이터 소스와 대시보드를 저장소 파일로 자동 등록해 재설치해도 같은 화면을 재현합니다.</td></tr>
-      <tr><td>Python 3 <code>server-ctl</code></td><td>git · Docker · nginx · 파일 작업을 인자 배열로 실행하고, 이름 · 경로 · 저장소 소유자 · Compose 구성을 검사하는 root 전용 경계로 사용했습니다.</td></tr>
-      <tr><td>TypeORM CLI</td><td>실행 중인 API 컨테이너 안에서 마이그레이션 적용과 스키마 초기화를 수행하고, 마지막 <code>migration:show</code> 결과를 Discord에 요약합니다.</td></tr>
-      <tr><td>Discord Webhook</td><td>별도 알림 플러그인 없이 Jenkins Java API로 최종 결과를 전송합니다. 웹훅은 탭별 Secret text 자격증명으로 분리합니다.</td></tr>
-      <tr><td>UFW · sudoers</td><td>Jenkins 컨테이너에 Docker 소켓을 주지 않고 호스트 에이전트를 사용하며, 에이전트 계정의 sudo는 root 소유 <code>server-ctl</code> 설치본으로 제한합니다.</td></tr>
-    </table>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>실패와 위험을 다루는 방법</h2>
-    <div class="grid two">
-      <div class="card"><span class="tag p">롤백</span><h3>생성과 배포의 복구 기준 분리</h3><p>새 서버 생성 실패는 nginx · 컨테이너 · 작업본을 역순으로 정리합니다. 기존 서버 배포 실패는 새 커밋 기동 전까지만 이전 커밋으로 되돌립니다.</p></div>
-      <div class="card"><span class="tag p">파괴 작업</span><h3>데이터 삭제와 DB 초기화 재확인</h3><p>서버 데이터 삭제와 DB reset은 대상 이름을 다시 입력해야 합니다. 기본 remove는 작업본과 컨테이너만 지우고 데이터는 남깁니다.</p></div>
-      <div class="card"><span class="tag">격리</span><h3>동시에 테스트 서버 한 대만</h3><p>고정 역할 포트 충돌을 막기 위해 create와 deploy 직전에 다른 실행 서버를 내립니다. 내린 서버 이름은 Discord 알림에 남깁니다.</p></div>
-      <div class="card"><span class="tag">비밀값</span><h3>토큰을 명령행과 로그에서 제외</h3><p>GitHub 토큰은 Jenkins 자격증명에서 꺼내 stdin으로 전달하고 셸 trace를 끕니다. Discord 웹훅과 부트스트랩 비밀값도 저장소에 기록하지 않습니다.</p></div>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer>
