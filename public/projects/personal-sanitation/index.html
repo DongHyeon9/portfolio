@@ -182,10 +182,10 @@
     <h2>프로젝트 개요</h2>
     <p class="lead">구독제 분리수거 대행 서비스입니다.<br>고객 앱은 Android·iOS 크로스 플랫폼을 지원합니다.<br>고객·기사·운영 담당자가 하나의 서비스 흐름으로 연결됩니다.</p>
     <div class="grid two services">
-      <div class="card service-card"><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>구독을 신청하고, 정해진 수거 일정과 요청 사항을 관리하는 고객용 앱입니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div>
-      <div class="card service-card"><span class="tag">기사 앱</span><h3>운영 앱</h3><p>수거 방문기사에게 오늘의 수거 권역과 방문 목록을 보여줍니다. 완료·미수거 기록을 오프라인에서도 저장하고, 관리자 웹의 작업 현황과 연계되도록 설계했습니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div>
-      <div class="card service-card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>오늘의 권역별 작업 현황과 구독·결제, 고객 요청, 푸시 알림, 이벤트·할인, 가격·플랜을 관리하는 운영 대시보드입니다.</p><div class="chips"><span class="chip">React</span><span class="chip">Next.js</span></div></div>
-      <div class="card service-card"><span class="tag">API</span><h3>백엔드 서버</h3><p>고객 앱과 운영 대시보드가 공유하고 기사 앱 연동을 전제로 설계한 백엔드 API입니다. 고객·구독·수거·결제 데이터를 통합 관리해 서비스 간 데이터 정합성을 높였습니다.</p><div class="chips"><span class="chip">NestJS</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">TypeORM</span></div></div>
+      <div class="card service-card"><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>구독 기반으로 정해진 수거 일정에 맞춰 쓰레기를 수거하는 서비스입니다.<br>고객은 여러 주소에 각각 서비스를 신청하고, 수거 일정과 요청 사항을 앱에서 관리할 수 있습니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div>
+      <div class="card service-card"><span class="tag">기사 앱</span><h3>운영 앱</h3><p>수거 방문 기사에게 오늘의 수거 권역과 방문 목록을 보여 줍니다.<br>완료·미수거 기록을 오프라인에서도 저장하고, 관리자 웹의 작업 현황과 연계되도록 구현했습니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div>
+      <div class="card service-card"><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>오늘의 권역별 작업 현황을 확인할 수 있는 관리자용 웹사이트입니다.<br>구독·결제, 고객 요청, 푸시 알림, 이벤트·할인, 가격·플랜을 설정할 수 있습니다.</p><div class="chips"><span class="chip">React</span><span class="chip">Next.js</span></div></div>
+      <div class="card service-card"><span class="tag">API</span><h3>백엔드 서버</h3><p>고객 앱, 운영 대시보드, 기사 앱 연동을 전제로 구현한 백엔드 서버입니다.<br>고객·구독·수거·결제 데이터를 통합 관리해 서비스 간 데이터 정합성을 높였습니다.</p><div class="chips"><span class="chip">NestJS</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">TypeORM</span></div></div>
     </div>
   </div>
 </section>
@@ -193,7 +193,6 @@
 <section>
   <div class="wrap">
     <h2>서비스 이미지</h2>
-    <p class="lead">각 서비스의 주요 화면입니다. <span class="screen-only">이미지를 누르면 크게 볼 수 있습니다.</span></p>
     <div class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="app" aria-controls="app">서비스 앱</button>
       <button role="tab" aria-selected="false" data-tab="driver" aria-controls="driver">운영 앱</button>
@@ -201,31 +200,31 @@
     </div>
 
     <div class="gallery phones on" id="app" role="tabpanel" data-label="서비스 앱">
-      <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b>로그인 없이 동네·요금 확인</figcaption></figure>
-      <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b>휴대폰 본인인증</figcaption></figure>
-      <figure><img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록"><figcaption><b>홈</b>여러 주소의 구독 목록</figcaption></figure>
-      <figure><img src="images/app-detail.png" alt="구독 상세"><figcaption><b>구독 상세</b>다음 수거 D-day · 이번 주 요청 · 고정 요청</figcaption></figure>
-      <figure><img src="images/app-subscribe.png" alt="플랜 선택"><figcaption><b>구독 신청</b>봉투 용량 · 추가 봉투</figcaption></figure>
-      <figure><img src="images/app-waitlist.png" alt="서비스 불가 지역"><figcaption><b>구독 대기</b>서비스 지역 밖 주소는 결제 없이 대기 등록</figcaption></figure>
-      <figure><img src="images/app-request.png" alt="이번 주 요청 작성"><figcaption><b>이번 주 요청</b>수거일 선택 · 추가 봉투 바로 결제</figcaption></figure>
-      <figure><img src="images/app-notifications.png" alt="알림 목록"><figcaption><b>알림</b>요청 답변 · 요금 변경 · 결제 알림</figcaption></figure>
-      <figure><img src="images/app-price-change.png" alt="요금 인상 동의"><figcaption><b>요금 변경 동의</b>인상 전후 금액 비교 · 동의 또는 해지</figcaption></figure>
-      <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b>기기 설정을 따름</figcaption></figure>
+      <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b></figcaption></figure>
+      <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b></figcaption></figure>
+      <figure><img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록"><figcaption><b>홈</b></figcaption></figure>
+      <figure><img src="images/app-detail.png" alt="구독 상세"><figcaption><b>구독 상세</b></figcaption></figure>
+      <figure><img src="images/app-subscribe.png" alt="플랜 선택"><figcaption><b>구독 신청</b></figcaption></figure>
+      <figure><img src="images/app-waitlist.png" alt="서비스 불가 지역"><figcaption><b>구독 대기</b></figcaption></figure>
+      <figure><img src="images/app-request.png" alt="이번 주 요청 작성"><figcaption><b>이번 주 요청</b></figcaption></figure>
+      <figure><img src="images/app-notifications.png" alt="알림 목록"><figcaption><b>알림</b></figcaption></figure>
+      <figure><img src="images/app-price-change.png" alt="요금 인상 동의"><figcaption><b>요금 변경 동의</b></figcaption></figure>
+      <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b></figcaption></figure>
     </div>
 
     <div class="gallery phones" id="driver" role="tabpanel" data-label="운영 앱">
-      <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b>진행률 · 오프라인 전송 대기</figcaption></figure>
-      <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b>출입 정보(비밀번호 가림) · 이번 주 요청</figcaption></figure>
-      <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b>빈 문앞을 촬영해 완료 처리</figcaption></figure>
+      <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b></figcaption></figure>
+      <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b></figcaption></figure>
+      <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b></figcaption></figure>
     </div>
 
     <div class="gallery desks" id="dash" role="tabpanel" data-label="운영 대시보드">
-      <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b>미답변 요청 · 권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
-      <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b>마스킹된 목록 + 상세 패널</figcaption></figure>
-      <figure><img src="images/dash-pricing.png" alt="가격 플랜"><figcaption><b>가격 · 플랜</b>예약 가격 변경 · 동의 현황</figcaption></figure>
-      <figure><img src="images/dash-areas.png" alt="지역 권역"><figcaption><b>지역 · 권역</b>권역 트리 · 수거 요일 · 읍면동 오픈 상태</figcaption></figure>
-      <figure><img src="images/dash-push.png" alt="푸시 작성"><figcaption><b>푸시 발송</b>대상 조건 · 미리보기</figcaption></figure>
-      <figure><img src="images/dash-promotions.png" alt="이벤트 만들기"><figcaption><b>이벤트 · 할인</b>조건 조합 · 예상 할인액 미리보기</figcaption></figure>
+      <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b></figcaption></figure>
+      <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b></figcaption></figure>
+      <figure><img src="images/dash-pricing.png" alt="가격 플랜"><figcaption><b>가격 · 플랜</b></figcaption></figure>
+      <figure><img src="images/dash-areas.png" alt="지역 권역"><figcaption><b>지역 · 권역</b></figcaption></figure>
+      <figure><img src="images/dash-push.png" alt="푸시 작성"><figcaption><b>푸시 발송</b></figcaption></figure>
+      <figure><img src="images/dash-promotions.png" alt="이벤트 만들기"><figcaption><b>이벤트 · 할인</b></figcaption></figure>
     </div>
   </div>
 </section>
