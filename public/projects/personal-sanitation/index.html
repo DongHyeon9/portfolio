@@ -27,7 +27,6 @@
   .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
   .grid + .grid { margin-top: 16px; }
   .arch + .lead { margin-top: 40px; }
-  .eyebrow { color: var(--primary); font-weight: 700; font-size: 14px; letter-spacing: .04em; }
 
   /* 히어로 */
   header.hero { padding: 72px 0 56px; }
@@ -132,7 +131,7 @@
     .gallery.desks { break-before: page; }
     .card, .arch, figure, .stack > div, .flow-notes li { break-inside: avoid; }
     .topbar { display: none; }
-    h2, .eyebrow, .lead { break-after: avoid; }
+    h2, .lead { break-after: avoid; }
     :root { --bg: #ffffff; }
     .hero h1 { font-size: 36px; }
     h3 { font-size: 16px; }
@@ -180,7 +179,6 @@
 <main>
 <section>
   <div class="wrap">
-    <p class="eyebrow">OVERVIEW</p>
     <h2>프로젝트 개요</h2>
     <p class="lead">구독제 분리수거 대행 서비스입니다.<br>고객 앱은 Android·iOS 크로스 플랫폼을 지원합니다.<br>고객·기사·운영 담당자가 하나의 서비스 흐름으로 연결됩니다.</p>
     <div class="grid two services">
@@ -194,8 +192,7 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">SCREENS</p>
-    <h2>화면</h2>
+    <h2>서비스 이미지</h2>
     <p class="lead">각 서비스의 주요 화면입니다. <span class="screen-only">이미지를 누르면 크게 볼 수 있습니다.</span></p>
     <div class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="app" aria-controls="app">서비스 앱</button>
@@ -207,35 +204,34 @@
       <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b>로그인 없이 동네·요금 확인</figcaption></figure>
       <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b>휴대폰 본인인증</figcaption></figure>
       <figure><img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록"><figcaption><b>홈</b>여러 주소의 구독 목록</figcaption></figure>
-      <figure><img src="images/app-detail.png" alt="구독 상세"><figcaption><b>구독 상세</b>다음 수거 · 요청 현황</figcaption></figure>
+      <figure><img src="images/app-detail.png" alt="구독 상세"><figcaption><b>구독 상세</b>다음 수거 D-day · 이번 주 요청 · 고정 요청</figcaption></figure>
       <figure><img src="images/app-subscribe.png" alt="플랜 선택"><figcaption><b>구독 신청</b>봉투 용량 · 추가 봉투</figcaption></figure>
-      <figure><img src="images/app-waitlist.png" alt="서비스 불가 지역"><figcaption><b>구독 대기</b>서비스 지역 밖 주소</figcaption></figure>
-      <figure><img src="images/app-request.png" alt="이번 주 요청 작성"><figcaption><b>요청사항</b>이번 주 요청 · 고정 요청</figcaption></figure>
-      <figure><img src="images/app-notifications.png" alt="알림 목록"><figcaption><b>알림</b>수거 예정 · 완료 알림</figcaption></figure>
-      <figure><img src="images/app-price-change.png" alt="요금 인상 동의"><figcaption><b>요금 변경 동의</b>기존 구독자 가격 변경</figcaption></figure>
+      <figure><img src="images/app-waitlist.png" alt="서비스 불가 지역"><figcaption><b>구독 대기</b>서비스 지역 밖 주소는 결제 없이 대기 등록</figcaption></figure>
+      <figure><img src="images/app-request.png" alt="이번 주 요청 작성"><figcaption><b>이번 주 요청</b>수거일 선택 · 추가 봉투 바로 결제</figcaption></figure>
+      <figure><img src="images/app-notifications.png" alt="알림 목록"><figcaption><b>알림</b>요청 답변 · 요금 변경 · 결제 알림</figcaption></figure>
+      <figure><img src="images/app-price-change.png" alt="요금 인상 동의"><figcaption><b>요금 변경 동의</b>인상 전후 금액 비교 · 동의 또는 해지</figcaption></figure>
       <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b>기기 설정을 따름</figcaption></figure>
     </div>
 
     <div class="gallery phones" id="driver" role="tabpanel" data-label="운영 앱">
       <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b>진행률 · 오프라인 전송 대기</figcaption></figure>
-      <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b>출입 정보(비밀번호 가림)</figcaption></figure>
-      <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b>사진 촬영 후 완료 처리</figcaption></figure>
+      <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b>출입 정보(비밀번호 가림) · 이번 주 요청</figcaption></figure>
+      <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b>빈 문앞을 촬영해 완료 처리</figcaption></figure>
     </div>
 
     <div class="gallery desks" id="dash" role="tabpanel" data-label="운영 대시보드">
-      <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b>권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
-      <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b>목록 + 상세 드로어</figcaption></figure>
+      <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b>미답변 요청 · 권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
+      <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b>마스킹된 목록 + 상세 패널</figcaption></figure>
       <figure><img src="images/dash-pricing.png" alt="가격 플랜"><figcaption><b>가격 · 플랜</b>예약 가격 변경 · 동의 현황</figcaption></figure>
-      <figure><img src="images/dash-areas.png" alt="지역 권역"><figcaption><b>지역 · 권역</b>법정동 트리 · 권역 상세</figcaption></figure>
+      <figure><img src="images/dash-areas.png" alt="지역 권역"><figcaption><b>지역 · 권역</b>권역 트리 · 수거 요일 · 읍면동 오픈 상태</figcaption></figure>
       <figure><img src="images/dash-push.png" alt="푸시 작성"><figcaption><b>푸시 발송</b>대상 조건 · 미리보기</figcaption></figure>
-      <figure><img src="images/dash-promotions.png" alt="이벤트 만들기"><figcaption><b>이벤트 · 할인</b>조건 조합으로 이벤트 생성</figcaption></figure>
+      <figure><img src="images/dash-promotions.png" alt="이벤트 만들기"><figcaption><b>이벤트 · 할인</b>조건 조합 · 예상 할인액 미리보기</figcaption></figure>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">FEATURES</p>
     <h2>구현 기능</h2>
     <div class="grid two">
       <div class="card"><span class="tag">서비스 앱</span><h3>회원가입 · 로그인</h3><ul>
@@ -298,7 +294,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">TECH STACK</p>
     <h2>기술 스택</h2>
     <div class="stack">
       <div class="k">백엔드 서버</div>
@@ -368,7 +363,6 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">ARCHITECTURE</p>
     <h2>시스템 구성</h2>
     <p class="lead">세 클라이언트(서비스 앱 · 운영 앱 · 운영 대시보드)가 하나의 백엔드 서버(Nest.js)를 공유합니다. 결제·본인인증·푸시 같은 외부 연동은 인터페이스 뒤에 두어 개발 중엔 mock, 운영에선 실제 구현으로 교체합니다.</p>
     <div class="arch">
