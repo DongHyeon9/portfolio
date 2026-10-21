@@ -284,6 +284,12 @@
         <li>광고성 푸시는 수신 동의자에게만 “(광고)” 표기와 수신 거부 안내를 붙이고, 야간(21~8시)이면 아침 8시에 발송</li>
       </ul></details></div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>기술 포인트</h2>
     <div class="grid feature-list">
       <div class="card"><span class="tag">보안</span><h3>민감정보 필드 암호화</h3><details class="more"><summary>구현 기능 상세</summary><p>공동현관 비밀번호처럼 DB가 유출돼도 읽히면 안 되는 값은 AES-256-GCM으로 암호화해 저장합니다. 버전 접두사(<code>v1:</code>)로 키 교체에 대비했습니다.</p></details></div>
       <div class="card"><span class="tag">보안</span><h3>네이티브 의존성 없는 비밀번호 해시</h3><details class="more"><summary>구현 기능 상세</summary><p>Node 내장 scrypt(N=2<sup>15</sup>)를 쓰고, 해시 문자열에 파라미터를 함께 저장해 비용을 올려도 기존 해시를 검증할 수 있게 했습니다.</p></details></div>
