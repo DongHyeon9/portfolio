@@ -25,12 +25,11 @@
   h3 { font-size: 18px; margin: 0 0 6px; }
   .lead { color: var(--text-2); margin: 0 0 28px; max-width: 760px; }
   code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: .88em; }
-  .grid + .grid { margin-top: 16px; }
   .grid.feature-list { grid-template-columns: repeat(2, 1fr); align-items: start; }
   .more { margin-top: 6px; }
   .more summary { cursor: pointer; width: fit-content; font-size: 14px; font-weight: 700; color: var(--primary); }
   .more[open] summary { margin-bottom: 8px; }
-  .more > p, .more > ul { margin-top: 0; }
+  .more > ul { margin-top: 0; }
   .arch + .lead { margin-top: 40px; }
 
   /* 히어로 */
@@ -90,6 +89,7 @@
   .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tabs button { font: inherit; font-size: 15px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
   .tabs button[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabs button[aria-selected="true"] { color: #141414; } }
   .gallery { display: none; gap: 20px; }
   .gallery.on { display: grid; }
   .gallery.phones { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
@@ -125,7 +125,7 @@
     .gallery { display: grid !important; margin-bottom: 28px; }
     .gallery::before { content: attr(data-label); grid-column: 1 / -1; font-weight: 700; font-size: 18px; }
     .gallery.phones { grid-template-columns: repeat(5, 1fr); gap: 14px; }
-    .gallery.desks { break-before: page; }
+    #admin { break-before: page; }
     .card, .arch, .browser, figure { break-inside: avoid; }
     .topbar, .screen-only { display: none; }
     .more summary { display: none; }
@@ -180,12 +180,12 @@
   <div class="wrap">
     <h2>서비스 이미지</h2>
     <div class="tabs" role="tablist">
-      <button role="tab" aria-selected="true" data-tab="web" aria-controls="web">서비스 웹</button>
-      <button role="tab" aria-selected="false" data-tab="admin" aria-controls="admin">운영 대시보드</button>
-      <button role="tab" aria-selected="false" data-tab="mobile" aria-controls="mobile">모바일</button>
+      <button role="tab" id="tab-web" aria-selected="true" tabindex="0" data-tab="web" aria-controls="web">서비스 웹</button>
+      <button role="tab" id="tab-admin" aria-selected="false" tabindex="-1" data-tab="admin" aria-controls="admin">운영 대시보드</button>
+      <button role="tab" id="tab-mobile" aria-selected="false" tabindex="-1" data-tab="mobile" aria-controls="mobile">모바일</button>
     </div>
 
-    <div class="gallery desks on" id="web" role="tabpanel" data-label="서비스 웹">
+    <div class="gallery desks on" id="web" role="tabpanel" aria-labelledby="tab-web" data-label="서비스 웹">
       <figure><img src="images/w-popups.png" alt="팝업 탐색 화면"><figcaption><b>팝업 탐색 · 검색</b></figcaption></figure>
       <figure><img src="images/w-detail.png" alt="팝업 상세와 회차 선택"><figcaption><b>날짜 · 회차 선택</b></figcaption></figure>
       <figure><img src="images/w-waiting.png" alt="예약 오픈 대기 화면"><figcaption><b>예약 오픈 대기</b></figcaption></figure>
@@ -196,7 +196,7 @@
       <figure><img src="images/w-login.png" alt="로그인과 회원가입"><figcaption><b>로그인 · 회원가입</b></figcaption></figure>
     </div>
 
-    <div class="gallery desks" id="admin" role="tabpanel" data-label="운영 대시보드">
+    <div class="gallery desks" id="admin" role="tabpanel" aria-labelledby="tab-admin" data-label="운영 대시보드">
       <figure><img src="images/a-dashboard.png" alt="관리자 대시보드"><figcaption><b>오늘 현황</b></figcaption></figure>
       <figure><img src="images/a-popup-edit.png" alt="팝업 등록과 수정"><figcaption><b>팝업 등록 · 수정</b></figcaption></figure>
       <figure><img src="images/a-slots.png" alt="회차와 정원 관리"><figcaption><b>회차 · 정원 관리</b></figcaption></figure>
@@ -204,7 +204,7 @@
       <figure><img src="images/a-ops-tests.png" alt="운영 테스트 도구"><figcaption><b>운영 테스트 도구</b></figcaption></figure>
     </div>
 
-    <div class="gallery phones" id="mobile" role="tabpanel" data-label="모바일">
+    <div class="gallery phones" id="mobile" role="tabpanel" aria-labelledby="tab-mobile" data-label="모바일">
       <figure><img src="images/m-home.png" alt="모바일 홈"><figcaption><b>홈</b></figcaption></figure>
       <figure><img src="images/m-detail.png" alt="모바일 팝업 상세"><figcaption><b>팝업 상세 · 회차 선택</b></figcaption></figure>
       <figure><img src="images/m-reserve.png" alt="모바일 예약 입력"><figcaption><b>예약 정보 입력</b></figcaption></figure>
@@ -222,7 +222,7 @@
         <li>운영 기간의 날짜 → 회차(시간) 순서로 선택</li>
         <li>회차별 잔여석 표시, 매진 회차는 선택 불가</li>
         <li>오픈 전에는 오픈 일시와 D-day 안내, 예약 버튼 잠금</li>
-        <li>서버 시각 기준 정각에 예약 가능으로 전환 (PC 시계를 바꿔도 오픈 전 요청은 서버가 차단)</li>
+        <li>서버 시각 기준 지정한 오픈 시각에 예약 가능으로 전환 (PC 시계를 바꿔도 오픈 전 요청은 서버가 차단)</li>
         <li>모든 시간은 한국 시간(KST)으로 표시, 서버에는 UTC로 저장</li>
       </ul></details></div>
       <div class="card"><span class="tag">서비스 웹 · API</span><h3>예약 · 취소</h3><details class="more"><summary>구현 기능 상세</summary><ul>
@@ -237,7 +237,7 @@
       <div class="card"><span class="tag">서비스 웹</span><h3>로그인 · 회원가입</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>Supabase Auth 이메일 가입 · 로그인</li>
         <li>예약할 때만 로그인 요청, 로그인 후 원래 보던 화면으로 복귀</li>
-        <li>토큰은 httpOnly 쿠키에만 보관하고 Next.js 서버가 API 호출</li>
+        <li>토큰은 인증 쿠키에 보관하고 Next.js 서버가 API 호출</li>
         <li>모바일 폭(390px)에서도 가로 스크롤 없이 동작 (17개 화면 자동 검사)</li>
       </ul></details></div>
       <div class="card"><span class="tag">운영 대시보드</span><h3>팝업 · 회차 관리</h3><details class="more"><summary>구현 기능 상세</summary><ul>
@@ -245,7 +245,7 @@
         <li>즉시 오픈 / 예약 오픈(일시 지정), 수동 마감</li>
         <li>두 관리자가 동시에 수정하면 나중 저장을 막고 새로고침 안내</li>
         <li>기간 · 시간 간격으로 회차 일괄 생성</li>
-        <li>정원은 이미 예약된 인원보다 작게 줄일 수 없음</li>
+        <li>정원은 이미 예약된 인원수보다 적게 줄일 수 없음</li>
         <li>예약이 있는 팝업은 초안 전환 · 삭제 불가, 예약 이력이 있는 회차는 삭제 불가</li>
       </ul></details></div>
       <div class="card"><span class="tag">운영 대시보드</span><h3>예약 현황 · 체크인</h3><details class="more"><summary>구현 기능 상세</summary><ul>
@@ -260,7 +260,7 @@
       <div class="card"><span class="tag">운영 대시보드 · API</span><h3>운영 테스트 도구 (SANDBOX)</h3><details class="more"><summary>구현 기능 상세</summary><ul>
         <li>관리자 화면에서 부하 · 동시 예약 · 지연 주입 · 장애 주입 시나리오 실행</li>
         <li>실제 데이터와 분리된 가상 팝업 · 가상 사용자로 실행 후 자동 정리</li>
-        <li>정원 초과 건수, 응답 시간, 오류율을 실시간 표시</li>
+        <li>응답 시간 · 성공률 표시, 정원 초과 건수는 종료 시 집계</li>
         <li>운영 환경에서는 서버가 기능 자체를 차단</li>
       </ul></details></div>
     </div>
@@ -271,23 +271,23 @@
   <div class="wrap">
     <h2>기술 포인트</h2>
     <div class="grid">
-      <div class="card"><span class="tag">동시성</span><h3>마지막 한 자리에 80명이 몰려도 초과 예약 0건</h3>
+      <div class="card"><span class="tag">동시성</span><h3>정원 10석에 80명이 동시에 몰려도 초과 예약 0건</h3>
         <p>애플리케이션 메모리 락 대신 데이터베이스의 조건부 UPDATE · 행 잠금 · 유니크 제약으로 좌석을 차감해, 서버가 몇 대로 늘어나도 정원을 넘지 않습니다.</p>
         <p class="result">✓ 정원 10석 · 동시 80명 → 성공 정확히 10건, 나머지 매진 안내</p></div>
       <div class="card"><span class="tag">신뢰성</span><h3>중복 클릭 · 네트워크 재시도에도 예약은 한 번</h3>
         <p>예약 요청마다 멱등성 키를 붙여, 같은 요청이 여러 번 와도 첫 결과를 그대로 돌려줍니다. 같은 회차 중복 예약은 DB 제약으로 막습니다.</p>
         <p class="result">✓ 같은 요청 20회 재전송 → 예약 1건, 좌석 1회 차감</p></div>
-      <div class="card"><span class="tag">시간</span><h3>서버 시각 기준 정각 오픈</h3>
+      <div class="card"><span class="tag">시간</span><h3>서버 시각 기준 지정 시각 오픈</h3>
         <p>예약 상태(오픈 대기 · 예약 가능 · 매진 · 마감)를 배치 작업 없이 요청마다 서버 시계로 계산합니다. 저장은 UTC, 화면은 KST로 명시해 시간대 오류를 없앴습니다.</p>
-        <p class="result">✓ 오픈 1초 전 · 정각 · 1초 후 경계 테스트 통과</p></div>
-      <div class="card"><span class="tag">보안</span><h3>토큰이 브라우저에 노출되지 않는 인증</h3>
-        <p>로그인은 Supabase Auth, 토큰은 httpOnly 쿠키에 보관하고 Next.js 서버만 API를 호출합니다. Spring이 공개키로 서명을 검증하고, 관리자 권한은 서버 DB로 판정합니다.</p>
+        <p class="result">✓ 오픈 1초 전 · 오픈 시각 · 1초 후 경계 테스트 통과</p></div>
+      <div class="card"><span class="tag">보안</span><h3>서버에서 검증하는 인증</h3>
+        <p>로그인은 Supabase Auth로 처리하고, 토큰은 인증 쿠키에 담아 Next.js 서버가 API를 호출합니다. Spring이 공개키로 서명을 검증하고, 관리자 권한은 서버 DB로 판정합니다.</p>
         <p class="result">✓ 위조 · 만료 · 권한 없는 토큰 거부 테스트 통과</p></div>
       <div class="card"><span class="tag">배포</span><h3>테스트를 통과한 코드만 자동 배포</h3>
         <p>GitHub Actions가 테스트 4단계(정책 · 웹 · API · E2E)를 통과한 main 커밋만 Google Cloud Run(API)과 Vercel(웹)에 배포합니다. 클라우드 키 파일 없이 인증하고, 롤백 · 암호화 백업도 자동화했습니다.</p>
         <p class="result">✓ push → 테스트 → 배포 → 상태 확인까지 자동</p></div>
       <div class="card"><span class="tag">품질</span><h3>개인정보를 남기지 않는 운영</h3>
-        <p>관리자 화면의 연락처는 마스킹하고, 로그에는 개인정보 대신 요청 ID만 남기며, 관리자 행동은 감사 로그로 기록합니다.</p>
+        <p>관리자 화면의 연락처는 마스킹하고, 로그에는 개인정보를 남기지 않고 요청 ID로 추적하며, 관리자 행동은 감사 로그로 기록합니다.</p>
         <p class="result">✓ 로그 개인정보 미기록 자동 검사</p></div>
     </div>
   </div>
@@ -298,9 +298,9 @@
     <h2>기술 스택</h2>
     <div class="stack-groups">
       <div class="card stack-group"><h3>서비스 웹 · 운영 대시보드</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
-        <dt>Next.js (App Router)</dt><dd>서버 컴포넌트가 매 요청 최신 잔여석을 렌더링, 브라우저에 API 주소 · 토큰 비노출, 서비스 웹과 운영 대시보드(/admin)를 한 앱에서 경로 · 권한으로 분리</dd>
+        <dt>Next.js (App Router)</dt><dd>서버 컴포넌트가 매 요청 최신 잔여석을 렌더링, 브라우저는 Spring API와 인증 헤더를 직접 다루지 않음, 서비스 웹과 운영 대시보드(/admin)를 한 앱에서 경로 · 권한으로 분리</dd>
         <dt>React</dt><dd>useActionState로 서버 액션 결과(오류 · 입력값) 수신, 예약 실패 시 입력값 유지</dd>
-        <dt>Server Actions</dt><dd>별도 API Route 없이 폼 제출을 서버에서 처리, 쿠키 토큰과 멱등성 키를 서버에서만 취급</dd>
+        <dt>Server Actions</dt><dd>별도 API Route 없이 폼 제출을 서버에서 처리, 서버가 생성해 폼에 담은 멱등성 키를 API 헤더로 전달</dd>
         <dt>TypeScript</dt><dd>API 응답 · 오류 코드를 타입으로 고정, CI typecheck 단계에서 배포 전 타입 오류 차단</dd>
       </dl></details></div>
       <div class="card stack-group"><h3>백엔드 서버</h3><details class="more"><summary>기술 상세</summary><dl class="tech-list">
@@ -399,13 +399,30 @@
 
 <dialog id="zoom"><img alt=""></dialog>
 <script>
-  // 탭 전환
-  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  // 탭 전환 (선택된 탭만 Tab 순서에 두고 좌우 화살표로 이동)
+  const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
+  const selectTab = b => {
+    tabs.forEach(x => { const on = x === b; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; });
     document.querySelectorAll('.gallery').forEach(g => g.classList.toggle('on', g.id === b.dataset.tab));
-  }));
+  };
+  tabs.forEach((b, i) => {
+    b.addEventListener('click', () => selectTab(b));
+    b.addEventListener('keydown', e => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      const next = tabs[(i + d + tabs.length) % tabs.length];
+      selectTab(next);
+      next.focus();
+    });
+  });
   // 인쇄할 때는 접힌 상세를 모두 펼친다
-  addEventListener('beforeprint', () => document.querySelectorAll('details.more').forEach(d => d.open = true));
+  let openBeforePrint = [];
+  addEventListener('beforeprint', () => {
+    openBeforePrint = [...document.querySelectorAll('details.more')].map(d => d.open);
+    document.querySelectorAll('details.more').forEach(d => d.open = true);
+  });
+  addEventListener('afterprint', () => document.querySelectorAll('details.more').forEach((d, i) => d.open = openBeforePrint[i] ?? false));
   // 이미지 확대 (바깥 클릭으로 닫기)
   const dlg = document.getElementById('zoom');
   const open = img => { dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal(); };

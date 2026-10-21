@@ -96,6 +96,7 @@
   .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tabs button { font: inherit; font-size: 15px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
   .tabs button[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabs button[aria-selected="true"] { color: #141414; } }
   .gallery { display: none; gap: 20px; }
   .gallery.on { display: grid; }
   .gallery.phones { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
@@ -196,12 +197,12 @@
   <div class="wrap">
     <h2>서비스 이미지</h2>
     <div class="tabs" role="tablist">
-      <button role="tab" aria-selected="true" data-tab="app" aria-controls="app">서비스 앱</button>
-      <button role="tab" aria-selected="false" data-tab="driver" aria-controls="driver">운영 앱</button>
-      <button role="tab" aria-selected="false" data-tab="dash" aria-controls="dash">운영 대시보드</button>
+      <button role="tab" id="tab-app" aria-selected="true" tabindex="0" data-tab="app" aria-controls="app">서비스 앱</button>
+      <button role="tab" id="tab-driver" aria-selected="false" tabindex="-1" data-tab="driver" aria-controls="driver">운영 앱</button>
+      <button role="tab" id="tab-dash" aria-selected="false" tabindex="-1" data-tab="dash" aria-controls="dash">운영 대시보드</button>
     </div>
 
-    <div class="gallery phones on" id="app" role="tabpanel" data-label="서비스 앱">
+    <div class="gallery phones on" id="app" role="tabpanel" aria-labelledby="tab-app" data-label="서비스 앱">
       <figure><img src="images/app-guest.png" alt="둘러보기 홈"><figcaption><b>둘러보기</b></figcaption></figure>
       <figure><img src="images/app-signup.png" alt="회원가입 본인인증"><figcaption><b>회원가입</b></figcaption></figure>
       <figure><img src="images/app-home.png" alt="서비스 앱 홈 화면: 내 구독 목록"><figcaption><b>홈</b></figcaption></figure>
@@ -214,13 +215,13 @@
       <figure><img src="images/app-home-dark.png" alt="다크 모드 홈"><figcaption><b>다크 모드</b></figcaption></figure>
     </div>
 
-    <div class="gallery phones" id="driver" role="tabpanel" data-label="운영 앱">
+    <div class="gallery phones" id="driver" role="tabpanel" aria-labelledby="tab-driver" data-label="운영 앱">
       <figure><img src="images/driver-today.png" alt="오늘 수거 목록"><figcaption><b>오늘 수거</b></figcaption></figure>
       <figure><img src="images/driver-stop.png" alt="수거지 상세"><figcaption><b>수거지 상세</b></figcaption></figure>
       <figure><img src="images/driver-photo.png" alt="수거 인증 촬영"><figcaption><b>수거 인증</b></figcaption></figure>
     </div>
 
-    <div class="gallery desks" id="dash" role="tabpanel" data-label="운영 대시보드">
+    <div class="gallery desks" id="dash" role="tabpanel" aria-labelledby="tab-dash" data-label="운영 대시보드">
       <figure><img src="images/dash-overview.png" alt="오늘 현황"><figcaption><b>오늘 현황</b></figcaption></figure>
       <figure><img src="images/dash-subscriptions.png" alt="구독 결제 조회"><figcaption><b>구독 · 결제</b></figcaption></figure>
       <figure><img src="images/dash-pricing.png" alt="가격 플랜"><figcaption><b>가격 · 플랜</b></figcaption></figure>
@@ -456,13 +457,30 @@
 
 <dialog id="zoom"><img alt=""></dialog>
 <script>
-  // 탭 전환
-  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  // 탭 전환 (선택된 탭만 Tab 순서에 두고 좌우 화살표로 이동)
+  const tabs = [...document.querySelectorAll('.tabs [role="tab"]')];
+  const selectTab = b => {
+    tabs.forEach(x => { const on = x === b; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; });
     document.querySelectorAll('.gallery').forEach(g => g.classList.toggle('on', g.id === b.dataset.tab));
-  }));
+  };
+  tabs.forEach((b, i) => {
+    b.addEventListener('click', () => selectTab(b));
+    b.addEventListener('keydown', e => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      const next = tabs[(i + d + tabs.length) % tabs.length];
+      selectTab(next);
+      next.focus();
+    });
+  });
   // 인쇄할 때는 접힌 구현 기능 상세를 모두 펼친다
-  addEventListener('beforeprint', () => document.querySelectorAll('details.more').forEach(d => d.open = true));
+  let openBeforePrint = [];
+  addEventListener('beforeprint', () => {
+    openBeforePrint = [...document.querySelectorAll('details.more')].map(d => d.open);
+    document.querySelectorAll('details.more').forEach(d => d.open = true);
+  });
+  addEventListener('afterprint', () => document.querySelectorAll('details.more').forEach((d, i) => d.open = openBeforePrint[i] ?? false));
   // 이미지 확대 (바깥 클릭으로 닫기)
   const dlg = document.getElementById('zoom');
   const open = img => { dlg.querySelector('img').src = img.src; dlg.querySelector('img').alt = img.alt; dlg.showModal(); };
