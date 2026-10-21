@@ -45,7 +45,7 @@
   .hero-shots img:last-child { margin-top: 48px; }
 
   /* 숫자 */
-  .services { margin-top: 16px; }
+  .grid.two.services { margin-top: 16px; grid-template-columns: 1fr; }
 
   /* 카드 그리드 */
   .grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
@@ -55,12 +55,14 @@
   .card ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-2); font-size: 15px; }
   .card .tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--primary-soft); color: var(--primary); margin-bottom: 10px; }
   .card .tag.plan { background: var(--accent-soft); color: #a8650a; }
-  .service-card { display: grid; gap: 18px; align-content: start; }
-  .service-card figure { margin-top: 4px; }
-  .service-card figure img { width: 100%; max-height: 430px; object-fit: contain; object-position: top; border-radius: 14px; }
+  .service-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, 240px); gap: 24px; align-items: center; }
+  .service-card.web { grid-template-columns: minmax(0, 1fr) minmax(280px, 440px); }
+  .service-card.no-image { grid-template-columns: 1fr; }
+  .service-card > div { min-width: 0; }
+  .service-card .chips { margin-top: 16px; }
+  .service-card figure { justify-self: end; }
+  .service-card figure img { width: 100%; max-height: 260px; object-fit: contain; object-position: center; border-radius: 14px; }
   .service-card.web figure img { max-height: none; border: 1px solid var(--border); }
-  .service-card figcaption { margin-top: 8px; }
-  .service-card .stack-line { color: var(--text); font-size: 14px; font-weight: 700; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card .tag.plan { color: var(--accent); } }
 
   /* 기술 스택 표 */
@@ -118,6 +120,8 @@
 
   @media screen and (max-width: 860px) {
     .hero-grid, .grid, .grid.two, .gallery.desks { grid-template-columns: 1fr; }
+    .service-card, .service-card.web { grid-template-columns: 1fr; }
+    .service-card figure { justify-self: center; }
     .stack { grid-template-columns: 1fr; }
     .stack > div:nth-child(2) { border-top: 1px solid var(--border); }
     .stack .k { border-top: 1px solid var(--border); }
@@ -188,12 +192,12 @@
   <div class="wrap">
     <p class="eyebrow">OVERVIEW</p>
     <h2>프로젝트 개요</h2>
-    <p class="lead">구독제 분리수거 대행 서비스입니다. 고객 앱은 Android·iOS 크로스 플랫폼을 지원하며, 고객·기사·운영 담당자가 하나의 서비스 흐름으로 연결됩니다.</p>
+    <p class="lead">구독제 분리수거 대행 서비스입니다.<br>고객 앱은 Android·iOS 크로스 플랫폼을 지원합니다.<br>고객·기사·운영 담당자가 하나의 서비스 흐름으로 연결됩니다.</p>
     <div class="grid two services">
-      <div class="card service-card"><div><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>구독을 신청하고, 정해진 수거 일정과 요청 사항을 관리하는 고객용 앱입니다.</p></div><figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"><figcaption>구독 페이지</figcaption></figure><p class="stack-line">React · React Native · Expo</p></div>
-      <div class="card service-card"><div><span class="tag">기사 앱</span><h3>운영 앱</h3><p>수거 방문기사에게 오늘의 수거 권역과 방문 목록을 보여줍니다. 완료·미수거 기록을 오프라인에서도 저장하고, 관리자 웹의 작업 현황과 연계되도록 설계했습니다.</p></div><figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"><figcaption>오늘 수거 페이지</figcaption></figure><p class="stack-line">React · React Native · Expo</p></div>
-      <div class="card service-card web"><div><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>오늘의 권역별 작업 현황과 구독·결제, 고객 요청, 푸시 알림, 이벤트·할인, 가격·플랜을 관리하는 운영 대시보드입니다.</p></div><figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"><figcaption>오늘 현황 페이지</figcaption></figure><p class="stack-line">React · Next.js</p></div>
-      <div class="card service-card"><div><span class="tag">API</span><h3>백엔드 서버</h3><p>고객 앱과 운영 대시보드가 공유하고 기사 앱 연동을 전제로 설계한 백엔드 API입니다. 고객·구독·수거·결제 데이터를 통합 관리해 서비스 간 데이터 정합성을 높였습니다.</p></div><p class="stack-line">NestJS · PostgreSQL · Docker · TypeORM</p></div>
+      <div class="card service-card"><div><span class="tag">고객 앱</span><h3>서비스 앱</h3><p>구독을 신청하고, 정해진 수거 일정과 요청 사항을 관리하는 고객용 앱입니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div><figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"></figure></div>
+      <div class="card service-card"><div><span class="tag">기사 앱</span><h3>운영 앱</h3><p>수거 방문기사에게 오늘의 수거 권역과 방문 목록을 보여줍니다. 완료·미수거 기록을 오프라인에서도 저장하고, 관리자 웹의 작업 현황과 연계되도록 설계했습니다.</p><div class="chips"><span class="chip">React</span><span class="chip">React Native</span><span class="chip">Expo</span></div></div><figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"></figure></div>
+      <div class="card service-card web"><div><span class="tag">관리자 웹</span><h3>운영 대시보드</h3><p>오늘의 권역별 작업 현황과 구독·결제, 고객 요청, 푸시 알림, 이벤트·할인, 가격·플랜을 관리하는 운영 대시보드입니다.</p><div class="chips"><span class="chip">React</span><span class="chip">Next.js</span></div></div><figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"></figure></div>
+      <div class="card service-card no-image"><div><span class="tag">API</span><h3>백엔드 서버</h3><p>고객 앱과 운영 대시보드가 공유하고 기사 앱 연동을 전제로 설계한 백엔드 API입니다. 고객·구독·수거·결제 데이터를 통합 관리해 서비스 간 데이터 정합성을 높였습니다.</p><div class="chips"><span class="chip">NestJS</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">TypeORM</span></div></div></div>
     </div>
   </div>
 </section>
@@ -431,15 +435,15 @@
     </div>
 
     <div class="gallery phones on" id="app" data-label="서비스 앱">
-      <figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"><figcaption><b>구독 페이지</b>봉투 용량 · 추가 봉투 선택</figcaption></figure>
+      <figure><img src="images/app-subscribe.png" alt="서비스 앱 구독 페이지"><figcaption>봉투 용량 · 추가 봉투 선택</figcaption></figure>
     </div>
 
     <div class="gallery phones" id="driver" data-label="운영 앱">
-      <figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"><figcaption><b>오늘 수거 페이지</b>권역 · 방문 목록 · 작업 현황</figcaption></figure>
+      <figure><img src="images/driver-today.png" alt="운영 앱 오늘 수거 페이지"><figcaption>권역 · 방문 목록 · 작업 현황</figcaption></figure>
     </div>
 
     <div class="gallery desks" id="dash" data-label="운영 대시보드">
-      <figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"><figcaption><b>오늘 현황 페이지</b>권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
+      <figure><img src="images/dash-overview.png" alt="운영 대시보드 오늘 현황 페이지"><figcaption>권역별 수거 진행 · 미수거 · 결제 실패</figcaption></figure>
     </div>
   </div>
 </section>
