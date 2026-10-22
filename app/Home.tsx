@@ -155,6 +155,7 @@ export default function Home({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ul>
+          <p className="projects-note">{tr('projects.note')}</p>
         </section>
 
         <section id="skills">

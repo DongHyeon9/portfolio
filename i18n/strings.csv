@@ -69,6 +69,7 @@ projects.jenkins-local-test.impact,home,"서비스 장애를 사전 방지,
 고객의 이탈률을 줄입니다.",I prevent service outages in advance and reduce customer churn.,"サービス障害を未然に防ぎ、
 顧客離れを減らします。","提前预防服务故障，
 降低客户流失率。",
+projects.note,home,※ 보안상의 이유로 프로젝트 이름은 실제 배포된 서비스명과 다르게 표기했습니다.,"※ For security reasons, project names differ from the names of the actual deployed services.",※ セキュリティ上の理由により、プロジェクト名は実際に公開しているサービス名とは異なります。,※ 出于安全原因，项目名称与实际上线的服务名称不同。,
 footer,home,© 2026 한동현 · Built with Next.js · GitHub Pages,© 2026 Donghyeon Han · Built with Next.js · GitHub Pages,© 2026 ハン・ドンヒョン · Built with Next.js · GitHub Pages,© 2026 Donghyeon Han · Built with Next.js · GitHub Pages,
 1cee125e,internal-linux-server/index; internal-linux-server/tech-doc,내부망 Linux 서버 구축,Internal Network Linux Server,内部ネットワーク Linux サーバー構築,内网 Linux 服务器搭建,
 9423ed50,internal-linux-server/index; internal-linux-server/tech-doc,← 포트폴리오 목록,← Portfolio,← ポートフォリオ一覧,← 作品集列表,
@@ -1145,6 +1146,7 @@ f2d26c61,jenkins-local-test/index,서버 구축 및 운영 환경 · 실제 IP �
 906082f5,personal-sanitation/index,분리집사 로고,Bunri Jipsa logo,Bunri Jipsa ロゴ,Bunri Jipsa 标志,
 3a256ad7,personal-sanitation/index,분리집사,Bunri Jipsa,Bunri Jipsa,Bunri Jipsa,
 db249809,personal-sanitation/index,"문앞에 내놓으면,<br><em>분리수거까지</em> 대신합니다","Leave it at your door,<br><em>we handle the recycling</em> for you",玄関先に出すだけで、<br><em>分別回収まで</em>代行します,放在门口，<br><em>垃圾分类回收</em>交给我们,
+de1195b2,personal-sanitation/index; reserve-system/index,※ 보안상의 이유로 프로젝트 이름은 실제 배포된 서비스명과 다르게 표기했습니다.,"※ For security reasons, project names differ from the names of the actual deployed services.",※ セキュリティ上の理由により、プロジェクト名は実際に公開しているサービス名とは異なります。,※ 出于安全原因，项目名称与实际上线的服务名称不同。,
 e17d0574,personal-sanitation/index,서비스 앱 홈 화면: 내 구독 목록,Service app home: my subscriptions,サービスアプリのホーム画面：購読一覧,服务 App 首页：我的订阅列表,
 fab758ef,personal-sanitation/index,운영 앱 오늘 수거 페이지,Operations app today’s pickups page,運営アプリの本日回収ページ,运营 App 今日回收页面,
 68adefb2,personal-sanitation/index; reserve-system/index,프로젝트 개요,Project Overview,プロジェクト概要,项目概述,
